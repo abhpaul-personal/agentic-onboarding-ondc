@@ -1,0 +1,13 @@
+member_name,business_name,city,state,category,gstin,fssai_no,fssai_expiry,bank_ifsc,account_no
+Sunanda Patil,Sunanda's Papad (Sakhi Annapurna),Satara,Maharashtra,Grocery,27ZZZPS0001A1ZV,20000000000701,2028-03-31,DEMO0000001,000000000001
+Rekha Jadhav,Rekha's Pickles (Sakhi Annapurna),Satara,Maharashtra,Grocery,27ZZZPR0002B1ZT,20000000000702,2028-03-31,DEMO0000002,000000000002
+Shabana Shaikh,Shabana's Chakli (Sakhi Annapurna),Satara,Maharashtra,Grocery,27ZZZPS0003C1ZP,20000000000703,2028-03-31,DEMO0000003,000000000003
+Lata More,Lata's Masala (Sakhi Annapurna),Satara,Maharashtra,Grocery,27ZZZPL0004D1ZT,20000000000704,2028-03-31,DEMO0000004,000000000004
+Kavita Gaikwad,Kavita's Laddoo (Sakhi Annapurna),Satara,Maharashtra,Grocery,27ZZZPK0005E1ZA,20000000000705,2028-03-31,DEMO0000005,000000000005
+Asha Pawar,Asha's Shev (Sakhi Annapurna),Satara,Maharashtra,Grocery,27ZZZPA0006F1ZY,20000000000706,2028-03-31,DEMO0000006,000000000006
+Nirmala Kale,Nirmala's Chutney Powder (Sakhi Annapurna),Satara,Maharashtra,Grocery,27ZZZPN0007G1ZI,20000000000707,2028-03-31,DEMO0000007,000000000007
+Rupali Shinde,Rupali's Kurdai (Sakhi Annapurna),Satara,Maharashtra,Grocery,27ZZZPR0008H1ZB,20000000000708,2028-03-31,DEMO0000008,000000000008
+Farida Pathan,Farida's Papdi (Sakhi Annapurna),Satara,Maharashtra,Grocery,27ZZZPF0009I1ZJ,20000000000709,2026-08-31,DEMO0000009,000000000009
+Vandana Salve,Vandana's Poha Chivda (Sakhi Annapurna),Satara,Maharashtra,Grocery,27ZZZPV0010J1Z8,20000000000710,2028-03-31,DEMO0000010,000000000010
+Meera Lokhande,Meera's Bhakri Pith (Sakhi Annapurna),Satara,Maharashtra,Grocery,27ZZZPM0011K1ZE,20000000000711,2028-03-31,DEMO0000011,000000000011
+Jyoti Kamble,Jyoti's Amla Candy (Sakhi Annapurna),Satara,Maharashtra,Grocery,27ZZZPJ0012L1ZE,20000000000712,2028-03-31,DEMO0000012,000000000012

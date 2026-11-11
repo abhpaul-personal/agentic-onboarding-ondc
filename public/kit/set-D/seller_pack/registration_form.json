@@ -1,0 +1,18 @@
+{
+  "seller_id": "SLR-D",
+  "business_name": "Butterleaf Home Bakery",
+  "owner": "Farah Qureshi",
+  "city": "Indore",
+  "state": "Madhya Pradesh",
+  "category": "Grocery",
+  "gstin": "23ZZZPQ0004D1ZW",
+  "pan": "ZZZPQ0004D",
+  "fssai": "20000000000004",
+  "fssai_expiry": "2027-12-31",
+  "ifsc": "DEMO0000004",
+  "account": "000000000404",
+  "packer_address": "House 7, Demo Colony, Indore 452000",
+  "returns": "Not returnable (perishable)",
+  "time_to_ship": "PT6H",
+  "note": "Fictional seller. All identifiers are synthetic test values."
+}

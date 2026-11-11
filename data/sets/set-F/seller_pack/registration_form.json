@@ -1,0 +1,18 @@
+{
+  "seller_id": "SLR-F",
+  "business_name": "Trapline Traders",
+  "owner": "Test Operator",
+  "city": "Nagpur",
+  "state": "Maharashtra",
+  "category": "Grocery",
+  "gstin": "27ZZZPT0006F1ZF",
+  "pan": "ZZZPT0006F",
+  "fssai": "20000000000006",
+  "fssai_expiry": "2027-06-30",
+  "ifsc": "DEMO0000006",
+  "account": "000000000606",
+  "packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+  "returns": "Returnable within 2 days if damaged",
+  "time_to_ship": "P1D",
+  "note": "Fictional seller. All identifiers are synthetic test values."
+}

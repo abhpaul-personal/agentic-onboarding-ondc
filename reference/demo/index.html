@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agentic Onboarding for ONDC Sellers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f5f1; --panel:#ffffff; --ink:#1d1f24; --ink2:#5b616e; --ink3:#8a909c; --line:#e3e1da; --line2:#efede7;
+  --accent:#0f766e; --accent-soft:#e3f2ef; --gate:#4338ca; --gate-soft:#eceafd; --sim:#b45309; --sim-soft:#fdf1e2;
+  --real:#166534; --real-soft:#e5f4ea; --bad:#b91c1c; --bad-soft:#fdeaea; --warn:#a16207; --warn-soft:#fdf6dc;
+  --r:10px; --mono:'JetBrains Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+a{color:var(--accent)}
+button{font:inherit;cursor:pointer}
+header.top{position:sticky;top:0;z-index:20;background:rgba(246,245,241,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.top-in{max-width:1320px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.brand{display:flex;flex-direction:column}
+.brand b{font-size:16px;letter-spacing:-.01em}
+.brand span{font-size:12px;color:var(--ink2)}
+nav.tabs{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+nav.tabs a{padding:7px 12px;border-radius:8px;text-decoration:none;color:var(--ink2);font-weight:500}
+nav.tabs a.on{background:var(--ink);color:#fff}
+main{max-width:1320px;margin:0 auto;padding:22px 20px 60px}
+.view{display:none}.view.on{display:block}
+h1{font-size:30px;line-height:1.15;letter-spacing:-.02em;margin:6px 0 10px}
+h2{font-size:20px;letter-spacing:-.01em;margin:0 0 8px}
+h3{font-size:15px;margin:0 0 6px}
+p{margin:0 0 10px}
+.muted{color:var(--ink2)} .small{font-size:12.5px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.grid{display:grid;gap:14px}
+.g3{grid-template-columns:repeat(3,1fr)} .g2{grid-template-columns:repeat(2,1fr)}
+@media(max-width:900px){.g3,.g2{grid-template-columns:1fr}}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.chip.sim{background:var(--sim-soft);color:var(--sim)} .chip.real{background:var(--real-soft);color:var(--real)}
+.chip.gate{background:var(--gate-soft);color:var(--gate)} .chip.bad{background:var(--bad-soft);color:var(--bad)}
+.chip.warn{background:var(--warn-soft);color:var(--warn)} .chip.ok{background:var(--real-soft);color:var(--real)}
+.chip.neutral{background:var(--line2);color:var(--ink2)}
+.btn{text-decoration:none;display:inline-block;border:1px solid var(--line);background:#fff;color:var(--ink);padding:8px 14px;border-radius:8px;font-weight:600}
+.btn:hover{border-color:var(--ink3)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.gate{background:var(--gate);border-color:var(--gate);color:#fff}
+.btn.ghost{background:transparent}
+.btn.sm{padding:4px 10px;font-size:12.5px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.hero{display:grid;grid-template-columns:1.25fr 1fr;gap:22px;align-items:start}
+@media(max-width:900px){.hero{grid-template-columns:1fr}}
+.stat b{display:block;font-size:24px;letter-spacing:-.02em}
+.stat span{font-size:12.5px;color:var(--ink2)}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.flow .f{padding:6px 10px;border-radius:8px;border:1px solid var(--line);background:#fff;font-size:12.5px;font-weight:500}
+.flow .f.g{background:var(--gate-soft);border-color:#c7c2f7;color:var(--gate);font-weight:600}
+.flow .arr{color:var(--ink3)}
+.legend{display:flex;gap:10px;flex-wrap:wrap}
+/* demo layout */
+.demo{display:grid;grid-template-columns:230px minmax(0,1fr) 270px;gap:16px;align-items:start}
+@media(max-width:1180px){.demo{grid-template-columns:220px minmax(0,1fr)}.audit{grid-column:1/-1}}
+@media(max-width:760px){.demo{grid-template-columns:1fr}}
+.timeline{position:sticky;top:76px}
+.tl-stage{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin:12px 0 6px}
+.tl-item{display:flex;gap:8px;align-items:flex-start;padding:6px 8px;border-radius:8px;font-size:13px;color:var(--ink2)}
+.tl-item .dot{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line);flex:none;margin-top:1px;display:grid;place-items:center;font-size:10px;background:#fff}
+.tl-item.gate .dot{border-radius:5px}
+.tl-item.done .dot{background:var(--real);border-color:var(--real);color:#fff}
+.tl-item.skip{opacity:.55}.tl-item.skip .dot{border-style:dashed}
+.tl-item.cur{background:#fff;border:1px solid var(--line);color:var(--ink);font-weight:600}
+.tl-item.cur .dot{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.tl-item.gate.cur .dot{border-color:var(--gate);box-shadow:0 0 0 3px var(--gate-soft)}
+.step-head{display:flex;align-items:flex-start;gap:12px;justify-content:space-between;margin-bottom:12px}
+.step-head .who{font-size:12px;color:var(--ink2)}
+.log{font-family:var(--mono);font-size:12px;background:#15171c;color:#d8dbe2;border-radius:8px;padding:10px 12px;min-height:44px;margin:10px 0;max-height:220px;overflow:auto}
+.log div{white-space:pre-wrap}
+.log .t{color:#7d8597}.log .ok{color:#86efac}.log .w{color:#fcd34d}.log .e{color:#fca5a5}
+table.t{width:100%;border-collapse:collapse;font-size:12.5px}
+table.t th{text-align:left;font-weight:600;color:var(--ink2);border-bottom:1px solid var(--line);padding:7px 8px;white-space:nowrap;background:#fbfaf7;position:sticky;top:0}
+table.t td{border-bottom:1px solid var(--line2);padding:7px 8px;vertical-align:top}
+.tbl-wrap{overflow:auto;max-height:420px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.mono{font-family:var(--mono);font-size:12px}
+.conf{display:inline-flex;align-items:center;gap:6px}
+.conf i{display:inline-block;width:46px;height:6px;border-radius:3px;background:var(--line2);position:relative;overflow:hidden}
+.conf i b{position:absolute;inset:0 auto 0 0;background:var(--accent)}
+.conf.lo i b{background:var(--bad)}.conf.mid i b{background:var(--warn)}
+select,input[type=text]{font:inherit;font-size:12.5px;padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:#fff;max-width:100%}
+.section{margin-top:16px}
+.callout{border-left:3px solid var(--gate);background:var(--gate-soft);padding:10px 12px;border-radius:0 8px 8px 0;font-size:13px;margin:10px 0}
+.callout.sim{border-color:var(--sim);background:var(--sim-soft)}
+.callout.real{border-color:var(--real);background:var(--real-soft)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.audit{position:sticky;top:76px;max-height:calc(100vh - 100px);display:flex;flex-direction:column}
+.audit-list{overflow:auto;flex:1;font-size:12px}
+.audit-list .e{display:grid;grid-template-columns:54px 16px 1fr;gap:6px;padding:5px 0;border-bottom:1px solid var(--line2)}
+.audit-list .e .ts{color:var(--ink3);font-family:var(--mono);font-size:11px}
+.audit-list .e .k{width:14px;height:14px;border-radius:4px;margin-top:2px}
+.k.agent{background:var(--sim)}.k.human{background:var(--gate)}.k.check{background:var(--real)}.k.sys{background:var(--ink3)}
+.scen{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.scen button{text-align:left;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.scen button:hover{border-color:var(--accent)}
+.scen button b{display:block;font-size:14.5px;margin-bottom:3px}
+.pre{font-family:var(--mono);font-size:11.5px;background:#fbfaf7;border:1px solid var(--line);border-radius:8px;padding:10px;max-height:320px;overflow:auto;white-space:pre}
+.metric b{font-size:26px;letter-spacing:-.02em;display:block}
+.metric .lbl{font-size:12.5px;color:var(--ink2)}
+.metric .tgt{font-size:11.5px;color:var(--ink3)}
+.pass{color:var(--real)}.fail{color:var(--bad)}
+.docimg{width:100%;border:1px solid var(--line);border-radius:6px;background:#fff}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:4px 10px;font-size:13px}
+.kv div:nth-child(odd){color:var(--ink2)}
+.foot{margin-top:28px;font-size:12px;color:var(--ink3)}
+.hidden{display:none!important}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:9px 14px;border-radius:8px;font-size:13px;z-index:50}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <div class="brand"><b>Agentic Onboarding for ONDC Sellers</b><span>Case-study demo · personal project · not affiliated with ONDC</span></div>
+  <nav class="tabs">
+    <a href="#overview" data-v="overview">Overview</a>
+    <a href="#demo" data-v="demo">Run the demo</a>
+    <a href="#scorecard" data-v="scorecard">Scorecard</a>
+    <a href="#kit" data-v="kit">Eval kit</a>
+  </nav>
+</div></header>
+<main>
+
+<!-- ============ OVERVIEW ============ -->
+<section class="view" id="v-overview">
+  <div class="hero">
+    <div>
+      <span class="chip neutral">Case study</span>
+      <h1>Small sellers get onboarded to ONDC, but far fewer go live with a complete, compliant catalog.</h1>
+      <p class="muted">Seller apps re-key catalogs by hand from Excel sheets, price-list photos and WhatsApp messages. Statutory fields such as MRP, net quantity and FSSAI licence are often missing. This demo shows an agentic onboarding flow that does the extraction, mapping and checking, while a human approves every step that carries legal or financial risk.</p>
+      <div class="actions"><a class="btn primary" href="#demo">Run the demo</a><a class="btn" href="#kit">Get the eval kit</a></div>
+    </div>
+    <div class="card">
+      <h3>The gap this targets</h3>
+      <div class="grid g2" style="margin-top:8px">
+        <div class="stat"><b>7 lakh+</b><span>sellers onboarded across 72 seller apps, early 2025 (<a href="https://www.policycircle.org/industry/ondc-faces-growth-pangs-e-commerce/" target="_blank" rel="noopener">Policy Circle</a>)</span></div>
+        <div class="stat"><b>2 lakh+</b><span>retail merchants active, July 2026 (<a href="https://cross-border-magazine.com/ondc-500-million-transactions-india/" target="_blank" rel="noopener">Cross-Border Magazine</a>)</span></div>
+      </div>
+      <p class="small muted" style="margin-top:10px">Sources count sellers differently, so read this as direction, not an exact funnel.</p>
+    </div>
+  </div>
+
+  <div class="section card">
+    <h2>How the flow works</h2>
+    <p class="muted small">Stage 1 runs once per seller. Stage 2 runs for every catalog that seller adds. Nothing is published by default.</p>
+    <div class="tl-stage">Stage 1 · Seller onboarding</div>
+    <div class="flow"><span class="f">S1 Seller intake agent</span><span class="arr">→</span><span class="f">S2 Verification agent</span><span class="arr">→</span><span class="f g">G0 SNP reviewer approves seller</span></div>
+    <div class="tl-stage">Stage 2 · Catalog onboarding, per seller</div>
+    <div class="flow"><span class="f">1 Source intake</span><span class="arr">→</span><span class="f">2 Extraction</span><span class="arr">→</span><span class="f g">G1 Seller confirms items</span><span class="arr">→</span><span class="f">3 Category</span><span class="arr">→</span><span class="f">4 Smart mapping</span><span class="arr">→</span><span class="f g">G2 Reviewer approves risky mappings</span><span class="arr">→</span><span class="f">5 Validation</span><span class="arr">→</span><span class="f g">G3 Seller signs off statutory fields</span><span class="arr">→</span><span class="f">6 Catalog builder</span><span class="arr">→</span><span class="f g">G4 Pilot phase, then full catalog</span><span class="arr">→</span><span class="f">7 Publish and monitor</span></div>
+    <p class="small muted" style="margin-top:10px">Anything an agent cannot resolve goes to a fallback queue for the catalog ops reviewer, and comes back through G2.</p>
+  </div>
+
+  <div class="section grid g3">
+    <div class="card"><span class="chip sim">Simulated agent</span><p class="small" style="margin-top:8px">Agent steps replay pre-computed outputs for the sample data. No model is called in this demo, which keeps it free, fast and repeatable.</p></div>
+    <div class="card"><span class="chip real">Real check</span><p class="small" style="margin-top:8px">Deterministic checks run as real code in your browser: GSTIN checksum, PAN match, FSSAI expiry, IFSC format, GTIN check digit, MRP versus price, duplicates and required fields.</p></div>
+    <div class="card"><span class="chip gate">Human gate</span><p class="small" style="margin-top:8px">You play both humans: the seller and the seller app's reviewer. Every approval, edit and rejection lands in the audit log.</p></div>
+  </div>
+
+  <div class="section card">
+    <h2>Smart mapping, in one rule</h2>
+    <p class="small">Every proposed field mapping carries a confidence score and a one-line reason that quotes the seller's own values. Low-risk fields at 0.90 or above are auto-accepted. Prices, net quantity, FSSAI, packer and veg marks always go to a human. Anything below 0.60 goes to the fallback queue. The agent never invents a statutory value: it can only extract it, pre-fill it from the approved seller profile, or ask.</p>
+  </div>
+  <p class="foot">All sellers, people, GSTINs, PANs, FSSAI numbers, bank details and barcodes are fictional test data. ONDC attribute keys are modelled on the public retail v1.2 specs and simplified for the demo.</p>
+</section>
+
+<!-- ============ DEMO ============ -->
+<section class="view" id="v-demo">
+  <div id="pick">
+    <h2>Pick a sample seller</h2>
+    <p class="muted">Each one stresses a different part of the flow. You will act as the seller and as the seller app's reviewer.</p>
+    <div class="scen" id="scen-list"></div>
+  </div>
+  <div id="run" class="hidden">
+    <div class="demo">
+      <aside class="timeline card" id="timeline"></aside>
+      <div>
+        <div class="card" id="stage"></div>
+      </div>
+      <aside class="card audit">
+        <div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">Audit log</h3><span class="small muted" id="clock"></span></div>
+        <div class="legend small" style="margin:6px 0 4px"><span><i class="k agent" style="display:inline-block;width:9px;height:9px;border-radius:2px"></i> agent</span><span><i class="k check" style="display:inline-block;width:9px;height:9px;border-radius:2px"></i> check</span><span><i class="k human" style="display:inline-block;width:9px;height:9px;border-radius:2px"></i> human</span></div>
+        <div class="audit-list" id="audit"></div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCORECARD ============ -->
+<section class="view" id="v-scorecard"><div id="score"></div></section>
+
+<!-- ============ KIT ============ -->
+<section class="view" id="v-kit">
+  <h2>Evaluation and dummy data kit</h2>
+  <p class="muted">Synthetic sellers and catalogs with ground truth, so anyone can test an onboarding flow and reproduce the scores. Data under CC BY 4.0, scoring script under MIT.</p>
+  <div class="actions" style="margin-bottom:14px"><button class="btn primary" data-dl="kit/eval-kit-v1.zip">Download full kit (.zip)</button><button class="btn" data-dl="kit/README.md">README</button><span class="small muted" id="dl-note"></span></div>
+  <div class="tbl-wrap" style="max-height:none"><table class="t" id="kit-table"></table></div>
+  <p class="foot">Every business, person and identifier in the kit is fictional. GTINs use the GS1 restricted-circulation prefix 2 so they cannot match real retail products.</p>
+</section>
+</main>
+
+<script>
+const DATA = {"sellers": {"B": {"business_name": "Rambhau Kirana Stores", "owner": "Ramesh Bhosale", "city": "Pune", "state": "Maharashtra", "state_code": "27", "pan": "ZZZPB0002B", "category": "Grocery", "fssai": "20000000000002", "fssai_expiry": "2027-09-30", "ifsc": "DEMO0000002", "account": "000000000202", "packer_address": "Shop 12, Demo Market Road, Pune 411000", "returns": "Returnable within 2 days if damaged", "time_to_ship": "PT4H", "gstin": "27ZZZPB0002B1Z9", "seller_id": "SLR-B", "fictional": true}, "C": {"business_name": "Neelkurinji Threads", "owner": "Anitha Varghese", "city": "Kochi", "state": "Kerala", "state_code": "32", "pan": "ZZZPV0003C", "category": "Fashion", "fssai": "", "fssai_expiry": "", "ifsc": "DEMO0000003", "account": "000000000303", "packer_address": "2nd Floor, Demo Weavers Lane, Kochi 682000", "returns": "Returnable within 7 days", "time_to_ship": "P2D", "gstin": "32ZZZPV0003C1ZV", "seller_id": "SLR-C", "fictional": true}, "D": {"business_name": "Butterleaf Home Bakery", "owner": "Farah Qureshi", "city": "Indore", "state": "Madhya Pradesh", "state_code": "23", "pan": "ZZZPQ0004D", "category": "Grocery", "fssai": "20000000000004", "fssai_expiry": "2027-12-31", "ifsc": "DEMO0000004", "account": "000000000404", "packer_address": "House 7, Demo Colony, Indore 452000", "returns": "Not returnable (perishable)", "time_to_ship": "PT6H", "gstin": "23ZZZPQ0004D1ZW", "seller_id": "SLR-D", "fictional": true}, "F": {"business_name": "Trapline Traders", "owner": "Test Operator", "city": "Nagpur", "state": "Maharashtra", "state_code": "27", "pan": "ZZZPT0006F", "category": "Grocery", "fssai": "20000000000006", "fssai_expiry": "2027-06-30", "ifsc": "DEMO0000006", "account": "000000000606", "packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000", "returns": "Returnable within 2 days if damaged", "time_to_ship": "P1D", "gstin": "27ZZZPT0006F1ZF", "seller_id": "SLR-F", "fictional": true}}, "target": {"descriptor.name": ["Item name", "low"], "descriptor.short_desc": ["Short description", "low"], "descriptor.code": ["GTIN", "medium"], "brand": ["Brand", "low"], "category_id": ["ONDC category", "medium"], "price.value": ["Selling price (INR)", "high"], "price.maximum_value": ["MRP (INR)", "high"], "net_quantity": ["Net quantity", "high"], "quantity.available.count": ["Stock count", "low"], "veg_non_veg": ["Veg or non-veg mark", "high"], "month_year_of_manufacture_packing_import": ["Month and year of packing", "high"], "brand_owner_FSSAI_license_no": ["FSSAI licence", "high"], "manufacturer_or_packer_name": ["Manufacturer or packer", "high"], "colour": ["Colour", "low"], "size": ["Size", "medium"], "material": ["Material", "low"], "gender": ["Gender", "low"], "parent_item_id": ["Variant group", "medium"], "descriptor.images": ["Image URL", "medium"], "shelf_life": ["Shelf life", "low"], "@ondc/org/time_to_ship": ["Time to ship", "medium"], "id": ["Item ID (SKU)", "low"], "IGNORE": ["Not mapped (ignore)", "low"]}, "proposals": {"B": [{"col": "Sr No", "proposed": null, "conf": 0.41, "reason": "Sequential integers 1 to 60 with no catalog meaning", "truth": "IGNORE", "samples": ["1", "2", "3"]}, {"col": "Item Naam", "proposed": "descriptor.name", "conf": 0.94, "reason": "'Naam' is Hindi for name, and values read as product names", "truth": "descriptor.name", "samples": ["Toor Dal", "Moong Dal", "Chana Dal"]}, {"col": "Brand", "proposed": "brand", "conf": 0.97, "reason": "Header matches the schema field, values are brand names or blank for loose items", "truth": "brand", "samples": ["Annakosh", "Panchvati Pantry", "Gharkul Demo"]}, {"col": "M.R.P (Rs)", "proposed": "price.maximum_value", "conf": 0.98, "reason": "Synonym list match for MRP, values like 'Rs. 165/-'", "truth": "price.maximum_value", "samples": ["Rs 165", "Rs. 75/-", "₹110.00"]}, {"col": "Rate", "proposed": "price.value", "conf": 0.81, "reason": "'Rate' is trade shorthand for selling price, and it is at or below MRP in every row", "truth": "price.value", "samples": ["Rs 160", "₹73.00", "Rs 108"]}, {"col": "Wajan", "proposed": "net_quantity", "conf": 0.86, "reason": "'Wajan' means weight, values like '500gm' and 'aadha kilo'", "truth": "net_quantity", "samples": ["1000 g", "1/2 kg", "1000GM"]}, {"col": "Barcode", "proposed": "descriptor.code", "conf": 0.93, "reason": "13-digit values, check digits valid on every non-empty row", "truth": "descriptor.code", "samples": ["2000002000013", "2000002000020", "2000002000037"]}, {"col": "Stock (pcs)", "proposed": "quantity.available.count", "conf": 0.92, "reason": "Small integers labelled as pieces", "truth": "quantity.available.count", "samples": ["9", "38", "3"]}, {"col": "Veg/NonVeg", "proposed": "veg_non_veg", "conf": 0.9, "reason": "Values 'Veg', 'V' and 'Shakahari' all mean vegetarian", "truth": "veg_non_veg", "samples": ["Veg", "Shakahari", "V"]}, {"col": "Mfg Dt", "proposed": "month_year_of_manufacture_packing_import", "conf": 0.72, "reason": "Month and year values in four different formats", "truth": "month_year_of_manufacture_packing_import", "samples": ["09-2026", "Oct-26", "10/2026"]}, {"col": "Remarks", "proposed": null, "conf": 0.33, "reason": "Free-text stock notes such as 'only 2 left', no schema field fits", "truth": "IGNORE", "samples": ["new stock aaya", "only 2 left", "fast moving"]}], "C": [{"col": "Handle", "proposed": "parent_item_id", "conf": 0.88, "reason": "Repeats across size rows of one product, so it groups variants", "truth": "parent_item_id", "samples": ["chanderi-kurta-set-01", "linen-blend-saree-02", "chanderi-dupatta-03"]}, {"col": "Title", "proposed": "descriptor.name", "conf": 0.95, "reason": "Product titles, blank on variant rows and filled down from the first row", "truth": "descriptor.name", "samples": ["Chanderi Kurta Set 01", "Linen Blend Saree 02", "Chanderi Dupatta 03"]}, {"col": "Body (HTML)", "proposed": "descriptor.short_desc", "conf": 0.91, "reason": "HTML paragraphs, tags stripped before use", "truth": "descriptor.short_desc", "samples": ["<p>Chanderi kurta set, hand-finished in Kochi.</p>", "<p>Linen Blend saree, hand-finished in Kochi.</p>", "<p>Chanderi dupatta, hand-finished in Kochi.</p>"]}, {"col": "Vendor", "proposed": "brand", "conf": 0.96, "reason": "Single value 'Neelkurinji' across all products", "truth": "brand", "samples": ["Neelkurinji"]}, {"col": "Type", "proposed": "category_id", "conf": 0.84, "reason": "'Kurta', 'Saree' and 'Dupatta' map to ONDC Fashion categories", "truth": "category_id", "samples": ["Kurta Set", "Saree", "Dupatta"]}, {"col": "Tags", "proposed": "material", "conf": 0.62, "reason": "Tags contain fabric words such as 'cotton' and 'linen'", "truth": "IGNORE", "samples": ["chanderi, festive, women", "linen, festive, women", "handloom, festive, women"]}, {"col": "Option1 Name", "proposed": "IGNORE", "conf": 0.93, "reason": "Constant label 'Size'; the value sits in Option1 Value", "truth": "IGNORE", "samples": ["Size"]}, {"col": "Option1 Value", "proposed": "size", "conf": 0.95, "reason": "Values S, M, L, XL and Free Size", "truth": "size", "samples": ["S", "M", "L"]}, {"col": "Option2 Name", "proposed": "IGNORE", "conf": 0.93, "reason": "Constant label 'Colour'; the value sits in Option2 Value", "truth": "IGNORE", "samples": ["Colour"]}, {"col": "Option2 Value", "proposed": "colour", "conf": 0.89, "reason": "Colour words such as 'Lal' and 'maroon-ish', normalised to the colour list", "truth": "colour", "samples": ["Peacock blue", "Haldi Yellow", "Mehendi"]}, {"col": "Variant SKU", "proposed": "id", "conf": 0.92, "reason": "Unique per row, product code plus size", "truth": "id", "samples": ["NKT-01-S", "NKT-01-M", "NKT-01-L"]}, {"col": "Variant Price", "proposed": "price.value", "conf": 0.95, "reason": "Price per variant, at or below compare-at price", "truth": "price.value", "samples": ["1490", "1390", "1290"]}, {"col": "Variant Compare At Price", "proposed": "price.maximum_value", "conf": 0.86, "reason": "Shopify's compare-at price is the struck-through MRP", "truth": "price.maximum_value", "samples": ["1490", "2490", "790"]}, {"col": "Variant Barcode", "proposed": "descriptor.code", "conf": 0.94, "reason": "13-digit values with valid check digits", "truth": "descriptor.code", "samples": ["2000003000104", "2000003000111", "2000003000128"]}, {"col": "Image Src", "proposed": "descriptor.images", "conf": 0.97, "reason": "HTTPS image URLs", "truth": "descriptor.images", "samples": ["https://example.com/demo/chanderi-kurta-set-01.jpg", "https://example.com/demo/linen-blend-saree-02.jpg", "https://example.com/demo/chanderi-dupatta-03.jpg"]}], "D": [{"col": "item text", "proposed": "descriptor.name", "conf": 0.91, "reason": "Product words before the quantity in each chat line", "truth": "descriptor.name", "samples": ["Whole wheat bread", "Garlic loaf", "Plum cake"]}, {"col": "quantity text", "proposed": "net_quantity", "conf": 0.87, "reason": "Weights like '400g' and counts like '6 pcs'", "truth": "net_quantity", "samples": ["400g", "6 pcs", "500g"]}, {"col": "price text", "proposed": "price.value", "conf": 0.83, "reason": "Rupee amounts in the chat are what buyers pay; MRP is not stated and will be asked at G3", "truth": "price.value", "samples": ["₹60", "75 rs", "380/-"]}, {"col": "egg mention", "proposed": "veg_non_veg", "conf": 0.8, "reason": "Chat says 'all eggless unless written', so items named 'Egg ...' are marked non-veg", "truth": "veg_non_veg", "samples": ["Egg sponge cake", "All eggless unless written"]}], "F": [{"col": "sku", "proposed": "id", "conf": 0.96, "reason": "Unique item codes", "truth": "id", "samples": ["TRP-001", "TRP-002", "TRP-003"]}, {"col": "name", "proposed": "descriptor.name", "conf": 0.97, "reason": "Product names", "truth": "descriptor.name", "samples": ["Toor Dal", "Moong Dal", "Chana Dal"]}, {"col": "description", "proposed": "descriptor.short_desc", "conf": 0.93, "reason": "Short product descriptions", "truth": "descriptor.short_desc", "samples": ["Toor Dal, 1000 g pack", "Moong Dal, 500 g pack", "Chana Dal, 1000 g pack"]}, {"col": "mrp", "proposed": "price.maximum_value", "conf": 0.98, "reason": "Header match for MRP", "truth": "price.maximum_value", "samples": ["165", "75", "110"]}, {"col": "price", "proposed": "price.value", "conf": 0.95, "reason": "Selling price, numeric", "truth": "price.value", "samples": ["160", "70", "105"]}, {"col": "pack_size", "proposed": "net_quantity", "conf": 0.74, "reason": "Numbers with no unit; grams inferred from typical pack sizes, please confirm", "truth": "net_quantity", "samples": ["1000", "500", "5000"]}, {"col": "ean", "proposed": "descriptor.code", "conf": 0.91, "reason": "13-digit EAN values", "truth": "descriptor.code", "samples": ["2000006000019", "2000006000026", "2000006000036"]}, {"col": "fssai_no", "proposed": "brand_owner_FSSAI_license_no", "conf": 0.96, "reason": "14-digit licence numbers", "truth": "brand_owner_FSSAI_license_no", "samples": ["20000000000006"]}, {"col": "packer", "proposed": "manufacturer_or_packer_name", "conf": 0.89, "reason": "Business names of who packed the item", "truth": "manufacturer_or_packer_name", "samples": ["Trapline Traders", "Third-party packer (not stated)"]}, {"col": "packed_month", "proposed": "month_year_of_manufacture_packing_import", "conf": 0.93, "reason": "Values in MM/YYYY", "truth": "month_year_of_manufacture_packing_import", "samples": ["10/2026"]}, {"col": "stock", "proposed": "quantity.available.count", "conf": 0.94, "reason": "Integer stock counts", "truth": "quantity.available.count", "samples": ["23", "7", "21"]}]}, "items": {"B": [{"id": "RKS-001", "name": "Toor Dal", "brand": "Annakosh", "mrp": 165.0, "price": 160.0, "net_qty": "1 kg", "gtin": "2000002000013", "stock": 9, "veg": "veg", "mfg": "09/2026", "category": "Dals and Pulses", "cat_conf": 0.9, "raw": {"M.R.P (Rs)": "Rs 165", "Rate": "Rs 160", "Wajan": "1000 g", "Veg/NonVeg": "Veg", "Mfg Dt": "09-2026"}}, {"id": "RKS-002", "name": "Moong Dal", "brand": "Panchvati Pantry", "mrp": 75.0, "price": 73.0, "net_qty": "500 g", "gtin": "2000002000020", "stock": 38, "veg": "veg", "mfg": "10/2026", "category": "Dals and Pulses", "cat_conf": 0.88, "raw": {"M.R.P (Rs)": "Rs. 75/-", "Rate": "₹73.00", "Wajan": "1/2 kg", "Veg/NonVeg": "Shakahari", "Mfg Dt": "Oct-26"}}, {"id": "RKS-003", "name": "Chana Dal", "brand": "Panchvati Pantry", "mrp": 110.0, "price": 108.0, "net_qty": "1 kg", "gtin": "2000002000037", "stock": 3, "veg": "veg", "mfg": "09/2026", "category": "Dals and Pulses", "cat_conf": 0.94, "raw": {"M.R.P (Rs)": "₹110.00", "Rate": "Rs 108", "Wajan": "1000GM", "Veg/NonVeg": "Veg", "Mfg Dt": "09-2026"}}, {"id": "RKS-004", "name": "Basmati Rice", "brand": "Gharkul Demo", "mrp": 140.0, "price": 130.0, "net_qty": "1 kg", "gtin": "2000002000044", "stock": 23, "veg": "veg", "mfg": "10/2026", "category": "Rice and Rice Products", "cat_conf": 0.87, "raw": {"M.R.P (Rs)": "Rs. 140/-", "Rate": "₹130.00", "Wajan": "1000gm", "Veg/NonVeg": "Shakahari", "Mfg Dt": "Oct-26"}}, {"id": "RKS-005", "name": "Kolam Rice", "brand": "Annakosh", "mrp": 420.0, "price": 415.0, "net_qty": "5 kg", "gtin": "2000002000051", "stock": 6, "veg": "veg", "mfg": "10/2026", "category": "Rice and Rice Products", "cat_conf": 0.93, "raw": {"M.R.P (Rs)": "Rs. 420/-", "Rate": "₹415.00", "Wajan": "5000 g", "Veg/NonVeg": "Veg", "Mfg Dt": "10/2026"}}, {"id": "RKS-006", "name": "Wheat Atta", "brand": "Annakosh", "mrp": 260.0, "price": 258.0, "net_qty": "5 kg", "gtin": "2000002000068", "stock": 43, "veg": "veg", "mfg": "10/2026", "category": "Atta, Flours and Sooji", "cat_conf": 0.91, "raw": {"M.R.P (Rs)": "Rs 260", "Rate": "Rs 258", "Wajan": "5 kg", "Veg/NonVeg": "V", "Mfg Dt": "10/2026"}}, {"id": "RKS-007", "name": "Besan", "brand": "", "mrp": 60.0, "price": 58.0, "net_qty": "500 g", "gtin": "", "stock": 33, "veg": "veg", "mfg": "10/2026", "category": "Atta, Flours and Sooji", "cat_conf": 0.87, "raw": {"M.R.P (Rs)": "₹60.00", "Rate": "₹58.00", "Wajan": "0.5 Kg", "Veg/NonVeg": "Shakahari", "Mfg Dt": "10/2026"}}, {"id": "RKS-008", "name": "Rava Sooji", "brand": "", "mrp": 40.0, "price": 35.0, "net_qty": "500 g", "gtin": "", "stock": 48, "veg": "veg", "mfg": "09/2026", "category": "Atta, Flours and Sooji", "cat_conf": 0.93, "raw": {"M.R.P (Rs)": "40", "Rate": "Rs. 35/-", "Wajan": "1/2 kg", "Veg/NonVeg": "veg", "Mfg Dt": "09-2026"}}, {"id": "RKS-009", "name": "Groundnut Oil", "brand": "Gharkul Demo", "mrp": 210.0, "price": 210.0, "net_qty": "1 kg", "gtin": "2000002000099", "stock": 3, "veg": "veg", "mfg": "09/2026", "category": "Oil and Ghee", "cat_conf": 0.86, "raw": {"M.R.P (Rs)": "210", "Rate": "210", "Wajan": "1000gm", "Veg/NonVeg": "Shakahari", "Mfg Dt": "Sept 2026"}}, {"id": "RKS-010", "name": "Sunflower Oil", "brand": "Panchvati Pantry", "mrp": 165.0, "price": 165.0, "net_qty": "1 kg", "gtin": "2000002000105", "stock": 27, "veg": "veg", "mfg": "10/2026", "category": "Oil and Ghee", "cat_conf": 0.92, "raw": {"M.R.P (Rs)": "₹165.00", "Rate": "165", "Wajan": "1000gm", "Veg/NonVeg": "V", "Mfg Dt": "Oct-26"}}, {"id": "RKS-011", "name": "Cow Ghee", "brand": "Annakosh", "mrp": 340.0, "price": 338.0, "net_qty": "500 g", "gtin": "2000002000112", "stock": 40, "veg": "veg", "mfg": "10/2026", "category": "Oil and Ghee", "cat_conf": 0.87, "raw": {"M.R.P (Rs)": "Rs 340", "Rate": "338", "Wajan": "0.5 Kg", "Veg/NonVeg": "Veg", "Mfg Dt": "Oct-26"}}, {"id": "RKS-012", "name": "Sugar", "brand": "Panchvati Pantry", "mrp": 48.0, "price": 48.0, "net_qty": "1 kg", "gtin": "2000002000129", "stock": 41, "veg": "veg", "mfg": "09/2026", "category": "Cooking and Baking Needs", "cat_conf": 0.69, "raw": {"M.R.P (Rs)": "48", "Rate": "Rs 48", "Wajan": "1000 g", "Veg/NonVeg": "veg", "Mfg Dt": "09-2026"}}, {"id": "RKS-013", "name": "Jaggery Cubes", "brand": "Kesarbaug Foods", "mrp": 70.0, "price": 68.0, "net_qty": "500 g", "gtin": "2000002000136", "stock": 3, "veg": "veg", "mfg": "10/2026", "category": "Cooking and Baking Needs", "cat_conf": 0.97, "raw": {"M.R.P (Rs)": "₹70.00", "Rate": "₹68.00", "Wajan": "aadha kilo", "Veg/NonVeg": "Veg", "Mfg Dt": "10/2026"}}, {"id": "RKS-014", "name": "Rock Salt", "brand": "Kesarbaug Foods", "mrp": 45.0, "price": 35.0, "net_qty": "1 kg", "gtin": "2000002000143", "stock": 52, "veg": "veg", "mfg": "10/2026", "category": "Cooking and Baking Needs", "cat_conf": 0.88, "raw": {"M.R.P (Rs)": "Rs 45", "Rate": "35", "Wajan": "1000GM", "Veg/NonVeg": "Shakahari", "Mfg Dt": "10/2026"}}, {"id": "RKS-015", "name": "Poha Thick", "brand": "Kesarbaug Foods", "mrp": 45.0, "price": 45.0, "net_qty": "500 g", "gtin": "2000002000150", "stock": 60, "veg": "veg", "mfg": "09/2026", "category": "Cereals and Breakfast", "cat_conf": 0.72, "raw": {"M.R.P (Rs)": "45", "Rate": "Rs. 45/-", "Wajan": "500gm", "Veg/NonVeg": "V", "Mfg Dt": "Sept 2026"}}, {"id": "RKS-016", "name": "Tea Dust", "brand": "", "mrp": 130.0, "price": 125.0, "net_qty": "250 g", "gtin": "", "stock": 44, "veg": "veg", "mfg": "09/2026", "category": "Beverages", "cat_conf": 0.98, "raw": {"M.R.P (Rs)": "Rs. 130/-", "Rate": "₹125.00", "Wajan": "250GM", "Veg/NonVeg": "veg", "Mfg Dt": "09-2026"}}, {"id": "RKS-017", "name": "Instant Coffee", "brand": "Kesarbaug Foods", "mrp": 210.0, "price": 210.0, "net_qty": "100 g", "gtin": "2000002000174", "stock": 44, "veg": "veg", "mfg": "10/2026", "category": "Beverages", "cat_conf": 0.94, "raw": {"M.R.P (Rs)": "210", "Rate": "₹210.00", "Wajan": "100GM", "Veg/NonVeg": "Veg", "Mfg Dt": "10/2026"}}, {"id": "RKS-018", "name": "Glucose Biscuits", "brand": "Kesarbaug Foods", "mrp": 30.0, "price": 30.0, "net_qty": "250 g", "gtin": "2000002000181", "stock": 35, "veg": "veg", "mfg": "09/2026", "category": "Chocolates and Biscuits", "cat_conf": 0.91, "raw": {"M.R.P (Rs)": "Rs 30", "Rate": "Rs 30", "Wajan": "250 g", "Veg/NonVeg": "Shakahari", "Mfg Dt": "Sept 2026"}}, {"id": "RKS-019", "name": "Cream Biscuits", "brand": "Gharkul Demo", "mrp": 25.0, "price": 20.0, "net_qty": "120 g", "gtin": "2000002000198", "stock": 32, "veg": "veg", "mfg": "10/2026", "category": "Chocolates and Biscuits", "cat_conf": 0.99, "raw": {"M.R.P (Rs)": "25", "Rate": "Rs. 20/-", "Wajan": "120GM", "Veg/NonVeg": "Veg", "Mfg Dt": "10/2026"}}, {"id": "RKS-020", "name": "Masala Noodles", "brand": "Panchvati Pantry", "mrp": 56.0, "price": 56.0, "net_qty": "280 g", "gtin": "2000002000204", "stock": 26, "veg": "veg", "mfg": "10/2026", "category": "Pasta, Soup and Noodles", "cat_conf": 0.87, "raw": {"M.R.P (Rs)": "Rs. 56/-", "Rate": "56", "Wajan": "280g", "Veg/NonVeg": "V", "Mfg Dt": "Oct-26"}}, {"id": "RKS-021", "name": "Farsan Mix", "brand": "", "mrp": 120.0, "price": 115.0, "net_qty": "400 g", "gtin": "", "stock": 28, "veg": "veg", "mfg": "09/2026", "category": "Snacks and Namkeen", "cat_conf": 0.97, "raw": {"M.R.P (Rs)": "Rs. 120/-", "Rate": "Rs 115", "Wajan": "400gm", "Veg/NonVeg": "Veg", "Mfg Dt": "09-2026"}}, {"id": "RKS-022", "name": "Chakli", "brand": "Annakosh", "mrp": 80.0, "price": 70.0, "net_qty": "200 g", "gtin": "2000002000228", "stock": 55, "veg": "veg", "mfg": "10/2026", "category": "Snacks and Namkeen", "cat_conf": 0.9, "raw": {"M.R.P (Rs)": "80", "Rate": "Rs 70", "Wajan": "200g", "Veg/NonVeg": "Veg", "Mfg Dt": "Oct-26"}}, {"id": "RKS-023", "name": "Peanuts Raw", "brand": "Kesarbaug Foods", "mrp": 95.0, "price": 90.0, "net_qty": "500 g", "gtin": "2000002000235", "stock": 40, "veg": "veg", "mfg": "09/2026", "category": "Dry Fruits, Nuts and Seeds", "cat_conf": 0.88, "raw": {"M.R.P (Rs)": "95", "Rate": "Rs 90", "Wajan": "0.5 Kg", "Veg/NonVeg": "V", "Mfg Dt": "Sept 2026"}}, {"id": "RKS-024", "name": "Cashew W320", "brand": "Kesarbaug Foods", "mrp": 290.0, "price": 280.0, "net_qty": "250 g", "gtin": "2000002000242", "stock": 15, "veg": "veg", "mfg": "09/2026", "category": "Dry Fruits, Nuts and Seeds", "cat_conf": 0.88, "raw": {"M.R.P (Rs)": "₹290.00", "Rate": "Rs 280", "Wajan": "250gm", "Veg/NonVeg": "Shakahari", "Mfg Dt": "09-2026"}}, {"id": "RKS-025", "name": "Raisins", "brand": "", "mrp": 120.0, "price": 120.0, "net_qty": "250 g", "gtin": "", "stock": 49, "veg": "veg", "mfg": "09/2026", "category": "Dry Fruits, Nuts and Seeds", "cat_conf": 0.9, "raw": {"M.R.P (Rs)": "₹120.00", "Rate": "120", "Wajan": "250g", "Veg/NonVeg": "Veg", "Mfg Dt": "Sept 2026"}}, {"id": "RKS-026", "name": "Tomato Ketchup", "brand": "Gharkul Demo", "mrp": 120.0, "price": 118.0, "net_qty": "500 g", "gtin": "2000002000266", "stock": 54, "veg": "veg", "mfg": "10/2026", "category": "Sauces, Spreads and Dips", "cat_conf": 0.97, "raw": {"M.R.P (Rs)": "120", "Rate": "₹118.00", "Wajan": "1/2 kg", "Veg/NonVeg": "veg", "Mfg Dt": "Oct-26"}}, {"id": "RKS-027", "name": "Mixed Fruit Jam", "brand": "Panchvati Pantry", "mrp": 160.0, "price": 155.0, "net_qty": "500 g", "gtin": "2000002000273", "stock": 52, "veg": "veg", "mfg": "10/2026", "category": "Sauces, Spreads and Dips", "cat_conf": 0.88, "raw": {"M.R.P (Rs)": "160", "Rate": "155", "Wajan": "500gm", "Veg/NonVeg": "V", "Mfg Dt": "10/2026"}}, {"id": "RKS-028", "name": "Turmeric Powder", "brand": "Kesarbaug Foods", "mrp": 62.0, "price": 62.0, "net_qty": "200 g", "gtin": "2000002000280", "stock": 34, "veg": "veg", "mfg": "10/2026", "category": "Masala and Seasoning", "cat_conf": 0.94, "raw": {"M.R.P (Rs)": "Rs. 62/-", "Rate": "₹62.00", "Wajan": "200g", "Veg/NonVeg": "Shakahari", "Mfg Dt": "Oct-26"}}, {"id": "RKS-029", "name": "Chilli Powder", "brand": "Gharkul Demo", "mrp": 78.0, "price": 78.0, "net_qty": "200 g", "gtin": "2000002000297", "stock": 44, "veg": "veg", "mfg": "09/2026", "category": "Masala and Seasoning", "cat_conf": 0.94, "raw": {"M.R.P (Rs)": "Rs. 78/-", "Rate": "Rs. 78/-", "Wajan": "200 g", "Veg/NonVeg": "V", "Mfg Dt": "Sept 2026"}}, {"id": "RKS-030", "name": "Hing", "brand": "Annakosh", "mrp": 85.0, "price": 80.0, "net_qty": "50 g", "gtin": "2000002000303", "stock": 41, "veg": "veg", "mfg": "09/2026", "category": "Masala and Seasoning", "cat_conf": 0.71, "raw": {"M.R.P (Rs)": "Rs 85", "Rate": "₹80.00", "Wajan": "50 g", "Veg/NonVeg": "Veg", "Mfg Dt": "Sept 2026"}}, {"id": "RKS-031", "name": "Toor Dal", "brand": "Gharkul Demo", "mrp": 170.0, "price": 165.0, "net_qty": "1 kg", "gtin": "2000002000310", "stock": 10, "veg": "veg", "mfg": "10/2026", "category": "Dals and Pulses", "cat_conf": 0.87, "raw": {"M.R.P (Rs)": "₹170.00", "Rate": "Rs. 165/-", "Wajan": "1000GM", "Veg/NonVeg": "Veg", "Mfg Dt": "10/2026"}}, {"id": "RKS-032", "name": "Moong Dal", "brand": "Gharkul Demo", "mrp": 80.0, "price": 80.0, "net_qty": "500 g", "gtin": "2000002000327", "stock": 17, "veg": "veg", "mfg": "10/2026", "category": "Dals and Pulses", "cat_conf": 0.87, "raw": {"M.R.P (Rs)": "Rs. 80/-", "Rate": "Rs. 80/-", "Wajan": "500gm", "Veg/NonVeg": "veg", "Mfg Dt": "10/2026"}}, {"id": "RKS-033", "name": "Chana Dal", "brand": "Gharkul Demo", "mrp": 115.0, "price": 115.0, "net_qty": "1 kg", "gtin": "2000002000334", "stock": 58, "veg": "veg", "mfg": "10/2026", "category": "Dals and Pulses", "cat_conf": 0.89, "raw": {"M.R.P (Rs)": "₹115.00", "Rate": "Rs 115", "Wajan": "1000gm", "Veg/NonVeg": "veg", "Mfg Dt": "10/2026"}}, {"id": "RKS-034", "name": "Basmati Rice", "brand": "", "mrp": 145.0, "price": 145.0, "net_qty": "1 kg", "gtin": "", "stock": 21, "veg": "veg", "mfg": "09/2026", "category": "Rice and Rice Products", "cat_conf": 0.95, "raw": {"M.R.P (Rs)": "Rs 145", "Rate": "Rs. 145/-", "Wajan": "1 kg", "Veg/NonVeg": "Veg", "Mfg Dt": "Sept 2026"}}, {"id": "RKS-035", "name": "Kolam Rice", "brand": "Annakosh", "mrp": 430.0, "price": 430.0, "net_qty": "5 kg", "gtin": "2000002000358", "stock": 43, "veg": "veg", "mfg": "09/2026", "category": "Rice and Rice Products", "cat_conf": 0.92, "raw": {"M.R.P (Rs)": "Rs. 430/-", "Rate": "Rs 430", "Wajan": "5 kg", "Veg/NonVeg": "veg", "Mfg Dt": "09-2026"}}, {"id": "RKS-036", "name": "Wheat Atta", "brand": "Gharkul Demo", "mrp": 265.0, "price": 255.0, "net_qty": "5 kg", "gtin": "2000002000365", "stock": 60, "veg": "veg", "mfg": "09/2026", "category": "Atta, Flours and Sooji", "cat_conf": 0.9, "raw": {"M.R.P (Rs)": "Rs 265", "Rate": "255", "Wajan": "5000gm", "Veg/NonVeg": "Veg", "Mfg Dt": "Sept 2026"}}, {"id": "RKS-037", "name": "Besan", "brand": "Kesarbaug Foods", "mrp": 65.0, "price": 63.0, "net_qty": "500 g", "gtin": "2000002000372", "stock": 47, "veg": "veg", "mfg": "09/2026", "category": "Atta, Flours and Sooji", "cat_conf": 0.94, "raw": {"M.R.P (Rs)": "₹65.00", "Rate": "Rs. 63/-", "Wajan": "aadha kilo", "Veg/NonVeg": "V", "Mfg Dt": "09-2026"}}, {"id": "RKS-038", "name": "Rava Sooji", "brand": "Panchvati Pantry", "mrp": 50.0, "price": 45.0, "net_qty": "500 g", "gtin": "2000002000389", "stock": 22, "veg": "veg", "mfg": "10/2026", "category": "Atta, Flours and Sooji", "cat_conf": 0.92, "raw": {"M.R.P (Rs)": "50", "Rate": "Rs 45", "Wajan": "0.5 Kg", "Veg/NonVeg": "Veg", "Mfg Dt": "10/2026"}}, {"id": "RKS-039", "name": "Groundnut Oil", "brand": "Annakosh", "mrp": 220.0, "price": 215.0, "net_qty": "1 kg", "gtin": "2000002000396", "stock": 33, "veg": "veg", "mfg": "09/2026", "category": "Oil and Ghee", "cat_conf": 0.9, "raw": {"M.R.P (Rs)": "Rs. 220/-", "Rate": "₹215.00", "Wajan": "1000gm", "Veg/NonVeg": "V", "Mfg Dt": "Sept 2026"}}, {"id": "RKS-040", "name": "Sunflower Oil", "brand": "Annakosh", "mrp": 175.0, "price": 175.0, "net_qty": "1 kg", "gtin": "2000002000402", "stock": 14, "veg": "veg", "mfg": "09/2026", "category": "Oil and Ghee", "cat_conf": 0.96, "raw": {"M.R.P (Rs)": "175", "Rate": "₹175.00", "Wajan": "1000 g", "Veg/NonVeg": "Shakahari", "Mfg Dt": "09-2026"}}, {"id": "RKS-041", "name": "Cow Ghee", "brand": "Annakosh", "mrp": 350.0, "price": 348.0, "net_qty": "500 g", "gtin": "2000002000419", "stock": 34, "veg": "veg", "mfg": "10/2026", "category": "Oil and Ghee", "cat_conf": 0.95, "raw": {"M.R.P (Rs)": "Rs 350", "Rate": "348", "Wajan": "0.5 Kg", "Veg/NonVeg": "V", "Mfg Dt": "10/2026"}}, {"id": "RKS-042", "name": "Sugar", "brand": "Kesarbaug Foods", "mrp": 58.0, "price": 48.0, "net_qty": "1 kg", "gtin": "2000002000426", "stock": 41, "veg": "veg", "mfg": "09/2026", "category": "Cooking and Baking Needs", "cat_conf": 0.71, "raw": {"M.R.P (Rs)": "₹58.00", "Rate": "48", "Wajan": "1000gm", "Veg/NonVeg": "veg", "Mfg Dt": "09-2026"}}, {"id": "RKS-043", "name": "Jaggery Cubes", "brand": "Annakosh", "mrp": 80.0, "price": 80.0, "net_qty": "500 g", "gtin": "2000002000433", "stock": 13, "veg": "veg", "mfg": "09/2026", "category": "Cooking and Baking Needs", "cat_conf": 0.93, "raw": {"M.R.P (Rs)": "Rs. 80/-", "Rate": "Rs 80", "Wajan": "0.5 Kg", "Veg/NonVeg": "Shakahari", "Mfg Dt": "Sept 2026"}}, {"id": "RKS-044", "name": "Rock Salt", "brand": "", "mrp": 50.0, "price": 48.0, "net_qty": "1 kg", "gtin": "", "stock": 51, "veg": "veg", "mfg": "09/2026", "category": "Cooking and Baking Needs", "cat_conf": 0.97, "raw": {"M.R.P (Rs)": "50", "Rate": "Rs. 48/-", "Wajan": "1000gm", "Veg/NonVeg": "Shakahari", "Mfg Dt": "09-2026"}}, {"id": "RKS-045", "name": "Poha Thick", "brand": "Panchvati Pantry", "mrp": 50.0, "price": 45.0, "net_qty": "500 g", "gtin": "2000002000457", "stock": 60, "veg": "veg", "mfg": "10/2026", "category": "Cereals and Breakfast", "cat_conf": 0.67, "raw": {"M.R.P (Rs)": "Rs. 50/-", "Rate": "₹45.00", "Wajan": "aadha kilo", "Veg/NonVeg": "Shakahari", "Mfg Dt": "Oct-26"}}, {"id": "RKS-046", "name": "Tea Dust", "brand": "", "mrp": 135.0, "price": 133.0, "net_qty": "250 g", "gtin": "", "stock": 46, "veg": "veg", "mfg": "09/2026", "category": "Beverages", "cat_conf": 0.99, "raw": {"M.R.P (Rs)": "Rs 135", "Rate": "₹133.00", "Wajan": "250GM", "Veg/NonVeg": "V", "Mfg Dt": "09-2026"}}, {"id": "RKS-047", "name": "Instant Coffee", "brand": "", "mrp": 220.0, "price": 210.0, "net_qty": "100 g", "gtin": "", "stock": 26, "veg": "veg", "mfg": "09/2026", "category": "Beverages", "cat_conf": 0.88, "raw": {"M.R.P (Rs)": "220", "Rate": "Rs 210", "Wajan": "100gm", "Veg/NonVeg": "V", "Mfg Dt": "Sept 2026"}}, {"id": "RKS-048", "name": "Glucose Biscuits", "brand": "Kesarbaug Foods", "mrp": 35.0, "price": 30.0, "net_qty": "250 g", "gtin": "2000002000488", "stock": 19, "veg": "veg", "mfg": "10/2026", "category": "Chocolates and Biscuits", "cat_conf": 0.91, "raw": {"M.R.P (Rs)": "Rs 35", "Rate": "Rs. 30/-", "Wajan": "250GM", "Veg/NonVeg": "Veg", "Mfg Dt": "Oct-26"}}, {"id": "RKS-049", "name": "Cream Biscuits", "brand": "Annakosh", "mrp": 35.0, "price": 33.0, "net_qty": "120 g", "gtin": "2000002000495", "stock": 37, "veg": "veg", "mfg": "10/2026", "category": "Chocolates and Biscuits", "cat_conf": 0.96, "raw": {"M.R.P (Rs)": "₹35.00", "Rate": "Rs. 33/-", "Wajan": "120gm", "Veg/NonVeg": "V", "Mfg Dt": "Oct-26"}}, {"id": "RKS-050", "name": "Masala Noodles", "brand": "", "mrp": 61.0, "price": 59.0, "net_qty": "280 g", "gtin": "", "stock": 41, "veg": "veg", "mfg": "10/2026", "category": "Pasta, Soup and Noodles", "cat_conf": 0.88, "raw": {"M.R.P (Rs)": "Rs. 61/-", "Rate": "₹59.00", "Wajan": "280g", "Veg/NonVeg": "Shakahari", "Mfg Dt": "Oct-26"}}, {"id": "RKS-051", "name": "Farsan Mix", "brand": "Gharkul Demo", "mrp": 130.0, "price": 125.0, "net_qty": "400 g", "gtin": "2000002000518", "stock": 22, "veg": "veg", "mfg": "10/2026", "category": "Snacks and Namkeen", "cat_conf": 0.92, "raw": {"M.R.P (Rs)": "Rs. 130/-", "Rate": "125", "Wajan": "400 g", "Veg/NonVeg": "veg", "Mfg Dt": "Oct-26"}}, {"id": "RKS-052", "name": "Chakli", "brand": "Panchvati Pantry", "mrp": 85.0, "price": 83.0, "net_qty": "200 g", "gtin": "2000002000525", "stock": 37, "veg": "veg", "mfg": "09/2026", "category": "Snacks and Namkeen", "cat_conf": 0.87, "raw": {"M.R.P (Rs)": "Rs 85", "Rate": "₹83.00", "Wajan": "200g", "Veg/NonVeg": "veg", "Mfg Dt": "09-2026"}}, {"id": "RKS-053", "name": "Peanuts Raw", "brand": "Gharkul Demo", "mrp": 105.0, "price": 103.0, "net_qty": "500 g", "gtin": "2000002000532", "stock": 32, "veg": "veg", "mfg": "10/2026", "category": "Dry Fruits, Nuts and Seeds", "cat_conf": 0.95, "raw": {"M.R.P (Rs)": "₹105.00", "Rate": "Rs. 103/-", "Wajan": "500gm", "Veg/NonVeg": "V", "Mfg Dt": "Oct-26"}}, {"id": "RKS-054", "name": "Cashew W320", "brand": "Kesarbaug Foods", "mrp": 300.0, "price": 290.0, "net_qty": "250 g", "gtin": "2000002000549", "stock": 3, "veg": "veg", "mfg": "09/2026", "category": "Dry Fruits, Nuts and Seeds", "cat_conf": 0.96, "raw": {"M.R.P (Rs)": "Rs. 300/-", "Rate": "290", "Wajan": "250GM", "Veg/NonVeg": "Veg", "Mfg Dt": "Sept 2026"}}, {"id": "RKS-055", "name": "Raisins", "brand": "Panchvati Pantry", "mrp": 125.0, "price": 123.0, "net_qty": "250 g", "gtin": "2000002000556", "stock": 44, "veg": "veg", "mfg": "09/2026", "category": "Dry Fruits, Nuts and Seeds", "cat_conf": 0.93, "raw": {"M.R.P (Rs)": "125", "Rate": "₹123.00", "Wajan": "250g", "Veg/NonVeg": "Shakahari", "Mfg Dt": "Sept 2026"}}, {"id": "RKS-056", "name": "Tomato Ketchup", "brand": "Panchvati Pantry", "mrp": 130.0, "price": 128.0, "net_qty": "500 g", "gtin": "2000002000563", "stock": 17, "veg": "veg", "mfg": "10/2026", "category": "Sauces, Spreads and Dips", "cat_conf": 0.97, "raw": {"M.R.P (Rs)": "Rs. 130/-", "Rate": "Rs. 128/-", "Wajan": "1/2 kg", "Veg/NonVeg": "Veg", "Mfg Dt": "Oct-26"}}, {"id": "RKS-057", "name": "Mixed Fruit Jam", "brand": "", "mrp": 170.0, "price": 170.0, "net_qty": "500 g", "gtin": "", "stock": 55, "veg": "veg", "mfg": "10/2026", "category": "Sauces, Spreads and Dips", "cat_conf": 0.9, "raw": {"M.R.P (Rs)": "170", "Rate": "170", "Wajan": "1/2 kg", "Veg/NonVeg": "veg", "Mfg Dt": "10/2026"}}, {"id": "RKS-058", "name": "Turmeric Powder", "brand": "", "mrp": 72.0, "price": 62.0, "net_qty": "200 g", "gtin": "", "stock": 34, "veg": "veg", "mfg": "10/2026", "category": "Masala and Seasoning", "cat_conf": 0.95, "raw": {"M.R.P (Rs)": "Rs 72", "Rate": "62", "Wajan": "200 g", "Veg/NonVeg": "veg", "Mfg Dt": "Oct-26"}}, {"id": "RKS-059", "name": "Chilli Powder", "brand": "Panchvati Pantry", "mrp": 83.0, "price": 78.0, "net_qty": "200 g", "gtin": "2000002000594", "stock": 30, "veg": "veg", "mfg": "09/2026", "category": "Masala and Seasoning", "cat_conf": 0.94, "raw": {"M.R.P (Rs)": "Rs. 83/-", "Rate": "₹78.00", "Wajan": "200gm", "Veg/NonVeg": "Shakahari", "Mfg Dt": "09-2026"}}, {"id": "RKS-060", "name": "Hing", "brand": "Panchvati Pantry", "mrp": 90.0, "price": 90.0, "net_qty": "50 g", "gtin": "2000002000600", "stock": 14, "veg": "veg", "mfg": "09/2026", "category": "Masala and Seasoning", "cat_conf": 0.69, "raw": {"M.R.P (Rs)": "90", "Rate": "Rs. 90/-", "Wajan": "50 g", "Veg/NonVeg": "V", "Mfg Dt": "Sept 2026"}}], "C": [{"id": "NKT-01-S", "name": "Chanderi Kurta Set 01 - S", "brand": "Neelkurinji", "mrp": 1490.0, "price": 1490.0, "gtin": "2000003000104", "stock": 3, "size": "S", "colour_raw": "Peacock blue", "colour": "Teal", "material": "Chanderi", "parent": "chanderi-kurta-set-01", "category": "Kurtas and Kurta Sets", "cat_conf": 0.97, "image": "https://example.com/demo/chanderi-kurta-set-01.jpg"}, {"id": "NKT-01-M", "name": "Chanderi Kurta Set 01 - M", "brand": "Neelkurinji", "mrp": 1490.0, "price": 1490.0, "gtin": "2000003000111", "stock": 6, "size": "M", "colour_raw": "Peacock blue", "colour": "Teal", "material": "Chanderi", "parent": "chanderi-kurta-set-01", "category": "Kurtas and Kurta Sets", "cat_conf": 0.98, "image": "https://example.com/demo/chanderi-kurta-set-01.jpg"}, {"id": "NKT-01-L", "name": "Chanderi Kurta Set 01 - L", "brand": "Neelkurinji", "mrp": 1490.0, "price": 1390.0, "gtin": "2000003000128", "stock": 3, "size": "L", "colour_raw": "Peacock blue", "colour": "Teal", "material": "Chanderi", "parent": "chanderi-kurta-set-01", "category": "Kurtas and Kurta Sets", "cat_conf": 0.92, "image": "https://example.com/demo/chanderi-kurta-set-01.jpg"}, {"id": "NKT-01-XL", "name": "Chanderi Kurta Set 01 - XL", "brand": "Neelkurinji", "mrp": 1490.0, "price": 1290.0, "gtin": "2000003000135", "stock": 9, "size": "XL", "colour_raw": "Peacock blue", "colour": "Teal", "material": "Chanderi", "parent": "chanderi-kurta-set-01", "category": "Kurtas and Kurta Sets", "cat_conf": 0.95, "image": "https://example.com/demo/chanderi-kurta-set-01.jpg"}, {"id": "NKT-02-FreeSize", "name": "Linen Blend Saree 02 - Free Size", "brand": "Neelkurinji", "mrp": 2490.0, "price": 2490.0, "gtin": "2000003000203", "stock": 8, "size": "Free Size", "colour_raw": "Haldi Yellow", "colour": "Yellow", "material": "Linen Blend", "parent": "linen-blend-saree-02", "category": "Sarees", "cat_conf": 0.87, "image": "https://example.com/demo/linen-blend-saree-02.jpg"}, {"id": "NKT-03-FreeSize", "name": "Chanderi Dupatta 03 - Free Size", "brand": "Neelkurinji", "mrp": 790.0, "price": 790.0, "gtin": "2000003000302", "stock": 2, "size": "Free Size", "colour_raw": "Haldi Yellow", "colour": "Yellow", "material": "Chanderi", "parent": "chanderi-dupatta-03", "category": "Dupattas", "cat_conf": 0.95, "image": "https://example.com/demo/chanderi-dupatta-03.jpg"}, {"id": "NKT-04-S", "name": "Chanderi Top 04 - S", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3290.0, "gtin": "2000003000401", "stock": 6, "size": "S", "colour_raw": "Mehendi", "colour": "Olive", "material": "Chanderi", "parent": "chanderi-top-04", "category": "Tops", "cat_conf": 0.79, "image": "https://example.com/demo/chanderi-top-04.jpg"}, {"id": "NKT-04-M", "name": "Chanderi Top 04 - M", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3190.0, "gtin": "2000003000418", "stock": 6, "size": "M", "colour_raw": "Mehendi", "colour": "Olive", "material": "Chanderi", "parent": "chanderi-top-04", "category": "Tops", "cat_conf": 0.7, "image": "https://example.com/demo/chanderi-top-04.jpg"}, {"id": "NKT-04-L", "name": "Chanderi Top 04 - L", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3190.0, "gtin": "2000003000425", "stock": 2, "size": "L", "colour_raw": "Mehendi", "colour": "Olive", "material": "Chanderi", "parent": "chanderi-top-04", "category": "Tops", "cat_conf": 0.75, "image": "https://example.com/demo/chanderi-top-04.jpg"}, {"id": "NKT-04-XL", "name": "Chanderi Top 04 - XL", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3290.0, "gtin": "2000003000432", "stock": 7, "size": "XL", "colour_raw": "Mehendi", "colour": "Olive", "material": "Chanderi", "parent": "chanderi-top-04", "category": "Tops", "cat_conf": 0.72, "image": "https://example.com/demo/chanderi-top-04.jpg"}, {"id": "NKT-05-S", "name": "Handloom Cotton Kurta 05 - S", "brand": "Neelkurinji", "mrp": 2490.0, "price": 2490.0, "gtin": "2000003000500", "stock": 10, "size": "S", "colour_raw": "maroon-ish", "colour": "Maroon", "material": "Handloom Cotton", "parent": "handloom-cotton-kurta-05", "category": "Kurtas and Kurta Sets", "cat_conf": 0.88, "image": "https://example.com/demo/handloom-cotton-kurta-05.jpg"}, {"id": "NKT-05-M", "name": "Handloom Cotton Kurta 05 - M", "brand": "Neelkurinji", "mrp": 2490.0, "price": 2490.0, "gtin": "2000003000517", "stock": 1, "size": "M", "colour_raw": "maroon-ish", "colour": "Maroon", "material": "Handloom Cotton", "parent": "handloom-cotton-kurta-05", "category": "Kurtas and Kurta Sets", "cat_conf": 0.88, "image": "https://example.com/demo/handloom-cotton-kurta-05.jpg"}, {"id": "NKT-05-L", "name": "Handloom Cotton Kurta 05 - L", "brand": "Neelkurinji", "mrp": 2490.0, "price": 2390.0, "gtin": "2000003000524", "stock": 1, "size": "L", "colour_raw": "maroon-ish", "colour": "Maroon", "material": "Handloom Cotton", "parent": "handloom-cotton-kurta-05", "category": "Kurtas and Kurta Sets", "cat_conf": 0.87, "image": "https://example.com/demo/handloom-cotton-kurta-05.jpg"}, {"id": "NKT-05-XL", "name": "Handloom Cotton Kurta 05 - XL", "brand": "Neelkurinji", "mrp": 2490.0, "price": 2490.0, "gtin": "2000003000531", "stock": 7, "size": "XL", "colour_raw": "maroon-ish", "colour": "Maroon", "material": "Handloom Cotton", "parent": "handloom-cotton-kurta-05", "category": "Kurtas and Kurta Sets", "cat_conf": 0.96, "image": "https://example.com/demo/handloom-cotton-kurta-05.jpg"}, {"id": "NKT-06-S", "name": "Mul Cotton Kurta Set 06 - S", "brand": "Neelkurinji", "mrp": 1890.0, "price": 1890.0, "gtin": "2000003000609", "stock": 9, "size": "S", "colour_raw": "Mehendi", "colour": "Olive", "material": "Mul Cotton", "parent": "mul-cotton-kurta-set-06", "category": "Kurtas and Kurta Sets", "cat_conf": 0.88, "image": "https://example.com/demo/mul-cotton-kurta-set-06.jpg"}, {"id": "NKT-06-M", "name": "Mul Cotton Kurta Set 06 - M", "brand": "Neelkurinji", "mrp": 1890.0, "price": 1890.0, "gtin": "2000003000616", "stock": 4, "size": "M", "colour_raw": "Mehendi", "colour": "Olive", "material": "Mul Cotton", "parent": "mul-cotton-kurta-set-06", "category": "Kurtas and Kurta Sets", "cat_conf": 0.89, "image": "https://example.com/demo/mul-cotton-kurta-set-06.jpg"}, {"id": "NKT-06-L", "name": "Mul Cotton Kurta Set 06 - L", "brand": "Neelkurinji", "mrp": 1890.0, "price": 1690.0, "gtin": "2000003000623", "stock": 4, "size": "L", "colour_raw": "Mehendi", "colour": "Olive", "material": "Mul Cotton", "parent": "mul-cotton-kurta-set-06", "category": "Kurtas and Kurta Sets", "cat_conf": 0.91, "image": "https://example.com/demo/mul-cotton-kurta-set-06.jpg"}, {"id": "NKT-06-XL", "name": "Mul Cotton Kurta Set 06 - XL", "brand": "Neelkurinji", "mrp": 1890.0, "price": 1690.0, "gtin": "2000003000630", "stock": 12, "size": "XL", "colour_raw": "Mehendi", "colour": "Olive", "material": "Mul Cotton", "parent": "mul-cotton-kurta-set-06", "category": "Kurtas and Kurta Sets", "cat_conf": 0.97, "image": "https://example.com/demo/mul-cotton-kurta-set-06.jpg"}, {"id": "NKT-07-FreeSize", "name": "Mul Cotton Saree 07 - Free Size", "brand": "Neelkurinji", "mrp": 1890.0, "price": 1890.0, "gtin": "2000003000708", "stock": 8, "size": "Free Size", "colour_raw": "Lal", "colour": "Red", "material": "Mul Cotton", "parent": "mul-cotton-saree-07", "category": "Sarees", "cat_conf": 0.87, "image": "https://example.com/demo/mul-cotton-saree-07.jpg"}, {"id": "NKT-08-FreeSize", "name": "Chanderi Dupatta 08 - Free Size", "brand": "Neelkurinji", "mrp": 790.0, "price": 790.0, "gtin": "2000003000807", "stock": 6, "size": "Free Size", "colour_raw": "Kasavu gold", "colour": "Gold", "material": "Chanderi", "parent": "chanderi-dupatta-08", "category": "Dupattas", "cat_conf": 0.92, "image": "https://example.com/demo/chanderi-dupatta-08.jpg"}, {"id": "NKT-09-S", "name": "Handloom Cotton Top 09 - S", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3190.0, "gtin": "2000003000906", "stock": 11, "size": "S", "colour_raw": "Indigo", "colour": "Indigo", "material": "Handloom Cotton", "parent": "handloom-cotton-top-09", "category": "Tops", "cat_conf": 0.77, "image": "https://example.com/demo/handloom-cotton-top-09.jpg"}, {"id": "NKT-09-M", "name": "Handloom Cotton Top 09 - M", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3090.0, "gtin": "2000003000913", "stock": 11, "size": "M", "colour_raw": "Indigo", "colour": "Indigo", "material": "Handloom Cotton", "parent": "handloom-cotton-top-09", "category": "Tops", "cat_conf": 0.77, "image": "https://example.com/demo/handloom-cotton-top-09.jpg"}, {"id": "NKT-09-L", "name": "Handloom Cotton Top 09 - L", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3290.0, "gtin": "2000003000920", "stock": 10, "size": "L", "colour_raw": "Indigo", "colour": "Indigo", "material": "Handloom Cotton", "parent": "handloom-cotton-top-09", "category": "Tops", "cat_conf": 0.71, "image": "https://example.com/demo/handloom-cotton-top-09.jpg"}, {"id": "NKT-09-XL", "name": "Handloom Cotton Top 09 - XL", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3290.0, "gtin": "2000003000937", "stock": 7, "size": "XL", "colour_raw": "Indigo", "colour": "Indigo", "material": "Handloom Cotton", "parent": "handloom-cotton-top-09", "category": "Tops", "cat_conf": 0.77, "image": "https://example.com/demo/handloom-cotton-top-09.jpg"}, {"id": "NKT-10-S", "name": "Chanderi Kurta 10 - S", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3190.0, "gtin": "2000003001002", "stock": 6, "size": "S", "colour_raw": "maroon-ish", "colour": "Maroon", "material": "Chanderi", "parent": "chanderi-kurta-10", "category": "Kurtas and Kurta Sets", "cat_conf": 0.98, "image": "https://example.com/demo/chanderi-kurta-10.jpg"}, {"id": "NKT-10-M", "name": "Chanderi Kurta 10 - M", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3290.0, "gtin": "2000003001019", "stock": 7, "size": "M", "colour_raw": "maroon-ish", "colour": "Maroon", "material": "Chanderi", "parent": "chanderi-kurta-10", "category": "Kurtas and Kurta Sets", "cat_conf": 0.88, "image": "https://example.com/demo/chanderi-kurta-10.jpg"}, {"id": "NKT-10-L", "name": "Chanderi Kurta 10 - L", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3190.0, "gtin": "2000003001026", "stock": 5, "size": "L", "colour_raw": "maroon-ish", "colour": "Maroon", "material": "Chanderi", "parent": "chanderi-kurta-10", "category": "Kurtas and Kurta Sets", "cat_conf": 0.88, "image": "https://example.com/demo/chanderi-kurta-10.jpg"}, {"id": "NKT-10-XL", "name": "Chanderi Kurta 10 - XL", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3090.0, "gtin": "2000003001033", "stock": 5, "size": "XL", "colour_raw": "maroon-ish", "colour": "Maroon", "material": "Chanderi", "parent": "chanderi-kurta-10", "category": "Kurtas and Kurta Sets", "cat_conf": 0.89, "image": "https://example.com/demo/chanderi-kurta-10.jpg"}, {"id": "NKT-11-S", "name": "Linen Blend Kurta Set 11 - S", "brand": "Neelkurinji", "mrp": 1290.0, "price": 1190.0, "gtin": "2000003001101", "stock": 11, "size": "S", "colour_raw": "Peacock blue", "colour": "Teal", "material": "Linen Blend", "parent": "linen-blend-kurta-set-11", "category": "Kurtas and Kurta Sets", "cat_conf": 0.89, "image": "https://example.com/demo/linen-blend-kurta-set-11.jpg"}, {"id": "NKT-11-M", "name": "Linen Blend Kurta Set 11 - M", "brand": "Neelkurinji", "mrp": 1290.0, "price": 1290.0, "gtin": "2000003001118", "stock": 6, "size": "M", "colour_raw": "Peacock blue", "colour": "Teal", "material": "Linen Blend", "parent": "linen-blend-kurta-set-11", "category": "Kurtas and Kurta Sets", "cat_conf": 0.92, "image": "https://example.com/demo/linen-blend-kurta-set-11.jpg"}, {"id": "NKT-11-L", "name": "Linen Blend Kurta Set 11 - L", "brand": "Neelkurinji", "mrp": 1290.0, "price": 1090.0, "gtin": "2000003001125", "stock": 10, "size": "L", "colour_raw": "Peacock blue", "colour": "Teal", "material": "Linen Blend", "parent": "linen-blend-kurta-set-11", "category": "Kurtas and Kurta Sets", "cat_conf": 0.94, "image": "https://example.com/demo/linen-blend-kurta-set-11.jpg"}, {"id": "NKT-11-XL", "name": "Linen Blend Kurta Set 11 - XL", "brand": "Neelkurinji", "mrp": 1290.0, "price": 1090.0, "gtin": "2000003001132", "stock": 5, "size": "XL", "colour_raw": "Peacock blue", "colour": "Teal", "material": "Linen Blend", "parent": "linen-blend-kurta-set-11", "category": "Kurtas and Kurta Sets", "cat_conf": 0.89, "image": "https://example.com/demo/linen-blend-kurta-set-11.jpg"}, {"id": "NKT-12-FreeSize", "name": "Mul Cotton Saree 12 - Free Size", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3190.0, "gtin": "2000003001200", "stock": 12, "size": "Free Size", "colour_raw": "Off white", "colour": "Off White", "material": "Mul Cotton", "parent": "mul-cotton-saree-12", "category": "Sarees", "cat_conf": 0.86, "image": "https://example.com/demo/mul-cotton-saree-12.jpg"}, {"id": "NKT-13-FreeSize", "name": "Chanderi Dupatta 13 - Free Size", "brand": "Neelkurinji", "mrp": 590.0, "price": 490.0, "gtin": "2000003001309", "stock": 1, "size": "Free Size", "colour_raw": "Kasavu gold", "colour": "Gold", "material": "Chanderi", "parent": "chanderi-dupatta-13", "category": "Dupattas", "cat_conf": 0.91, "image": "https://example.com/demo/chanderi-dupatta-13.jpg"}, {"id": "NKT-14-S", "name": "Handloom Cotton Top 14 - S", "brand": "Neelkurinji", "mrp": 1490.0, "price": 1390.0, "gtin": "2000003001408", "stock": 10, "size": "S", "colour_raw": "Lal", "colour": "Red", "material": "Handloom Cotton", "parent": "handloom-cotton-top-14", "category": "Tops", "cat_conf": 0.73, "image": "https://example.com/demo/handloom-cotton-top-14.jpg"}, {"id": "NKT-14-M", "name": "Handloom Cotton Top 14 - M", "brand": "Neelkurinji", "mrp": 1490.0, "price": 1290.0, "gtin": "2000003001415", "stock": 5, "size": "M", "colour_raw": "Lal", "colour": "Red", "material": "Handloom Cotton", "parent": "handloom-cotton-top-14", "category": "Tops", "cat_conf": 0.75, "image": "https://example.com/demo/handloom-cotton-top-14.jpg"}, {"id": "NKT-14-L", "name": "Handloom Cotton Top 14 - L", "brand": "Neelkurinji", "mrp": 1490.0, "price": 1490.0, "gtin": "2000003001422", "stock": 12, "size": "L", "colour_raw": "Lal", "colour": "Red", "material": "Handloom Cotton", "parent": "handloom-cotton-top-14", "category": "Tops", "cat_conf": 0.74, "image": "https://example.com/demo/handloom-cotton-top-14.jpg"}, {"id": "NKT-14-XL", "name": "Handloom Cotton Top 14 - XL", "brand": "Neelkurinji", "mrp": 1490.0, "price": 1490.0, "gtin": "2000003001439", "stock": 12, "size": "XL", "colour_raw": "Lal", "colour": "Red", "material": "Handloom Cotton", "parent": "handloom-cotton-top-14", "category": "Tops", "cat_conf": 0.67, "image": "https://example.com/demo/handloom-cotton-top-14.jpg"}, {"id": "NKT-15-S", "name": "Chanderi Kurta 15 - S", "brand": "Neelkurinji", "mrp": 2490.0, "price": 2290.0, "gtin": "2000003001507", "stock": 4, "size": "S", "colour_raw": "Haldi Yellow", "colour": "Yellow", "material": "Chanderi", "parent": "chanderi-kurta-15", "category": "Kurtas and Kurta Sets", "cat_conf": 0.98, "image": "https://example.com/demo/chanderi-kurta-15.jpg"}, {"id": "NKT-15-M", "name": "Chanderi Kurta 15 - M", "brand": "Neelkurinji", "mrp": 2490.0, "price": 2490.0, "gtin": "2000003001514", "stock": 1, "size": "M", "colour_raw": "Haldi Yellow", "colour": "Yellow", "material": "Chanderi", "parent": "chanderi-kurta-15", "category": "Kurtas and Kurta Sets", "cat_conf": 0.96, "image": "https://example.com/demo/chanderi-kurta-15.jpg"}, {"id": "NKT-15-L", "name": "Chanderi Kurta 15 - L", "brand": "Neelkurinji", "mrp": 2490.0, "price": 2390.0, "gtin": "2000003001521", "stock": 12, "size": "L", "colour_raw": "Haldi Yellow", "colour": "Yellow", "material": "Chanderi", "parent": "chanderi-kurta-15", "category": "Kurtas and Kurta Sets", "cat_conf": 0.97, "image": "https://example.com/demo/chanderi-kurta-15.jpg"}, {"id": "NKT-15-XL", "name": "Chanderi Kurta 15 - XL", "brand": "Neelkurinji", "mrp": 2490.0, "price": 2390.0, "gtin": "2000003001538", "stock": 6, "size": "XL", "colour_raw": "Haldi Yellow", "colour": "Yellow", "material": "Chanderi", "parent": "chanderi-kurta-15", "category": "Kurtas and Kurta Sets", "cat_conf": 0.96, "image": "https://example.com/demo/chanderi-kurta-15.jpg"}, {"id": "NKT-16-S", "name": "Chanderi Kurta Set 16 - S", "brand": "Neelkurinji", "mrp": 2490.0, "price": 2290.0, "gtin": "2000003001606", "stock": 1, "size": "S", "colour_raw": "Off white", "colour": "Off White", "material": "Chanderi", "parent": "chanderi-kurta-set-16", "category": "Kurtas and Kurta Sets", "cat_conf": 0.91, "image": "https://example.com/demo/chanderi-kurta-set-16.jpg"}, {"id": "NKT-16-M", "name": "Chanderi Kurta Set 16 - M", "brand": "Neelkurinji", "mrp": 2490.0, "price": 2390.0, "gtin": "2000003001613", "stock": 7, "size": "M", "colour_raw": "Off white", "colour": "Off White", "material": "Chanderi", "parent": "chanderi-kurta-set-16", "category": "Kurtas and Kurta Sets", "cat_conf": 0.91, "image": "https://example.com/demo/chanderi-kurta-set-16.jpg"}, {"id": "NKT-16-L", "name": "Chanderi Kurta Set 16 - L", "brand": "Neelkurinji", "mrp": 2490.0, "price": 2290.0, "gtin": "2000003001620", "stock": 7, "size": "L", "colour_raw": "Off white", "colour": "Off White", "material": "Chanderi", "parent": "chanderi-kurta-set-16", "category": "Kurtas and Kurta Sets", "cat_conf": 0.87, "image": "https://example.com/demo/chanderi-kurta-set-16.jpg"}, {"id": "NKT-16-XL", "name": "Chanderi Kurta Set 16 - XL", "brand": "Neelkurinji", "mrp": 2490.0, "price": 2290.0, "gtin": "2000003001637", "stock": 4, "size": "XL", "colour_raw": "Off white", "colour": "Off White", "material": "Chanderi", "parent": "chanderi-kurta-set-16", "category": "Kurtas and Kurta Sets", "cat_conf": 0.94, "image": "https://example.com/demo/chanderi-kurta-set-16.jpg"}, {"id": "NKT-17-FreeSize", "name": "Linen Blend Saree 17 - Free Size", "brand": "Neelkurinji", "mrp": 2490.0, "price": 2490.0, "gtin": "2000003001705", "stock": 5, "size": "Free Size", "colour_raw": "Lal", "colour": "Red", "material": "Linen Blend", "parent": "linen-blend-saree-17", "category": "Sarees", "cat_conf": 0.87, "image": "https://example.com/demo/linen-blend-saree-17.jpg"}, {"id": "NKT-18-FreeSize", "name": "Linen Blend Dupatta 18 - Free Size", "brand": "Neelkurinji", "mrp": 590.0, "price": 590.0, "gtin": "2000003001804", "stock": 11, "size": "Free Size", "colour_raw": "Lal", "colour": "Red", "material": "Linen Blend", "parent": "linen-blend-dupatta-18", "category": "Dupattas", "cat_conf": 0.87, "image": "https://example.com/demo/linen-blend-dupatta-18.jpg"}, {"id": "NKT-19-S", "name": "Handloom Cotton Top 19 - S", "brand": "Neelkurinji", "mrp": 1490.0, "price": 1290.0, "gtin": "2000003001903", "stock": 11, "size": "S", "colour_raw": "maroon-ish", "colour": "Maroon", "material": "Handloom Cotton", "parent": "handloom-cotton-top-19", "category": "Tops", "cat_conf": 0.68, "image": "https://example.com/demo/handloom-cotton-top-19.jpg"}, {"id": "NKT-19-M", "name": "Handloom Cotton Top 19 - M", "brand": "Neelkurinji", "mrp": 1490.0, "price": 1390.0, "gtin": "2000003001910", "stock": 6, "size": "M", "colour_raw": "maroon-ish", "colour": "Maroon", "material": "Handloom Cotton", "parent": "handloom-cotton-top-19", "category": "Tops", "cat_conf": 0.67, "image": "https://example.com/demo/handloom-cotton-top-19.jpg"}, {"id": "NKT-19-L", "name": "Handloom Cotton Top 19 - L", "brand": "Neelkurinji", "mrp": 1490.0, "price": 1390.0, "gtin": "2000003001927", "stock": 11, "size": "L", "colour_raw": "maroon-ish", "colour": "Maroon", "material": "Handloom Cotton", "parent": "handloom-cotton-top-19", "category": "Tops", "cat_conf": 0.68, "image": "https://example.com/demo/handloom-cotton-top-19.jpg"}, {"id": "NKT-19-XL", "name": "Handloom Cotton Top 19 - XL", "brand": "Neelkurinji", "mrp": 1490.0, "price": 1290.0, "gtin": "2000003001934", "stock": 8, "size": "XL", "colour_raw": "maroon-ish", "colour": "Maroon", "material": "Handloom Cotton", "parent": "handloom-cotton-top-19", "category": "Tops", "cat_conf": 0.71, "image": "https://example.com/demo/handloom-cotton-top-19.jpg"}, {"id": "NKT-20-S", "name": "Mul Cotton Kurta 20 - S", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3090.0, "gtin": "2000003002009", "stock": 8, "size": "S", "colour_raw": "Mehendi", "colour": "Olive", "material": "Mul Cotton", "parent": "mul-cotton-kurta-20", "category": "Kurtas and Kurta Sets", "cat_conf": 0.86, "image": "https://example.com/demo/mul-cotton-kurta-20.jpg"}, {"id": "NKT-20-M", "name": "Mul Cotton Kurta 20 - M", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3090.0, "gtin": "2000003002016", "stock": 5, "size": "M", "colour_raw": "Mehendi", "colour": "Olive", "material": "Mul Cotton", "parent": "mul-cotton-kurta-20", "category": "Kurtas and Kurta Sets", "cat_conf": 0.97, "image": "https://example.com/demo/mul-cotton-kurta-20.jpg"}, {"id": "NKT-20-L", "name": "Mul Cotton Kurta 20 - L", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3090.0, "gtin": "2000003002023", "stock": 6, "size": "L", "colour_raw": "Mehendi", "colour": "Olive", "material": "Mul Cotton", "parent": "mul-cotton-kurta-20", "category": "Kurtas and Kurta Sets", "cat_conf": 0.94, "image": "https://example.com/demo/mul-cotton-kurta-20.jpg"}, {"id": "NKT-20-XL", "name": "Mul Cotton Kurta 20 - XL", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3290.0, "gtin": "2000003002030", "stock": 12, "size": "XL", "colour_raw": "Mehendi", "colour": "Olive", "material": "Mul Cotton", "parent": "mul-cotton-kurta-20", "category": "Kurtas and Kurta Sets", "cat_conf": 0.88, "image": "https://example.com/demo/mul-cotton-kurta-20.jpg"}, {"id": "NKT-21-S", "name": "Linen Blend Kurta Set 21 - S", "brand": "Neelkurinji", "mrp": 1290.0, "price": 1290.0, "gtin": "2000003002108", "stock": 10, "size": "S", "colour_raw": "Off white", "colour": "Off White", "material": "Linen Blend", "parent": "linen-blend-kurta-set-21", "category": "Kurtas and Kurta Sets", "cat_conf": 0.89, "image": "https://example.com/demo/linen-blend-kurta-set-21.jpg"}, {"id": "NKT-21-M", "name": "Linen Blend Kurta Set 21 - M", "brand": "Neelkurinji", "mrp": 1290.0, "price": 1090.0, "gtin": "2000003002115", "stock": 2, "size": "M", "colour_raw": "Off white", "colour": "Off White", "material": "Linen Blend", "parent": "linen-blend-kurta-set-21", "category": "Kurtas and Kurta Sets", "cat_conf": 0.91, "image": "https://example.com/demo/linen-blend-kurta-set-21.jpg"}, {"id": "NKT-21-L", "name": "Linen Blend Kurta Set 21 - L", "brand": "Neelkurinji", "mrp": 1290.0, "price": 1090.0, "gtin": "2000003002122", "stock": 1, "size": "L", "colour_raw": "Off white", "colour": "Off White", "material": "Linen Blend", "parent": "linen-blend-kurta-set-21", "category": "Kurtas and Kurta Sets", "cat_conf": 0.91, "image": "https://example.com/demo/linen-blend-kurta-set-21.jpg"}, {"id": "NKT-21-XL", "name": "Linen Blend Kurta Set 21 - XL", "brand": "Neelkurinji", "mrp": 1290.0, "price": 1090.0, "gtin": "2000003002139", "stock": 8, "size": "XL", "colour_raw": "Off white", "colour": "Off White", "material": "Linen Blend", "parent": "linen-blend-kurta-set-21", "category": "Kurtas and Kurta Sets", "cat_conf": 0.88, "image": "https://example.com/demo/linen-blend-kurta-set-21.jpg"}, {"id": "NKT-22-FreeSize", "name": "Kasavu Cotton Saree 22 - Free Size", "brand": "Neelkurinji", "mrp": 1890.0, "price": 1690.0, "gtin": "2000003002207", "stock": 12, "size": "Free Size", "colour_raw": "Peacock blue", "colour": "Teal", "material": "Kasavu Cotton", "parent": "kasavu-cotton-saree-22", "category": "Sarees", "cat_conf": 0.97, "image": "https://example.com/demo/kasavu-cotton-saree-22.jpg"}, {"id": "NKT-23-FreeSize", "name": "Mul Cotton Dupatta 23 - Free Size", "brand": "Neelkurinji", "mrp": 590.0, "price": 390.0, "gtin": "2000003002306", "stock": 9, "size": "Free Size", "colour_raw": "Kasavu gold", "colour": "Gold", "material": "Mul Cotton", "parent": "mul-cotton-dupatta-23", "category": "Dupattas", "cat_conf": 0.99, "image": "https://example.com/demo/mul-cotton-dupatta-23.jpg"}, {"id": "NKT-24-S", "name": "Handloom Cotton Top 24 - S", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3290.0, "gtin": "2000003002405", "stock": 8, "size": "S", "colour_raw": "maroon-ish", "colour": "Maroon", "material": "Handloom Cotton", "parent": "handloom-cotton-top-24", "category": "Tops", "cat_conf": 0.72, "image": "https://example.com/demo/handloom-cotton-top-24.jpg"}, {"id": "NKT-24-M", "name": "Handloom Cotton Top 24 - M", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3090.0, "gtin": "2000003002412", "stock": 4, "size": "M", "colour_raw": "maroon-ish", "colour": "Maroon", "material": "Handloom Cotton", "parent": "handloom-cotton-top-24", "category": "Tops", "cat_conf": 0.67, "image": "https://example.com/demo/handloom-cotton-top-24.jpg"}, {"id": "NKT-24-L", "name": "Handloom Cotton Top 24 - L", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3090.0, "gtin": "2000003002429", "stock": 5, "size": "L", "colour_raw": "maroon-ish", "colour": "Maroon", "material": "Handloom Cotton", "parent": "handloom-cotton-top-24", "category": "Tops", "cat_conf": 0.69, "image": "https://example.com/demo/handloom-cotton-top-24.jpg"}, {"id": "NKT-24-XL", "name": "Handloom Cotton Top 24 - XL", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3090.0, "gtin": "2000003002436", "stock": 5, "size": "XL", "colour_raw": "maroon-ish", "colour": "Maroon", "material": "Handloom Cotton", "parent": "handloom-cotton-top-24", "category": "Tops", "cat_conf": 0.68, "image": "https://example.com/demo/handloom-cotton-top-24.jpg"}, {"id": "NKT-25-S", "name": "Kasavu Cotton Kurta 25 - S", "brand": "Neelkurinji", "mrp": 2490.0, "price": 2290.0, "gtin": "2000003002504", "stock": 7, "size": "S", "colour_raw": "Indigo", "colour": "Indigo", "material": "Kasavu Cotton", "parent": "kasavu-cotton-kurta-25", "category": "Kurtas and Kurta Sets", "cat_conf": 0.86, "image": "https://example.com/demo/kasavu-cotton-kurta-25.jpg"}, {"id": "NKT-25-M", "name": "Kasavu Cotton Kurta 25 - M", "brand": "Neelkurinji", "mrp": 2490.0, "price": 2290.0, "gtin": "2000003002511", "stock": 7, "size": "M", "colour_raw": "Indigo", "colour": "Indigo", "material": "Kasavu Cotton", "parent": "kasavu-cotton-kurta-25", "category": "Kurtas and Kurta Sets", "cat_conf": 0.98, "image": "https://example.com/demo/kasavu-cotton-kurta-25.jpg"}, {"id": "NKT-25-L", "name": "Kasavu Cotton Kurta 25 - L", "brand": "Neelkurinji", "mrp": 2490.0, "price": 2390.0, "gtin": "2000003002528", "stock": 5, "size": "L", "colour_raw": "Indigo", "colour": "Indigo", "material": "Kasavu Cotton", "parent": "kasavu-cotton-kurta-25", "category": "Kurtas and Kurta Sets", "cat_conf": 0.93, "image": "https://example.com/demo/kasavu-cotton-kurta-25.jpg"}, {"id": "NKT-25-XL", "name": "Kasavu Cotton Kurta 25 - XL", "brand": "Neelkurinji", "mrp": 2490.0, "price": 2390.0, "gtin": "2000003002535", "stock": 3, "size": "XL", "colour_raw": "Indigo", "colour": "Indigo", "material": "Kasavu Cotton", "parent": "kasavu-cotton-kurta-25", "category": "Kurtas and Kurta Sets", "cat_conf": 0.88, "image": "https://example.com/demo/kasavu-cotton-kurta-25.jpg"}, {"id": "NKT-26-S", "name": "Kasavu Cotton Kurta Set 26 - S", "brand": "Neelkurinji", "mrp": 2490.0, "price": 2290.0, "gtin": "2000003002603", "stock": 4, "size": "S", "colour_raw": "Mehendi", "colour": "Olive", "material": "Kasavu Cotton", "parent": "kasavu-cotton-kurta-set-26", "category": "Kurtas and Kurta Sets", "cat_conf": 0.93, "image": "https://example.com/demo/kasavu-cotton-kurta-set-26.jpg"}, {"id": "NKT-26-M", "name": "Kasavu Cotton Kurta Set 26 - M", "brand": "Neelkurinji", "mrp": 2490.0, "price": 2290.0, "gtin": "2000003002610", "stock": 7, "size": "M", "colour_raw": "Mehendi", "colour": "Olive", "material": "Kasavu Cotton", "parent": "kasavu-cotton-kurta-set-26", "category": "Kurtas and Kurta Sets", "cat_conf": 0.86, "image": "https://example.com/demo/kasavu-cotton-kurta-set-26.jpg"}, {"id": "NKT-26-L", "name": "Kasavu Cotton Kurta Set 26 - L", "brand": "Neelkurinji", "mrp": 2490.0, "price": 2290.0, "gtin": "2000003002627", "stock": 5, "size": "L", "colour_raw": "Mehendi", "colour": "Olive", "material": "Kasavu Cotton", "parent": "kasavu-cotton-kurta-set-26", "category": "Kurtas and Kurta Sets", "cat_conf": 0.93, "image": "https://example.com/demo/kasavu-cotton-kurta-set-26.jpg"}, {"id": "NKT-26-XL", "name": "Kasavu Cotton Kurta Set 26 - XL", "brand": "Neelkurinji", "mrp": 2490.0, "price": 2490.0, "gtin": "2000003002634", "stock": 9, "size": "XL", "colour_raw": "Mehendi", "colour": "Olive", "material": "Kasavu Cotton", "parent": "kasavu-cotton-kurta-set-26", "category": "Kurtas and Kurta Sets", "cat_conf": 0.99, "image": "https://example.com/demo/kasavu-cotton-kurta-set-26.jpg"}, {"id": "NKT-27-FreeSize", "name": "Handloom Cotton Saree 27 - Free Size", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3190.0, "gtin": "2000003002702", "stock": 10, "size": "Free Size", "colour_raw": "Lal", "colour": "Red", "material": "Handloom Cotton", "parent": "handloom-cotton-saree-27", "category": "Sarees", "cat_conf": 0.97, "image": "https://example.com/demo/handloom-cotton-saree-27.jpg"}, {"id": "NKT-28-FreeSize", "name": "Linen Blend Dupatta 28 - Free Size", "brand": "Neelkurinji", "mrp": 590.0, "price": 490.0, "gtin": "2000003002801", "stock": 6, "size": "Free Size", "colour_raw": "Off white", "colour": "Off White", "material": "Linen Blend", "parent": "linen-blend-dupatta-28", "category": "Dupattas", "cat_conf": 0.95, "image": "https://example.com/demo/linen-blend-dupatta-28.jpg"}, {"id": "NKT-29-S", "name": "Chanderi Top 29 - S", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3290.0, "gtin": "2000003002900", "stock": 2, "size": "S", "colour_raw": "Indigo", "colour": "Indigo", "material": "Chanderi", "parent": "chanderi-top-29", "category": "Tops", "cat_conf": 0.71, "image": "https://example.com/demo/chanderi-top-29.jpg"}, {"id": "NKT-29-M", "name": "Chanderi Top 29 - M", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3090.0, "gtin": "2000003002917", "stock": 12, "size": "M", "colour_raw": "Indigo", "colour": "Indigo", "material": "Chanderi", "parent": "chanderi-top-29", "category": "Tops", "cat_conf": 0.76, "image": "https://example.com/demo/chanderi-top-29.jpg"}, {"id": "NKT-29-L", "name": "Chanderi Top 29 - L", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3190.0, "gtin": "2000003002924", "stock": 3, "size": "L", "colour_raw": "Indigo", "colour": "Indigo", "material": "Chanderi", "parent": "chanderi-top-29", "category": "Tops", "cat_conf": 0.76, "image": "https://example.com/demo/chanderi-top-29.jpg"}, {"id": "NKT-29-XL", "name": "Chanderi Top 29 - XL", "brand": "Neelkurinji", "mrp": 3290.0, "price": 3290.0, "gtin": "2000003002931", "stock": 7, "size": "XL", "colour_raw": "Indigo", "colour": "Indigo", "material": "Chanderi", "parent": "chanderi-top-29", "category": "Tops", "cat_conf": 0.69, "image": "https://example.com/demo/chanderi-top-29.jpg"}, {"id": "NKT-30-S", "name": "Mul Cotton Kurta 30 - S", "brand": "Neelkurinji", "mrp": 1490.0, "price": 1290.0, "gtin": "2000003003006", "stock": 1, "size": "S", "colour_raw": "Indigo", "colour": "Indigo", "material": "Mul Cotton", "parent": "mul-cotton-kurta-30", "category": "Kurtas and Kurta Sets", "cat_conf": 0.97, "image": "https://example.com/demo/mul-cotton-kurta-30.jpg"}, {"id": "NKT-30-M", "name": "Mul Cotton Kurta 30 - M", "brand": "Neelkurinji", "mrp": 1490.0, "price": 1390.0, "gtin": "2000003003013", "stock": 10, "size": "M", "colour_raw": "Indigo", "colour": "Indigo", "material": "Mul Cotton", "parent": "mul-cotton-kurta-30", "category": "Kurtas and Kurta Sets", "cat_conf": 0.99, "image": "https://example.com/demo/mul-cotton-kurta-30.jpg"}, {"id": "NKT-30-L", "name": "Mul Cotton Kurta 30 - L", "brand": "Neelkurinji", "mrp": 1490.0, "price": 1490.0, "gtin": "2000003003020", "stock": 11, "size": "L", "colour_raw": "Indigo", "colour": "Indigo", "material": "Mul Cotton", "parent": "mul-cotton-kurta-30", "category": "Kurtas and Kurta Sets", "cat_conf": 0.97, "image": "https://example.com/demo/mul-cotton-kurta-30.jpg"}, {"id": "NKT-30-XL", "name": "Mul Cotton Kurta 30 - XL", "brand": "Neelkurinji", "mrp": 1490.0, "price": 1390.0, "gtin": "2000003003037", "stock": 7, "size": "XL", "colour_raw": "Indigo", "colour": "Indigo", "material": "Mul Cotton", "parent": "mul-cotton-kurta-30", "category": "Kurtas and Kurta Sets", "cat_conf": 0.96, "image": "https://example.com/demo/mul-cotton-kurta-30.jpg"}], "D": [{"id": "BLB-001", "name": "Whole wheat bread", "brand": "Butterleaf", "mrp": null, "price": 60.0, "net_qty": "400 g", "gtin": "", "stock": 10, "veg": "veg", "mfg": "", "category": "Bakery, Cakes and Dairy", "cat_conf": 0.93, "line": "[10/11/26, 9:03 AM] Farah (Butterleaf): Whole wheat bread 400g - ₹60", "ext_conf": 0.96}, {"id": "BLB-002", "name": "Multigrain bread", "brand": "Butterleaf", "mrp": null, "price": 75.0, "net_qty": "400 g", "gtin": "", "stock": 10, "veg": "veg", "mfg": "", "category": "Bakery, Cakes and Dairy", "cat_conf": 0.89, "line": "[10/11/26, 9:03 AM] Farah (Butterleaf): Multigrain bread – 400g – 75 rs", "ext_conf": 0.9}, {"id": "BLB-003", "name": "Pav (6 pcs)", "brand": "Butterleaf", "mrp": null, "price": 40.0, "net_qty": "6 pcs", "gtin": "", "stock": 10, "veg": "veg", "mfg": "", "category": "Bakery, Cakes and Dairy", "cat_conf": 0.8, "line": "[10/11/26, 9:03 AM] Farah (Butterleaf): Pav (6 pcs) 6 pcs - ₹40", "ext_conf": 0.92}, {"id": "BLB-004", "name": "Garlic loaf", "brand": "Butterleaf", "mrp": null, "price": 90.0, "net_qty": "300 g", "gtin": "", "stock": 10, "veg": "veg", "mfg": "", "category": "Bakery, Cakes and Dairy", "cat_conf": 0.85, "line": "[10/11/26, 9:04 AM] Farah (Butterleaf): Garlic loaf (300g) Rs 90", "ext_conf": 0.88}, {"id": "BLB-005", "name": "Banana walnut cake", "brand": "Butterleaf", "mrp": null, "price": 380.0, "net_qty": "500 g", "gtin": "", "stock": 10, "veg": "veg", "mfg": "", "category": "Bakery, Cakes and Dairy", "cat_conf": 0.92, "line": "[10/11/26, 9:04 AM] Farah (Butterleaf): Banana walnut cake (500g) Rs 380", "ext_conf": 0.91}, {"id": "BLB-006", "name": "Chocolate brownie box", "brand": "Butterleaf", "mrp": null, "price": 360.0, "net_qty": "6 pcs", "gtin": "", "stock": 10, "veg": "veg", "mfg": "", "category": "Bakery, Cakes and Dairy", "cat_conf": 0.96, "line": "[10/11/26, 9:04 AM] Farah (Butterleaf): Chocolate brownie box – 6 pcs – 360 rs", "ext_conf": 0.74}, {"id": "BLB-007", "name": "Nankhatai", "brand": "Butterleaf", "mrp": null, "price": 160.0, "net_qty": "250 g", "gtin": "", "stock": 10, "veg": "veg", "mfg": "", "category": "Chocolates and Biscuits", "cat_conf": 0.96, "line": "[10/11/26, 9:04 AM] Farah (Butterleaf): Nankhatai (250g) Rs 160", "ext_conf": 0.92}, {"id": "BLB-008", "name": "Jeera cookies", "brand": "Butterleaf", "mrp": null, "price": 150.0, "net_qty": "250 g", "gtin": "", "stock": 10, "veg": "veg", "mfg": "", "category": "Chocolates and Biscuits", "cat_conf": 0.96, "line": "[10/11/26, 9:05 AM] Farah (Butterleaf): Jeera cookies – 250g – 150 rs", "ext_conf": 0.98}, {"id": "BLB-009", "name": "Atta biscuits", "brand": "Butterleaf", "mrp": null, "price": 140.0, "net_qty": "250 g", "gtin": "", "stock": 10, "veg": "veg", "mfg": "", "category": "Chocolates and Biscuits", "cat_conf": 0.84, "line": "[10/11/26, 9:05 AM] Farah (Butterleaf): Atta biscuits 250g - ₹140", "ext_conf": 0.92}, {"id": "BLB-010", "name": "Plum cake", "brand": "Butterleaf", "mrp": null, "price": 450.0, "net_qty": "500 g", "gtin": "", "stock": 10, "veg": "veg", "mfg": "", "category": "Bakery, Cakes and Dairy", "cat_conf": 0.83, "line": "[10/11/26, 9:05 AM] Farah (Butterleaf): Plum cake 500g - ₹450", "ext_conf": 0.9}, {"id": "BLB-011", "name": "Khari", "brand": "Butterleaf", "mrp": null, "price": 80.0, "net_qty": "200 g", "gtin": "", "stock": 10, "veg": "veg", "mfg": "", "category": "Bakery, Cakes and Dairy", "cat_conf": 0.91, "line": "[10/11/26, 9:05 AM] Farah (Butterleaf): Khari 200g - ₹80", "ext_conf": 0.9}, {"id": "BLB-012", "name": "Toast rusk", "brand": "Butterleaf", "mrp": null, "price": 95.0, "net_qty": "300 g", "gtin": "", "stock": 10, "veg": "veg", "mfg": "", "category": "Bakery, Cakes and Dairy", "cat_conf": 0.94, "line": "[10/11/26, 9:06 AM] Farah (Butterleaf): Toast rusk 300g - ₹95", "ext_conf": 0.97}, {"id": "BLB-013", "name": "Eggless vanilla cake", "brand": "Butterleaf", "mrp": null, "price": 350.0, "net_qty": "500 g", "gtin": "", "stock": 10, "veg": "veg", "mfg": "", "category": "Bakery, Cakes and Dairy", "cat_conf": 0.91, "line": "[10/11/26, 9:06 AM] Farah (Butterleaf): Eggless vanilla cake (500g) Rs 350", "ext_conf": 0.93}, {"id": "BLB-014", "name": "Coconut cookies", "brand": "Butterleaf", "mrp": null, "price": 150.0, "net_qty": "250 g", "gtin": "", "stock": 10, "veg": "veg", "mfg": "", "category": "Chocolates and Biscuits", "cat_conf": 0.81, "line": "[10/11/26, 9:06 AM] Farah (Butterleaf): Coconut cookies 250g @ 150/-", "ext_conf": 0.96}, {"id": "BLB-015", "name": "Pizza base (2)", "brand": "Butterleaf", "mrp": null, "price": 70.0, "net_qty": "2 pcs", "gtin": "", "stock": 10, "veg": "veg", "mfg": "", "category": "Bakery, Cakes and Dairy", "cat_conf": 0.91, "line": "[10/11/26, 9:06 AM] Farah (Butterleaf): Pizza base (2) 2 pcs - ₹70", "ext_conf": 0.74}, {"id": "BLB-016", "name": "Burger buns (4)", "brand": "Butterleaf", "mrp": null, "price": 60.0, "net_qty": "4 pcs", "gtin": "", "stock": 10, "veg": "veg", "mfg": "", "category": "Bakery, Cakes and Dairy", "cat_conf": 0.93, "line": "[10/11/26, 9:07 AM] Farah (Butterleaf): Burger buns (4) (4 pcs) Rs 60", "ext_conf": 0.97}, {"id": "BLB-017", "name": "Dinner rolls (6)", "brand": "Butterleaf", "mrp": null, "price": 70.0, "net_qty": "6 pcs", "gtin": "", "stock": 10, "veg": "veg", "mfg": "", "category": "Bakery, Cakes and Dairy", "cat_conf": 0.88, "line": "[10/11/26, 9:07 AM] Farah (Butterleaf): Dinner rolls (6) 6 pcs - ₹70", "ext_conf": 0.96}, {"id": "BLB-018", "name": "Ragi cookies", "brand": "Butterleaf", "mrp": null, "price": 170.0, "net_qty": "250 g", "gtin": "", "stock": 10, "veg": "veg", "mfg": "", "category": "Chocolates and Biscuits", "cat_conf": 0.93, "line": "[10/11/26, 9:07 AM] Farah (Butterleaf): Ragi cookies – 250g – 170 rs", "ext_conf": 0.9}, {"id": "BLB-019", "name": "Lemon tea cake", "brand": "Butterleaf", "mrp": null, "price": 280.0, "net_qty": "400 g", "gtin": "", "stock": 10, "veg": "veg", "mfg": "", "category": "Bakery, Cakes and Dairy", "cat_conf": 0.94, "line": "[10/11/26, 9:07 AM] Farah (Butterleaf): Lemon tea cake 400g - ₹280", "ext_conf": 0.91}, {"id": "BLB-020", "name": "Fruit bun", "brand": "Butterleaf", "mrp": null, "price": 50.0, "net_qty": "2 pcs", "gtin": "", "stock": 10, "veg": "veg", "mfg": "", "category": "Bakery, Cakes and Dairy", "cat_conf": 0.87, "line": "[10/11/26, 9:08 AM] Farah (Butterleaf): Fruit bun (2 pcs) Rs 50", "ext_conf": 0.98}, {"id": "BLB-021", "name": "Cheese straws", "brand": "Butterleaf", "mrp": null, "price": 130.0, "net_qty": "200 g", "gtin": "", "stock": 10, "veg": "veg", "mfg": "", "category": "Bakery, Cakes and Dairy", "cat_conf": 0.96, "line": "[10/11/26, 9:08 AM] Farah (Butterleaf): Cheese straws (200g) Rs 130", "ext_conf": 0.92}, {"id": "BLB-022", "name": "Oats cookies", "brand": "Butterleaf", "mrp": null, "price": 170.0, "net_qty": "250 g", "gtin": "", "stock": 10, "veg": "veg", "mfg": "", "category": "Chocolates and Biscuits", "cat_conf": 0.83, "line": "[10/11/26, 9:08 AM] Farah (Butterleaf): Oats cookies (250g) Rs 170", "ext_conf": 0.95}, {"id": "BLB-023", "name": "Sourdough loaf", "brand": "Butterleaf", "mrp": null, "price": 220.0, "net_qty": "500 g", "gtin": "", "stock": 10, "veg": "veg", "mfg": "", "category": "Bakery, Cakes and Dairy", "cat_conf": 0.83, "line": "[10/11/26, 9:08 AM] Farah (Butterleaf): Sourdough loaf – 500g – 220 rs", "ext_conf": 0.89}, {"id": "BLB-024", "name": "Masala bread", "brand": "Butterleaf", "mrp": null, "price": 80.0, "net_qty": "400 g", "gtin": "", "stock": 10, "veg": "veg", "mfg": "", "category": "Bakery, Cakes and Dairy", "cat_conf": 0.94, "line": "[10/11/26, 9:09 AM] Farah (Butterleaf): Masala bread 400g @ 80/-", "ext_conf": 0.97}, {"id": "BLB-025", "name": "Egg sponge cake", "brand": "Butterleaf", "mrp": null, "price": 300.0, "net_qty": "500 g", "gtin": "", "stock": 10, "veg": "non_veg", "mfg": "", "category": "Bakery, Cakes and Dairy", "cat_conf": 0.94, "line": "[10/11/26, 9:09 AM] Farah (Butterleaf): Egg sponge cake 500g - ₹300", "ext_conf": 0.89}], "F": [{"id": "TRP-001", "name": "Toor Dal", "desc": "Toor Dal, 1000 g pack", "mrp": 165.0, "price": 160.0, "net_qty": "1 kg", "gtin": "2000006000019", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 23, "veg": "veg", "category": "Dals and Pulses", "cat_conf": 0.99}, {"id": "TRP-002", "name": "Moong Dal", "desc": "Moong Dal, 500 g pack", "mrp": 75.0, "price": 70.0, "net_qty": "500 g", "gtin": "2000006000026", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 7, "veg": "veg", "category": "Dals and Pulses", "cat_conf": 0.95}, {"id": "TRP-003", "name": "Chana Dal", "desc": "Chana Dal, 1000 g pack", "mrp": 110.0, "price": 105.0, "net_qty": "1 kg", "gtin": "2000006000036", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 21, "veg": "veg", "category": "Dals and Pulses", "cat_conf": 0.91}, {"id": "TRP-004", "name": "Basmati Rice", "desc": "Basmati Rice, 1000 g pack", "mrp": 140.0, "price": 135.0, "net_qty": "1 kg", "gtin": "2000006000040", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 32, "veg": "veg", "category": "Rice and Rice Products", "cat_conf": 0.93}, {"id": "TRP-005", "name": "Kolam Rice", "desc": "Kolam Rice, 5000 g pack", "mrp": 420.0, "price": 435.0, "net_qty": "5 kg", "gtin": "2000006000057", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 15, "veg": "veg", "category": "Rice and Rice Products", "cat_conf": 0.88}, {"id": "TRP-006", "name": "Wheat Atta", "desc": "Wheat Atta, 5000 g pack", "mrp": 260.0, "price": 255.0, "net_qty": "5 kg", "gtin": "2000006000064", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 9, "veg": "veg", "category": "Atta, Flours and Sooji", "cat_conf": 0.86}, {"id": "TRP-007", "name": "Besan", "desc": "Besan, 500 g pack", "mrp": 60.0, "price": 55.0, "net_qty": "500 g", "gtin": "2000006000071", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 25, "veg": "veg", "category": "Atta, Flours and Sooji", "cat_conf": 0.99}, {"id": "TRP-008", "name": "Rava Sooji", "desc": "Rava Sooji, 500 g pack", "mrp": 40.0, "price": 35.0, "net_qty": "500 g", "gtin": "2000006000088", "fssai": "", "packer": "Third-party packer (not stated)", "mfg": "10/2026", "stock": 6, "veg": "veg", "category": "Atta, Flours and Sooji", "cat_conf": 0.94}, {"id": "TRP-009", "name": "Groundnut Oil", "desc": "Groundnut Oil, 1000 g pack", "mrp": 210.0, "price": 205.0, "net_qty": "1 kg", "gtin": "2000006000095", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 40, "veg": "veg", "category": "Oil and Ghee", "cat_conf": 0.93}, {"id": "TRP-010", "name": "Sunflower Oil", "desc": "Sunflower Oil, 1000 g pack", "mrp": 165.0, "price": 160.0, "net_qty": "1 kg", "gtin": "2000006000101", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 13, "veg": "veg", "category": "Oil and Ghee", "cat_conf": 0.98}, {"id": "TRP-011", "name": "Cow Ghee", "desc": "Cow Ghee, 500 g pack", "mrp": 340.0, "price": 335.0, "net_qty": "500 g", "gtin": "2000006000111", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 10, "veg": "veg", "category": "Oil and Ghee", "cat_conf": 0.92}, {"id": "TRP-012", "name": "Sugar", "desc": "Sugar, 1000 g pack", "mrp": 48.0, "price": 43.0, "net_qty": "1 kg", "gtin": "2000006000125", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 21, "veg": "veg", "category": "Cooking and Baking Needs", "cat_conf": 0.97}, {"id": "TRP-013", "name": "Jaggery Cubes", "desc": "Jaggery Cubes, 500 g pack", "mrp": 70.0, "price": 65.0, "net_qty": "500 g", "gtin": "2000006000132", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 25, "veg": "veg", "category": "Cooking and Baking Needs", "cat_conf": 0.97}, {"id": "TRP-014", "name": "Rock Salt", "desc": "Rock Salt, 1000 g pack", "mrp": 45.0, "price": 60.0, "net_qty": "1 kg", "gtin": "2000006000149", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 39, "veg": "veg", "category": "Cooking and Baking Needs", "cat_conf": 0.89}, {"id": "TRP-015", "name": "Poha Thick", "desc": "Poha Thick, 500 g pack", "mrp": 45.0, "price": 40.0, "net_qty": "500 g", "gtin": "2000006000156", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 23, "veg": "veg", "category": "Cereals and Breakfast", "cat_conf": 0.89}, {"id": "TRP-016", "name": "Tea Dust", "desc": "Tea Dust, 250 g pack", "mrp": 130.0, "price": 125.0, "net_qty": "250 g", "gtin": "2000006000163", "fssai": "", "packer": "Third-party packer (not stated)", "mfg": "10/2026", "stock": 21, "veg": "veg", "category": "Beverages", "cat_conf": 0.9}, {"id": "TRP-017", "name": "Instant Coffee", "desc": "Instant Coffee - customers say it tastes like organic", "mrp": 210.0, "price": 205.0, "net_qty": "100 g", "gtin": "2000006000170", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 20, "veg": "veg", "category": "Beverages", "cat_conf": 0.89}, {"id": "TRP-018", "name": "Glucose Biscuits", "desc": "Glucose Biscuits, 250 g pack", "mrp": 30.0, "price": 25.0, "net_qty": "250 g", "gtin": "2000006000187", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 32, "veg": "veg", "category": "Chocolates and Biscuits", "cat_conf": 0.94}, {"id": "TRP-019", "name": "Cream Biscuits", "desc": "Cream Biscuits, 120 g pack", "mrp": 25.0, "price": 20.0, "net_qty": "120 g", "gtin": "2000006000197", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 27, "veg": "veg", "category": "Chocolates and Biscuits", "cat_conf": 0.89}, {"id": "TRP-020", "name": "Masala Noodles", "desc": "Masala Noodles, 280 g pack", "mrp": 56.0, "price": 51.0, "net_qty": "280 g", "gtin": "2000006000200", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 25, "veg": "veg", "category": "Pasta, Soup and Noodles", "cat_conf": 0.91}, {"id": "TRP-021", "name": "Farsan Mix", "desc": "Farsan Mix, 400 g pack", "mrp": 120.0, "price": 115.0, "net_qty": "400 g", "gtin": "2000006000217", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 9, "veg": "veg", "category": "Snacks and Namkeen", "cat_conf": 0.88}, {"id": "TRP-022", "name": "Chakli", "desc": "Chakli, 200 g pack", "mrp": 80.0, "price": 95.0, "net_qty": "200 g", "gtin": "2000006000224", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 30, "veg": "veg", "category": "Snacks and Namkeen", "cat_conf": 0.98}, {"id": "TRP-023", "name": "Peanuts Raw", "desc": "Peanuts Raw, 500 g pack", "mrp": 95.0, "price": 90.0, "net_qty": "500 g", "gtin": "2000006000231", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 23, "veg": "veg", "category": "Dry Fruits, Nuts and Seeds", "cat_conf": 0.91}, {"id": "TRP-024", "name": "Cashew W320", "desc": "Cashew W320, 250 g pack", "mrp": 290.0, "price": 285.0, "net_qty": "250 g", "gtin": "2000006000248", "fssai": "", "packer": "Third-party packer (not stated)", "mfg": "10/2026", "stock": 8, "veg": "veg", "category": "Dry Fruits, Nuts and Seeds", "cat_conf": 0.92}, {"id": "TRP-025", "name": "Raisins", "desc": "Raisins, 250 g pack", "mrp": 120.0, "price": 115.0, "net_qty": "250 g", "gtin": "2000006000255", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 36, "veg": "veg", "category": "Dry Fruits, Nuts and Seeds", "cat_conf": 0.94}, {"id": "TRP-026", "name": "Tomato Ketchup", "desc": "Tomato Ketchup, 500 g pack", "mrp": 120.0, "price": 115.0, "net_qty": "500 g", "gtin": "2000006000262", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 8, "veg": "veg", "category": "Sauces, Spreads and Dips", "cat_conf": 0.98}, {"id": "TRP-027", "name": "Mixed Fruit Jam", "desc": "Mixed Fruit Jam, 500 g pack", "mrp": 160.0, "price": 155.0, "net_qty": "500 g", "gtin": "2000006000272", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 27, "veg": "veg", "category": "Sauces, Spreads and Dips", "cat_conf": 0.91}, {"id": "TRP-028", "name": "Turmeric Powder", "desc": "Turmeric Powder, 200 g pack", "mrp": 62.0, "price": 57.0, "net_qty": "200 g", "gtin": "2000006000286", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 10, "veg": "veg", "category": "Masala and Seasoning", "cat_conf": 0.98}, {"id": "TRP-029", "name": "Chilli Powder", "desc": "Chilli Powder, 200 g pack", "mrp": 78.0, "price": 73.0, "net_qty": "200 g", "gtin": "2000006000293", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 32, "veg": "veg", "category": "Masala and Seasoning", "cat_conf": 0.93}, {"id": "TRP-030", "name": "Hing", "desc": "Hing, 50 g pack", "mrp": 85.0, "price": 80.0, "net_qty": "50 g", "gtin": "2000006000309", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 16, "veg": "veg", "category": "Masala and Seasoning", "cat_conf": 0.93}, {"id": "TRP-009", "name": "Groundnut Oil", "desc": "Groundnut Oil, 1000 g pack", "mrp": 210.0, "price": 205.0, "net_qty": "1 kg", "gtin": "2000006000095", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 40, "veg": "veg", "category": "Oil and Ghee", "cat_conf": 0.93}, {"id": "TRP-021", "name": "Farsan Mix", "desc": "Farsan Mix, 400 g pack", "mrp": 120.0, "price": 115.0, "net_qty": "400 g", "gtin": "2000006000217", "fssai": "20000000000006", "packer": "Trapline Traders", "mfg": "10/2026", "stock": 9, "veg": "veg", "category": "Snacks and Namkeen", "cat_conf": 0.86}]}, "planted": {"F": [{"sku": "TRP-003", "error": "invalid_gtin_check_digit", "caught_at": "validation", "gate": "G2"}, {"sku": "TRP-005", "error": "mrp_below_selling_price", "caught_at": "validation", "gate": "G3"}, {"sku": "TRP-008", "error": "missing_fssai_for_third_party_packer", "caught_at": "validation", "gate": "G3"}, {"sku": "TRP-011", "error": "invalid_gtin_check_digit", "caught_at": "validation", "gate": "G2"}, {"sku": "TRP-014", "error": "mrp_below_selling_price", "caught_at": "validation", "gate": "G3"}, {"sku": "TRP-016", "error": "missing_fssai_for_third_party_packer", "caught_at": "validation", "gate": "G3"}, {"sku": "TRP-017", "error": "invented_claim_bait_organic", "caught_at": "description_guardrail", "gate": "G2"}, {"sku": "TRP-019", "error": "invalid_gtin_check_digit", "caught_at": "validation", "gate": "G2"}, {"sku": "TRP-022", "error": "mrp_below_selling_price", "caught_at": "validation", "gate": "G3"}, {"sku": "TRP-024", "error": "missing_fssai_for_third_party_packer", "caught_at": "validation", "gate": "G3"}, {"sku": "TRP-027", "error": "invalid_gtin_check_digit", "caught_at": "validation", "gate": "G2"}, {"sku": "TRP-009", "error": "duplicate_sku", "caught_at": "validation", "gate": "G2"}, {"sku": "TRP-021", "error": "duplicate_sku", "caught_at": "validation", "gate": "G2"}]}, "setG": {"header": ["member_name", "business_name", "city", "state", "category", "gstin", "fssai_no", "fssai_expiry", "bank_ifsc", "account_no"], "rows": [["Sunanda Patil", "Sunanda's Papad (Sakhi Annapurna)", "Satara", "Maharashtra", "Grocery", "27ZZZPS0001A1ZV", "20000000000701", "2028-03-31", "DEMO0000001", "000000000001"], ["Rekha Jadhav", "Rekha's Pickles (Sakhi Annapurna)", "Satara", "Maharashtra", "Grocery", "27ZZZPR0002B1ZT", "20000000000702", "2028-03-31", "DEMO0000002", "000000000002"], ["Shabana Shaikh", "Shabana's Chakli (Sakhi Annapurna)", "Satara", "Maharashtra", "Grocery", "27ZZZPS0003C1ZP", "20000000000703", "2028-03-31", "DEMO0000003", "000000000003"], ["Lata More", "Lata's Masala (Sakhi Annapurna)", "Satara", "Maharashtra", "Grocery", "27ZZZPL0004D1ZT", "20000000000704", "2028-03-31", "DEMO0000004", "000000000004"], ["Kavita Gaikwad", "Kavita's Laddoo (Sakhi Annapurna)", "Satara", "Maharashtra", "Grocery", "27ZZZPK0005E1ZA", "20000000000705", "2028-03-31", "DEMO0000005", "000000000005"], ["Asha Pawar", "Asha's Shev (Sakhi Annapurna)", "Satara", "Maharashtra", "Grocery", "27ZZZPA0006F1ZY", "20000000000706", "2028-03-31", "DEMO0000006", "000000000006"], ["Nirmala Kale", "Nirmala's Chutney Powder (Sakhi Annapurna)", "Satara", "Maharashtra", "Grocery", "27ZZZPN0007G1ZI", "20000000000707", "2028-03-31", "DEMO0000007", "000000000007"], ["Rupali Shinde", "Rupali's Kurdai (Sakhi Annapurna)", "Satara", "Maharashtra", "Grocery", "27ZZZPR0008H1ZB", "20000000000708", "2028-03-31", "DEMO0000008", "000000000008"], ["Farida Pathan", "Farida's Papdi (Sakhi Annapurna)", "Satara", "Maharashtra", "Grocery", "27ZZZPF0009I1ZJ", "20000000000709", "2026-08-31", "DEMO0000009", "000000000009"], ["Vandana Salve", "Vandana's Poha Chivda (Sakhi Annapurna)", "Satara", "Maharashtra", "Grocery", "27ZZZPV0010J1Z8", "20000000000710", "2028-03-31", "DEMO0000010", "000000000010"], ["Meera Lokhande", "Meera's Bhakri Pith (Sakhi Annapurna)", "Satara", "Maharashtra", "Grocery", "27ZZZPM0011K1ZE", "20000000000711", "2028-03-31", "DEMO0000011", "000000000011"], ["Jyoti Kamble", "Jyoti's Amla Candy (Sakhi Annapurna)", "Satara", "Maharashtra", "Grocery", "27ZZZPJ0012L1ZE", "20000000000712", "2028-03-31", "DEMO0000012", "000000000012"]], "planted": [{"row": 5, "error": "invalid_gstin_checksum", "gate": "G0"}, {"row": 9, "error": "expired_fssai_licence", "gate": "G0"}]}, "raw": {"B": {"header": ["Sr No", "Item Naam", "Brand", "M.R.P (Rs)", "Rate", "Wajan", "Barcode", "Stock (pcs)", "Veg/NonVeg", "Mfg Dt", "Remarks"], "rows": [[1, "Toor Dal", "Annakosh", "Rs 165", "Rs 160", "1000 g", "2000002000013", 9, "Veg", "09-2026", "new stock aaya"], [2, "Moong Dal", "Panchvati Pantry", "Rs. 75/-", "₹73.00", "1/2 kg", "2000002000020", 38, "Shakahari", "Oct-26", "only 2 left"], [3, "Chana Dal", "Panchvati Pantry", "₹110.00", "Rs 108", "1000GM", "2000002000037", 3, "Veg", "09-2026", "fast moving"], [4, "Basmati Rice", "Gharkul Demo", "Rs. 140/-", "₹130.00", "1000gm", "2000002000044", 23, "Shakahari", "Oct-26", "only 2 left"], [5, "Kolam Rice", "Annakosh", "Rs. 420/-", "₹415.00", "5000 g", "2000002000051", 6, "Veg", "10/2026", ""], [6, "Wheat Atta", "Annakosh", "Rs 260", "Rs 258", "5 kg", "2000002000068", 43, "V", "10/2026", "fast moving"], [7, "Besan", "", "₹60.00", "₹58.00", "0.5 Kg", "", 33, "Shakahari", "10/2026", "new stock aaya"], [8, "Rava Sooji", "", "40", "Rs. 35/-", "1/2 kg", "", 48, "veg", "09-2026", ""]]}, "C": {"header": ["Handle", "Title", "Body (HTML)", "Vendor", "Type", "Tags", "Option1 Name", "Option1 Value", "Option2 Name", "Option2 Value", "Variant SKU", "Variant Price", "Variant Compare At Price", "Variant Barcode", "Image Src"], "rows": [["chanderi-kurta-set-01", "Chanderi Kurta Set 01", "<p>Chanderi kurta set, hand-finished in Kochi.</p>", "Neelkurinji", "Kurta Set", "chanderi, festive, women", "Size", "S", "Colour", "Peacock blue", "NKT-01-S", 1490, 1490, "2000003000104", "https://example.com/demo/chanderi-kurta-set-01.jpg"], ["chanderi-kurta-set-01", "", "", "", "", "", "Size", "M", "Colour", "Peacock blue", "NKT-01-M", 1490, 1490, "2000003000111", ""], ["chanderi-kurta-set-01", "", "", "", "", "", "Size", "L", "Colour", "Peacock blue", "NKT-01-L", 1390, 1490, "2000003000128", ""], ["chanderi-kurta-set-01", "", "", "", "", "", "Size", "XL", "Colour", "Peacock blue", "NKT-01-XL", 1290, 1490, "2000003000135", ""], ["linen-blend-saree-02", "Linen Blend Saree 02", "<p>Linen Blend saree, hand-finished in Kochi.</p>", "Neelkurinji", "Saree", "linen, festive, women", "Size", "Free Size", "Colour", "Haldi Yellow", "NKT-02-FreeSize", 2490, 2490, "2000003000203", "https://example.com/demo/linen-blend-saree-02.jpg"], ["chanderi-dupatta-03", "Chanderi Dupatta 03", "<p>Chanderi dupatta, hand-finished in Kochi.</p>", "Neelkurinji", "Dupatta", "chanderi, festive, women", "Size", "Free Size", "Colour", "Haldi Yellow", "NKT-03-FreeSize", 790, 790, "2000003000302", "https://example.com/demo/chanderi-dupatta-03.jpg"]]}, "D": {"lines": ["[10/11/26, 9:02 AM] Farah (Butterleaf): Good morning! This week's menu 🍞", "[10/11/26, 9:02 AM] Farah (Butterleaf): All eggless unless written", "[10/11/26, 9:03 AM] Farah (Butterleaf): Whole wheat bread 400g - ₹60", "[10/11/26, 9:03 AM] Farah (Butterleaf): Multigrain bread – 400g – 75 rs", "[10/11/26, 9:03 AM] Farah (Butterleaf): Pav (6 pcs) 6 pcs - ₹40", "[10/11/26, 9:04 AM] Farah (Butterleaf): Garlic loaf (300g) Rs 90", "[10/11/26, 9:04 AM] Farah (Butterleaf): Banana walnut cake (500g) Rs 380", "[10/11/26, 9:04 AM] Farah (Butterleaf): Chocolate brownie box – 6 pcs – 360 rs", "[10/11/26, 9:04 AM] Farah (Butterleaf): Nankhatai (250g) Rs 160", "[10/11/26, 9:05 AM] Farah (Butterleaf): Jeera cookies – 250g – 150 rs"]}, "F": {"header": ["sku", "name", "description", "mrp", "price", "pack_size", "ean", "fssai_no", "packer", "packed_month", "stock"], "rows": [["TRP-001", "Toor Dal", "Toor Dal, 1000 g pack", 165, 160, "1000", "2000006000019", "20000000000006", "Trapline Traders", "10/2026", 23], ["TRP-002", "Moong Dal", "Moong Dal, 500 g pack", 75, 70, "500", "2000006000026", "20000000000006", "Trapline Traders", "10/2026", 7], ["TRP-003", "Chana Dal", "Chana Dal, 1000 g pack", 110, 105, "1000", "2000006000036", "20000000000006", "Trapline Traders", "10/2026", 21], ["TRP-004", "Basmati Rice", "Basmati Rice, 1000 g pack", 140, 135, "1000", "2000006000040", "20000000000006", "Trapline Traders", "10/2026", 32], ["TRP-005", "Kolam Rice", "Kolam Rice, 5000 g pack", 420, 435, "5000", "2000006000057", "20000000000006", "Trapline Traders", "10/2026", 15], ["TRP-006", "Wheat Atta", "Wheat Atta, 5000 g pack", 260, 255, "5000", "2000006000064", "20000000000006", "Trapline Traders", "10/2026", 9], ["TRP-007", "Besan", "Besan, 500 g pack", 60, 55, "500", "2000006000071", "20000000000006", "Trapline Traders", "10/2026", 25], ["TRP-008", "Rava Sooji", "Rava Sooji, 500 g pack", 40, 35, "500", "2000006000088", "", "Third-party packer (not stated)", "10/2026", 6]]}}};
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmtINR = v => v == null || isNaN(v) ? '—' : '₹' + Number(v).toLocaleString('en-IN', {maximumFractionDigits: 2});
+const TARGET = DATA.target;
+const tLabel = k => k == null ? 'No match' : (TARGET[k] ? TARGET[k][0] : k);
+const tRisk = k => k == null ? 'low' : (TARGET[k] ? TARGET[k][1] : 'low');
+const STATE_CODES = {'Maharashtra':'27','Kerala':'32','Madhya Pradesh':'23','West Bengal':'19'};
+const TODAY = new Date();
+
+/* ---------------- real deterministic checks ---------------- */
+const B36 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+function gstinValid(g){
+  if (!/^\d{2}[A-Z]{5}\d{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/.test(g)) return false;
+  let s = 0;
+  for (let i = 0; i < 14; i++){ const p = B36.indexOf(g[i]) * (i % 2 ? 2 : 1); s += Math.floor(p / 36) + p % 36; }
+  return B36[(36 - s % 36) % 36] === g[14];
+}
+const panValid = p => /^[A-Z]{5}\d{4}[A-Z]$/.test(p);
+const ifscValid = c => /^[A-Z]{4}0[A-Z0-9]{6}$/.test(c);
+const fssaiValid = f => /^[12]\d{13}$/.test(f);
+function gtinValid(g){
+  if (!/^\d{13}$/.test(g)) return false;
+  let s = 0; for (let i = 0; i < 12; i++) s += +g[i] * (i % 2 ? 3 : 1);
+  return (10 - s % 10) % 10 === +g[12];
+}
+const CLAIM_RE = /\b(organic|handmade|sugar[- ]free|chemical[- ]free|100% natural)\b/i;
+
+/* ---------------- scenarios ---------------- */
+const SCEN = {
+  B:{title:'Rambhau Kirana Stores', where:'Kirana store, Pune', what:'Messy Excel rate list, 60 items', tests:'Hinglish headers, units inside text, branded goods with other packers', cat:'Grocery'},
+  C:{title:'Neelkurinji Threads', where:'Handloom boutique, Kochi', what:'Shopify-style export, 30 products and 84 variants', tests:'Variants, sizes, colour words like "Lal", a wrong mapping to correct', cat:'Fashion'},
+  D:{title:'Butterleaf Home Bakery', where:'Home bakery, Indore', what:'WhatsApp menu, 25 items', tests:'Free-text extraction at G1, MRP and packing date asked at G3', cat:'Grocery'},
+  F:{title:'Trapline Traders', where:'Test seller, Nagpur', what:'CSV with 13 planted errors', tests:'Bad barcodes, MRP below price, missing FSSAI, duplicates, an "organic" bait', cat:'Grocery'},
+  G:{title:'Sakhi Annapurna Cooperative', where:'Women-led food cooperative, Satara', what:'Bulk list of 12 sellers', tests:'Stage 1 only: bulk verification and G0, two planted errors', cat:'Grocery'}
+};
+const STEPS = {
+  s1:{n:'S1', label:'Seller intake agent', kind:'agent', stage:1},
+  s2:{n:'S2', label:'Verification agent', kind:'agent', stage:1},
+  g0:{n:'G0', label:'SNP reviewer approves seller', kind:'gate', stage:1, role:'SNP reviewer'},
+  intake:{n:'1', label:'Source intake agent', kind:'agent', stage:2},
+  extract:{n:'2', label:'Extraction agent', kind:'agent', stage:2},
+  g1:{n:'G1', label:'Seller confirms extracted items', kind:'gate', stage:2, role:'Seller'},
+  category:{n:'3', label:'Category agent', kind:'agent', stage:2},
+  mapping:{n:'4', label:'Mapping agent', kind:'agent', stage:2},
+  g2:{n:'G2', label:'Reviewer approves risky mappings', kind:'gate', stage:2, role:'Catalog ops reviewer'},
+  validate:{n:'5', label:'Validation agent', kind:'agent', stage:2},
+  queue:{n:'FQ', label:'Fallback queue', kind:'gate', stage:2, role:'Catalog ops reviewer'},
+  g3:{n:'G3', label:'Seller signs off statutory fields', kind:'gate', stage:2, role:'Seller'},
+  build:{n:'6', label:'Catalog builder', kind:'agent', stage:2},
+  g4:{n:'G4', label:'Pilot phase, then full catalog', kind:'gate', stage:2, role:'Reviewer, then seller'},
+  publish:{n:'7', label:'Publish and monitor', kind:'agent', stage:2},
+  done:{n:'✓', label:'Summary', kind:'end', stage:0}
+};
+
+let st = null;
+function newState(key){
+  const full = ['s1','s2','g0','intake','extract','g1','category','mapping','g2','validate','queue','g3','build','g4','publish','done'];
+  return {key, steps: key === 'G' ? ['s1','s2','g0','done'] : full, i:0, skipped:new Set(), done:new Set(), log:[], t0:Date.now(), agentSecs:0,
+    seller: key === 'G' ? null : DATA.sellers[key], items: key === 'G' ? [] : JSON.parse(JSON.stringify(DATA.items[key])),
+    map:{}, cats:{}, issues:[], g3:{}, gates:[], pilotOk:false, published:false, g1:{}, bulk:null, sellerOk:null};
+}
+
+/* ---------------- audit + toast ---------------- */
+function audit(kind, text){
+  if (!st) return;
+  const secs = Math.round((Date.now() - st.t0) / 1000) + st.agentSecs;
+  const mm = String(Math.floor(secs / 60)).padStart(2,'0'), ss = String(secs % 60).padStart(2,'0');
+  st.log.push({kind, text, ts:`${mm}:${ss}`});
+  renderAudit();
+}
+function renderAudit(){
+  const el = $('#audit');
+  el.innerHTML = st.log.slice().reverse().map(e => `<div class="e"><span class="ts">${e.ts}</span><span class="k ${e.kind}"></span><span>${esc(e.text)}</span></div>`).join('');
+}
+function toast(msg){ const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2600); }
+
+/* ---------------- simulated agent runner ---------------- */
+function runAgent(lines, simSecs, after){
+  const box = $('#log');
+  const btn = $('#run-agent'); if (btn) btn.disabled = true;
+  box.innerHTML = '';
+  let i = 0;
+  const tick = () => {
+    if (i < lines.length){
+      const [cls, txt] = Array.isArray(lines[i]) ? lines[i] : ['', lines[i]];
+      box.insertAdjacentHTML('beforeend', `<div><span class="t">›</span> <span class="${cls}">${esc(txt)}</span></div>`);
+      box.scrollTop = box.scrollHeight; i++; setTimeout(tick, 260);
+    } else {
+      st.agentSecs += simSecs;
+      after();
+    }
+  };
+  tick();
+}
+
+/* ---------------- shell ---------------- */
+function curStep(){ return st.steps[st.i]; }
+function next(){
+  st.done.add(curStep());
+  st.i++;
+  while (st.skipped.has(curStep())) st.i++;
+  render();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function renderTimeline(){
+  const groups = [[1,'Stage 1 · Seller'],[2,'Stage 2 · Catalog']];
+  let h = `<div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:13px">${esc(SCEN[st.key].title)}</b><button class="btn ghost sm" id="reset">Change</button></div>`;
+  for (const [g, name] of groups){
+    const ids = st.steps.filter(s => STEPS[s].stage === g);
+    if (!ids.length) continue;
+    h += `<div class="tl-stage">${name}</div>`;
+    for (const s of ids){
+      const d = STEPS[s];
+      const cls = ['tl-item', d.kind === 'gate' ? 'gate' : '', st.done.has(s) ? 'done' : '', st.skipped.has(s) ? 'skip' : '', curStep() === s ? 'cur' : ''].join(' ');
+      h += `<div class="${cls}"><span class="dot">${st.done.has(s) ? '✓' : ''}</span><span>${d.n} · ${esc(d.label)}${st.skipped.has(s) ? ' <span class="small">(skipped)</span>' : ''}</span></div>`;
+    }
+  }
+  $('#timeline').innerHTML = h;
+  $('#reset').onclick = () => { st = null; showPick(); };
+}
+function head(stepId, extra = ''){
+  const d = STEPS[stepId];
+  const chip = d.kind === 'gate' ? '<span class="chip gate">Human gate</span>' : d.kind === 'agent' ? '<span class="chip sim">Simulated agent</span>' : '';
+  const who = d.role ? `<div class="who">You are acting as: <b>${esc(d.role)}</b></div>` : '';
+  return `<div class="step-head"><div><h2>${d.n} · ${esc(d.label)}</h2>${who}</div><div style="display:flex;gap:6px;flex-wrap:wrap">${chip}${extra}</div></div>`;
+}
+function render(){
+  renderTimeline();
+  const s = curStep();
+  const fn = VIEWS[s];
+  $('#stage').innerHTML = '';
+  fn($('#stage'));
+  $('#clock').textContent = `agent time ${st.agentSecs}s (simulated)`;
+}
+function showPick(){
+  $('#pick').classList.remove('hidden'); $('#run').classList.add('hidden');
+  $('#scen-list').innerHTML = Object.entries(SCEN).map(([k, s]) => `<button data-k="${k}"><span class="chip ${k==='G'?'gate':'neutral'}" style="margin-bottom:8px">${k==='G'?'Stage 1 only':'Set '+k+' · '+s.cat}</span><b>${esc(s.title)}</b><span class="small muted">${esc(s.where)}</span><p class="small" style="margin:8px 0 4px">${esc(s.what)}</p><span class="small muted">Tests: ${esc(s.tests)}</span></button>`).join('');
+  document.querySelectorAll('#scen-list button').forEach(b => b.onclick = () => start(b.dataset.k));
+}
+function start(k){
+  st = newState(k);
+  $('#pick').classList.add('hidden'); $('#run').classList.remove('hidden');
+  audit('sys', `Run started for ${SCEN[k].title} (fictional seller)`);
+  render();
+}
+
+/* ---------------- verification (real) ---------------- */
+function verifySeller(s){
+  const checks = [];
+  const g = s.gstin || '';
+  checks.push(['GSTIN format and checksum', gstinValid(g), gstinValid(g) ? g : `${g} fails the checksum`]);
+  checks.push(['GSTIN state code matches state', g.slice(0,2) === STATE_CODES[s.state], `${g.slice(0,2)} for ${s.state}`]);
+  if (s.pan) checks.push(['PAN format and match inside GSTIN', panValid(s.pan) && g.slice(2,12) === s.pan, s.pan]);
+  if (s.category === 'Grocery'){
+    const exp = new Date(s.fssai_expiry);
+    checks.push(['FSSAI licence format', fssaiValid(s.fssai), s.fssai]);
+    checks.push(['FSSAI licence in date', exp > TODAY, `valid up to ${s.fssai_expiry}`]);
+  }
+  checks.push(['IFSC format', ifscValid(s.ifsc), s.ifsc]);
+  return checks;
+}
+
+/* ---------------- views ---------------- */
+const VIEWS = {};
+
+VIEWS.s1 = el => {
+  if (st.key === 'G'){
+    const rows = DATA.setG.rows;
+    el.innerHTML = head('s1') + `<p>The SNP uploads a bulk list from the cooperative. The intake agent reads each row into a seller profile.</p>
+      <button class="btn primary" id="run-agent">Run seller intake agent</button><div class="log" id="log"></div><div id="out"></div>`;
+    $('#run-agent').onclick = () => runAgent([
+      'Reading cooperative_sellers.csv (12 rows, 10 columns)',
+      'Header match: member_name, business_name, gstin, fssai_no, fssai_expiry, bank_ifsc, account_no',
+      ['ok','12 seller profiles drafted, 0 columns unmapped'],
+      'Handing over to the verification agent'], 6, () => {
+        $('#out').innerHTML = `<div class="tbl-wrap"><table class="t"><tr>${DATA.setG.header.slice(0,8).map(h=>`<th>${esc(h)}</th>`).join('')}</tr>${rows.map(r=>`<tr>${r.slice(0,8).map(c=>`<td class="${/^\d|^[A-Z0-9]{10,}/.test(c)?'mono':''}">${esc(c)}</td>`).join('')}</tr>`).join('')}</table></div>
+        <div class="actions"><button class="btn primary" id="go">Continue to verification</button></div>`;
+        audit('agent','S1 drafted 12 seller profiles from the bulk CSV');
+        $('#go').onclick = next;
+      });
+    return;
+  }
+  const s = st.seller, key = st.key;
+  const docs = ['gst_certificate.png','fssai_licence.png','cancelled_cheque.png'].filter(f => s.fssai || f !== 'fssai_licence.png');
+  el.innerHTML = head('s1') + `<p>The seller fills a short registration form and uploads three documents. The intake agent reads the documents and cross-fills the profile.</p>
+    <div class="grid g3">${docs.map(d => `<div><img class="docimg" alt="${esc(d)}" src="kit/set-${key}/seller_pack/${d}" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'card small muted',textContent:'${d} (specimen image)'}))"><div class="small muted">${esc(d)}</div></div>`).join('')}</div>
+    <div class="actions"><button class="btn primary" id="run-agent">Run seller intake agent</button></div><div class="log" id="log"></div><div id="out"></div>`;
+  $('#run-agent').onclick = () => runAgent([
+    'Reading registration_form.json',
+    `OCR gst_certificate.png → legal name "${s.business_name}", GSTIN ${s.gstin}`,
+    s.fssai ? `OCR fssai_licence.png → licence ${s.fssai}, valid up to ${s.fssai_expiry}` : 'No FSSAI licence needed for Fashion',
+    `OCR cancelled_cheque.png → account ${s.account}, IFSC ${s.ifsc}`,
+    ['ok','Form and documents agree on name, GSTIN and bank details']], 9, () => {
+      $('#out').innerHTML = `<div class="card" style="margin-top:6px"><h3>Draft seller profile</h3><div class="kv">
+        <div>Business</div><div>${esc(s.business_name)} · ${esc(s.owner)}</div><div>Location</div><div>${esc(s.city)}, ${esc(s.state)}</div>
+        <div>Category</div><div>${esc(s.category)}</div><div>GSTIN</div><div class="mono">${esc(s.gstin)}</div><div>PAN</div><div class="mono">${esc(s.pan)}</div>
+        ${s.fssai ? `<div>FSSAI licence</div><div class="mono">${esc(s.fssai)} (to ${esc(s.fssai_expiry)})</div>` : ''}
+        <div>Bank</div><div class="mono">${esc(s.account)} · ${esc(s.ifsc)}</div><div>Packer address</div><div>${esc(s.packer_address)}</div>
+        <div>Returns</div><div>${esc(s.returns)}</div><div>Time to ship</div><div class="mono">${esc(s.time_to_ship)}</div></div></div>
+        <div class="actions"><button class="btn primary" id="go">Continue to verification</button></div>`;
+      audit('agent', 'S1 drafted the seller profile from the form and 3 documents');
+      $('#go').onclick = next;
+    });
+};
+
+VIEWS.s2 = el => {
+  el.innerHTML = head('s2', '<span class="chip real">Real checks</span>') + `<p>Format and checksum checks run as real code. Name matching against GST and bank records is simulated, because it would need live APIs.</p>
+    <button class="btn primary" id="run-agent">Run verification</button><div class="log" id="log"></div><div id="out"></div>`;
+  $('#run-agent').onclick = () => {
+    if (st.key === 'G'){
+      const res = DATA.setG.rows.map((r, i) => {
+        const [m, bn, city, state, cat, gst, fs, exp, ifsc] = r;
+        const fails = [];
+        if (!gstinValid(gst)) fails.push('GSTIN checksum fails');
+        if (new Date(exp) <= TODAY) fails.push(`FSSAI licence expired on ${exp}`);
+        if (!fssaiValid(fs)) fails.push('FSSAI format');
+        if (!ifscValid(ifsc)) fails.push('IFSC format');
+        return {row:i+1, name:m, business:bn, gst, fails};
+      });
+      st.bulk = res;
+      runAgent(['Checking 12 GSTINs (format, checksum, state code)', 'Checking 12 FSSAI licences (format, expiry)', 'Checking 12 IFSC codes',
+        ['w', `${res.filter(r=>r.fails.length).length} sellers flagged`], 'Simulated: name match with GST and bank records passed for all'], 5, () => {
+        $('#out').innerHTML = `<div class="tbl-wrap"><table class="t"><tr><th>#</th><th>Member</th><th>GSTIN</th><th>Result</th></tr>${res.map(r=>`<tr><td>${r.row}</td><td>${esc(r.name)}</td><td class="mono">${esc(r.gst)}</td><td>${r.fails.length?r.fails.map(f=>`<span class="chip bad">${esc(f)}</span>`).join(' '):'<span class="chip ok">All checks pass</span>'}</td></tr>`).join('')}</table></div>
+          <div class="actions"><button class="btn gate" id="go">Send to G0 review</button></div>`;
+        res.filter(r=>r.fails.length).forEach(r => audit('check', `Row ${r.row} (${r.name}): ${r.fails.join(', ')}`));
+        audit('check', `Verification ran 48 real checks across 12 sellers`);
+        $('#go').onclick = next;
+      });
+      return;
+    }
+    const checks = verifySeller(st.seller);
+    st.sellerChecks = checks;
+    runAgent(checks.map(([n, ok]) => [ok ? 'ok' : 'e', `${ok ? 'PASS' : 'FAIL'} ${n}`]).concat([['', 'Simulated: legal name matches GST record and bank account holder']]), 4, () => {
+      $('#out').innerHTML = `<table class="t"><tr><th>Check</th><th>Value</th><th>Result</th><th>Type</th></tr>${checks.map(([n, ok, v]) => `<tr><td>${esc(n)}</td><td class="mono">${esc(v)}</td><td>${ok?'<span class="chip ok">Pass</span>':'<span class="chip bad">Fail</span>'}</td><td><span class="chip real">Real</span></td></tr>`).join('')}
+        <tr><td>Name match: GST record and bank holder</td><td>${esc(st.seller.business_name)}</td><td><span class="chip ok">Pass</span></td><td><span class="chip sim">Simulated</span></td></tr></table>
+        <div class="actions"><button class="btn gate" id="go">Send to G0 review</button></div>`;
+      checks.forEach(([n, ok]) => audit('check', `${n}: ${ok ? 'pass' : 'fail'}`));
+      $('#go').onclick = next;
+    });
+  };
+};
+
+VIEWS.g0 = el => {
+  if (st.key === 'G'){
+    const flagged = st.bulk.filter(r => r.fails.length), clean = st.bulk.filter(r => !r.fails.length);
+    el.innerHTML = head('g0') + `<div class="callout">Approve the ${clean.length} clean sellers. Send the ${flagged.length} flagged sellers back with a reason. Nothing moves to catalog onboarding until a seller passes G0.</div>
+      ${flagged.map(r => `<div class="card" style="margin-top:10px"><b>Row ${r.row} · ${esc(r.name)}</b><div class="small muted">${esc(r.business)}</div><div style="margin:6px 0">${r.fails.map(f=>`<span class="chip bad">${esc(f)}</span>`).join(' ')}</div>
+        <label class="small">Message to seller <input type="text" style="width:100%" value="${r.fails[0].includes('GSTIN') ? 'Please re-check your GSTIN, the last character does not match.' : 'Your FSSAI licence has expired. Please upload the renewed licence.'}"></label></div>`).join('')}
+      <div class="actions"><button class="btn gate" id="ok">Approve ${clean.length}, send back ${flagged.length}</button></div>`;
+    $('#ok').onclick = () => {
+      audit('human', `G0: approved ${clean.length} sellers`);
+      flagged.forEach(r => audit('human', `G0: sent row ${r.row} (${r.name}) back to the seller with a reason`));
+      st.gates.push(['G0', `${clean.length} approved, ${flagged.length} sent back`]);
+      next();
+    };
+    return;
+  }
+  const allOk = st.sellerChecks.every(c => c[1]);
+  el.innerHTML = head('g0') + `<div class="callout">Review the profile and the check results. Catalog onboarding for this seller cannot start until you approve.</div>
+    <div class="kv"><div>Seller</div><div>${esc(st.seller.business_name)}</div><div>Checks</div><div>${st.sellerChecks.filter(c=>c[1]).length} of ${st.sellerChecks.length} real checks pass, name match passed (simulated)</div></div>
+    <div class="actions"><button class="btn gate" id="ok" ${allOk?'':'disabled'}>Approve seller</button><button class="btn" id="back">Send back to seller</button></div>`;
+  $('#ok').onclick = () => { audit('human','G0: SNP reviewer approved the seller profile'); st.gates.push(['G0','Seller approved']); next(); };
+  $('#back').onclick = () => { audit('human','G0: sent back to seller for corrections (demo continues after re-upload)'); toast('Sent back. In this demo the seller re-submits and you can approve.'); };
+};
+
+VIEWS.intake = el => {
+  const k = st.key;
+  const fmt = {B:'Excel workbook (.xlsx), 1 sheet, merged title row, 2 blank rows', C:'Shopify-style product export (.csv), 15 columns', D:'WhatsApp chat export (.txt), 28 lines', F:'CSV, 11 columns, 32 rows'}[k];
+  const raw = DATA.raw[k];
+  const preview = k === 'D' ? `<div class="pre">${raw.lines.map(esc).join('\n')}</div>` :
+    `<div class="tbl-wrap"><table class="t"><tr>${raw.header.map(h=>`<th>${esc(h)}</th>`).join('')}</tr>${raw.rows.map(r=>`<tr>${r.map(c=>`<td>${esc(String(c).slice(0,40))}</td>`).join('')}</tr>`).join('')}</table></div>`;
+  el.innerHTML = head('intake') + `<p>The seller uploads the catalog they already have. Here is what arrived:</p>${preview}
+    <div class="actions"><button class="btn primary" id="run-agent">Run source intake agent</button></div><div class="log" id="log"></div><div id="out"></div>`;
+  $('#run-agent').onclick = () => runAgent([
+    `Detected format: ${fmt}`,
+    k === 'B' ? 'Skipping merged title row and 2 blank rows; header found on row 3' : k === 'C' ? 'Variant rows found: product fields are blank after the first size, will fill down' : k === 'D' ? 'Chat lines from one sender; greeting and closing lines are not items' : 'Header found on row 1',
+    `Pre-filling from approved seller profile: packer, FSSAI licence, return terms, time to ship`,
+    ['ok','Source accepted']], 3, () => {
+      audit('agent', `Source intake: ${fmt}`);
+      if (k !== 'D'){ st.skipped.add('g1'); }
+      $('#out').innerHTML = `<div class="actions"><button class="btn primary" id="go">Continue to extraction</button></div>`;
+      $('#go').onclick = next;
+    });
+};
+
+VIEWS.extract = el => {
+  const k = st.key, n = st.items.length;
+  const lines = k === 'D' ? ['Splitting 28 chat lines', 'Dropping 3 non-item lines (greeting, note, closing)', `Extracted ${n} items: name, quantity, price`, ['w','2 lines below 0.80 extraction confidence, seller to confirm at G1']]
+    : ['Parsing rows', `Read ${k==='C' ? n + ' variant rows' : n + ' rows'}`, k === 'F' ? ['w','2 rows repeat an existing SKU, kept for validation'] : ['ok','Parser hit no errors'], k === 'D' ? '' : 'G1 not needed: structured file parsed cleanly'];
+  el.innerHTML = head('extract') + `<button class="btn primary" id="run-agent">Run extraction agent</button><div class="log" id="log"></div><div id="out"></div>`;
+  $('#run-agent').onclick = () => runAgent(lines.filter(Boolean), k === 'D' ? 12 : 5, () => {
+    audit('agent', `Extraction: ${n} items read${k==='D' ? ', 2 low-confidence lines flagged for G1' : ''}`);
+    if (k !== 'D') audit('sys', 'G1 skipped: structured source parsed with no errors');
+    $('#out').innerHTML = `<div class="actions"><button class="btn primary" id="go">${k==='D' ? 'Go to G1' : 'Continue to categories'}</button></div>`;
+    $('#go').onclick = next;
+  });
+};
+
+VIEWS.g1 = el => {
+  const rows = st.items;
+  el.innerHTML = head('g1') + `<div class="callout">Check what the agent read from your chat. Low-confidence lines are first. Edit anything that is wrong.</div>
+    <div class="tbl-wrap"><table class="t"><tr><th>Chat line</th><th>Item</th><th>Quantity</th><th>Price</th><th>Confidence</th></tr>
+    ${rows.slice().sort((a,b)=>a.ext_conf-b.ext_conf).map(r => `<tr><td class="small muted">${esc(r.line.replace(/^\[.*?\]\s*[^:]+:\s*/,''))}</td><td><input type="text" data-id="${r.id}" data-f="name" value="${esc(r.name)}"></td><td><input type="text" data-id="${r.id}" data-f="net_qty" value="${esc(r.net_qty)}" style="width:80px"></td><td>${fmtINR(r.price)}</td><td>${confHtml(r.ext_conf)}</td></tr>`).join('')}</table></div>
+    <div class="actions"><button class="btn gate" id="ok">Confirm ${rows.length} items</button></div>`;
+  $('#ok').onclick = () => {
+    let edits = 0;
+    el.querySelectorAll('input[data-id]').forEach(inp => { const it = st.items.find(x => x.id === inp.dataset.id); if (it[inp.dataset.f] !== inp.value){ it[inp.dataset.f] = inp.value; edits++; } });
+    audit('human', `G1: seller confirmed ${rows.length} items${edits ? `, edited ${edits} values` : ''}`);
+    st.gates.push(['G1', `${rows.length} items confirmed`]);
+    next();
+  };
+};
+
+function confHtml(c){ const cls = c < 0.6 ? 'lo' : c < 0.9 ? 'mid' : ''; return `<span class="conf ${cls}"><i><b style="width:${Math.round(c*100)}%"></b></i><span class="mono">${c.toFixed(2)}</span></span>`; }
+
+VIEWS.category = el => {
+  el.innerHTML = head('category') + `<button class="btn primary" id="run-agent">Run category agent</button><div class="log" id="log"></div><div id="out"></div>`;
+  const low = st.items.filter(i => i.cat_conf < 0.8);
+  const counts = {}; st.items.forEach(i => counts[i.category] = (counts[i.category]||0)+1);
+  $('#run-agent').onclick = () => runAgent([`Classifying ${st.items.length} items into ONDC ${SCEN[st.key].cat} categories`, ...Object.entries(counts).slice(0,4).map(([c,n])=>`${n} → ${c}`), low.length ? ['w', `${low.length} items below 0.80, sent to G2`] : ['ok','All items at 0.80 or above']], 6, () => {
+    audit('agent', `Category: ${st.items.length} items classified, ${low.length} low-confidence to G2`);
+    $('#out').innerHTML = `<div class="tbl-wrap" style="max-height:240px"><table class="t"><tr><th>ONDC category</th><th>Items</th></tr>${Object.entries(counts).map(([c,n])=>`<tr><td>${esc(c)}</td><td>${n}</td></tr>`).join('')}</table></div>
+      <div class="actions"><button class="btn primary" id="go">Continue to smart mapping</button></div>`;
+    $('#go').onclick = next;
+  });
+};
+
+function route(p){
+  if (p.proposed == null || p.conf < 0.6) return 'fallback';
+  if (tRisk(p.proposed) === 'low' && p.conf >= 0.9) return 'auto';
+  return 'review';
+}
+
+VIEWS.mapping = el => {
+  const props = DATA.proposals[st.key];
+  el.innerHTML = head('mapping') + `<p>For each column the agent proposes an ONDC attribute, a confidence and a reason that quotes the seller's values. Routing then follows the risk rule: low-risk fields at 0.90 or above are auto-accepted, high-risk fields always go to a human, and anything below 0.60 goes to the fallback queue.</p>
+    <button class="btn primary" id="run-agent">Run mapping agent</button><div class="log" id="log"></div><div id="out"></div>`;
+  $('#run-agent').onclick = () => runAgent([`Profiling ${props.length} source columns (type, fill rate, samples)`, 'Candidates: synonym list, fuzzy match, embeddings of header plus samples', 'Judge: picks one candidate or none, scores confidence, writes reason', 'Normalising values: units, prices, colours, dates', ['ok','Routing by confidence and field risk']], 14, () => {
+    props.forEach(p => { st.map[p.col] = {...p, route: route(p), final: p.proposed, edited:false, resolved: route(p) === 'auto'}; });
+    const c = {auto:0, review:0, fallback:0}; Object.values(st.map).forEach(m => c[m.route]++);
+    audit('agent', `Mapping: ${props.length} columns · ${c.auto} auto-accepted · ${c.review} to G2 · ${c.fallback} to fallback queue`);
+    $('#out').innerHTML = mapTable(false) + `<div class="actions"><button class="btn gate" id="go">Send to G2 review</button></div>`;
+    $('#go').onclick = next;
+  });
+};
+
+function mapTable(editable){
+  const order = {fallback:0, review:1, auto:2};
+  const rows = Object.values(st.map).sort((a,b) => order[a.route]-order[b.route] || a.conf-b.conf);
+  const opts = sel => ['IGNORE', ...Object.keys(TARGET).filter(k => k !== 'IGNORE')].map(k => `<option value="${k}" ${k===sel?'selected':''}>${esc(tLabel(k))}</option>`).join('');
+  return `<div class="tbl-wrap" style="max-height:520px"><table class="t"><tr><th style="width:24%">Source column and seller's values</th><th>Proposed ONDC attribute and the agent's reason</th><th style="width:150px">Confidence, risk, route</th></tr>
+  ${rows.map(m => {
+    const rchip = m.route === 'auto' ? '<span class="chip ok">Auto-accepted</span>' : m.route === 'review' ? '<span class="chip gate">G2 review</span>' : '<span class="chip warn">Fallback queue</span>';
+    const risk = tRisk(m.proposed); const riskChip = `<span class="chip ${risk==='high'?'bad':risk==='medium'?'warn':'neutral'}">${risk} risk</span>`;
+    let dec = '';
+    if (editable){
+      if (m.route === 'auto') dec = '<span class="small muted">Spot-check only</span>';
+      else dec = `<select data-col="${esc(m.col)}">${m.route==='fallback' && !m.resolved ? '<option value="">Choose…</option>' : ''}${opts(m.route==='fallback' && !m.resolved ? '' : m.final)}</select>`;
+    }
+    return `<tr><td><b>${esc(m.col)}</b><div class="small mono muted" style="margin-top:3px">${m.samples.map(v=>esc(String(v).slice(0,28))).join(' · ')}</div></td><td><b>${esc(tLabel(m.proposed))}</b><div class="small muted" style="margin-top:3px">${esc(m.reason)}</div>${editable?`<div style="margin-top:6px" class="small">Your decision: ${dec}</div>`:''}</td><td>${confHtml(m.conf)}<div style="margin-top:4px;display:flex;gap:4px;flex-wrap:wrap">${riskChip}${rchip}</div></td></tr>`;
+  }).join('')}</table></div>`;
+}
+
+VIEWS.g2 = el => {
+  const low = st.items.filter(i => i.cat_conf < 0.8);
+  const cats = [...new Set(st.items.map(i => i.category))];
+  const pend = () => Object.values(st.map).filter(m => m.route !== 'auto' && !m.touched).length;
+  el.innerHTML = head('g2') + `<div class="callout">Accept or change each mapping that needs review, and resolve the fallback queue. Auto-accepted rows are listed for spot-checks only. ${st.key==='C' ? 'Hint: look closely at what the agent did with Tags.' : ''}</div>
+    ${mapTable(true)}
+    ${low.length ? `<div class="section"><h3>Low-confidence categories (${low.length})</h3><div class="tbl-wrap" style="max-height:220px"><table class="t"><tr><th>Item</th><th>Agent's category</th><th>Confidence</th><th>Your decision</th></tr>${low.map(i=>`<tr><td>${esc(i.name)}</td><td>${esc(i.category)}</td><td>${confHtml(i.cat_conf)}</td><td><select data-item="${i.id}">${cats.map(c=>`<option ${c===i.category?'selected':''}>${esc(c)}</option>`).join('')}</select></td></tr>`).join('')}</table></div></div>` : ''}
+    <div class="actions"><button class="btn" id="acc">Accept all proposals as they are</button><button class="btn gate" id="ok">Approve mappings</button><span class="small muted" id="pending"></span></div>`;
+  const upd = () => { const p = pend(); $('#pending').textContent = p ? `${p} decision${p>1?'s':''} still open` : 'All decisions made'; $('#ok').disabled = p > 0; };
+  el.querySelectorAll('select[data-col]').forEach(sel => {
+    sel.onchange = () => { const m = st.map[sel.dataset.col]; if (!sel.value) return; m.touched = true; m.final = sel.value; m.edited = sel.value !== m.proposed; m.resolved = true; upd(); };
+    const m = st.map[sel.dataset.col]; if (m.route === 'review') { sel.addEventListener('focus', () => {}, {once:true}); }
+  });
+  // review rows count as decided once the reviewer accepts (default selection) via the accept-all button or by touching them
+  $('#acc').onclick = () => { Object.values(st.map).forEach(m => { if (m.route === 'review' && !m.touched){ m.touched = true; m.final = m.proposed; m.resolved = true; } }); toast('Review rows accepted as proposed. Fallback rows still need a choice.'); upd(); };
+  $('#ok').onclick = () => {
+    el.querySelectorAll('select[data-item]').forEach(s => { const it = st.items.find(x => x.id === s.dataset.item); if (it.category !== s.value){ audit('human', `G2: recategorised ${it.name} to ${s.value}`); it.category = s.value; } it.cat_conf = 1; });
+    const edits = Object.values(st.map).filter(m => m.edited);
+    edits.forEach(m => audit('human', `G2: changed ${m.col} from "${tLabel(m.proposed)}" to "${tLabel(m.final)}"`));
+    Object.values(st.map).filter(m => m.route === 'fallback').forEach(m => audit('human', `Fallback queue: ${m.col} resolved as "${tLabel(m.final)}", saved to the template for this format`));
+    audit('human', `G2: approved ${Object.values(st.map).filter(m=>m.route!=='auto').length} reviewed mappings`);
+    st.gates.push(['G2', `${edits.length} mapping edits`]);
+    next();
+  };
+  upd();
+};
+
+/* ---------------- validation (real) ---------------- */
+function validate(){
+  const issues = [], seen = {};
+  const s = st.seller, grocery = s.category === 'Grocery';
+  for (const it of st.items){
+    if (seen[it.id]) issues.push({id:it.id, type:'duplicate', sev:'queue', msg:`Duplicate SKU ${it.id}`}); seen[it.id] = 1;
+    if (it.gtin && !gtinValid(it.gtin)) issues.push({id:it.id, type:'gtin', sev:'queue', msg:`GTIN ${it.gtin} fails the check digit`});
+    if (it.mrp != null && it.price > it.mrp) issues.push({id:it.id, type:'mrp', sev:'g3', msg:`Selling price ${fmtINR(it.price)} is above MRP ${fmtINR(it.mrp)}`});
+    if (it.desc && CLAIM_RE.test(it.desc)) issues.push({id:it.id, type:'claim', sev:'queue', msg:`Description implies "${it.desc.match(CLAIM_RE)[0]}" with no certification field behind it`});
+    if (grocery && it.fssai === '') issues.push({id:it.id, type:'fssai', sev:'g3', msg:`No FSSAI licence for third-party packed item`});
+  }
+  if (st.items.some(i => i.mrp == null)) issues.push({id:'*', type:'mrp_missing', sev:'g3', msg:`MRP missing on ${st.items.filter(i=>i.mrp==null).length} items`});
+  if (grocery && st.items.some(i => !i.mfg)) issues.push({id:'*', type:'mfg_missing', sev:'g3', msg:`Month and year of packing missing on ${st.items.filter(i=>!i.mfg).length} items`});
+  return issues;
+}
+
+VIEWS.validate = el => {
+  el.innerHTML = head('validate', '<span class="chip real">Real checks</span>') + `<p>These checks run as real code on the mapped items: GTIN check digit, MRP versus selling price, duplicates, unsupported claims and required statutory fields.</p>
+    <button class="btn primary" id="run-agent">Run validation</button><div class="log" id="log"></div><div id="out"></div>`;
+  $('#run-agent').onclick = () => {
+    st.issues = validate();
+    const q = st.issues.filter(i => i.sev === 'queue'), g3 = st.issues.filter(i => i.sev === 'g3');
+    runAgent([`Checking ${st.items.length} items against ${st.seller.category} schema`, `${st.items.filter(i=>i.gtin).length} GTIN check digits`, 'MRP at or above selling price', 'Duplicate SKUs', 'Claims in descriptions', 'Statutory fields after seller-profile pre-fill',
+      q.length ? ['w', `${q.length} issues to the fallback queue`] : ['ok','Nothing for the fallback queue'], g3.length ? ['w', `${g3.length} statutory issues for the seller at G3`] : ['ok','No statutory gaps']], 4, () => {
+      st.issues.forEach(i => audit('check', i.msg));
+      if (!q.length) st.skipped.add('queue');
+      if (st.key === 'F'){
+        const planted = DATA.planted.F;
+        const caught = planted.filter(p => st.issues.some(i => i.id === p.sku && ({invalid_gtin_check_digit:'gtin', mrp_below_selling_price:'mrp', missing_fssai_for_third_party_packer:'fssai', invented_claim_bait_organic:'claim', duplicate_sku:'duplicate'})[p.error] === i.type));
+        st.recall = {caught:caught.length, planted:planted.length};
+        audit('check', `Planted errors caught: ${caught.length} of ${planted.length}`);
+      }
+      $('#out').innerHTML = st.issues.length ? `<div class="tbl-wrap" style="max-height:300px"><table class="t"><tr><th>Item</th><th>Issue</th><th>Goes to</th></tr>${st.issues.map(i=>`<tr><td class="mono">${esc(i.id)}</td><td>${esc(i.msg)}</td><td>${i.sev==='queue'?'<span class="chip warn">Fallback queue</span>':'<span class="chip gate">G3 seller</span>'}</td></tr>`).join('')}</table></div>` : '<div class="callout real">All checks passed.</div>';
+      if (st.recall) $('#out').insertAdjacentHTML('beforeend', `<div class="callout real">Planted errors caught: <b>${st.recall.caught} of ${st.recall.planted}</b>. This is the "statutory gap recall" metric on the scorecard.</div>`);
+      $('#out').insertAdjacentHTML('beforeend', `<div class="actions"><button class="btn ${q.length?'gate':'primary'}" id="go">${q.length ? 'Open fallback queue' : 'Go to G3'}</button></div>`);
+      $('#go').onclick = next;
+    });
+  };
+};
+
+VIEWS.queue = el => {
+  const q = st.issues.filter(i => i.sev === 'queue');
+  const fix = {duplicate:['Keep the first row, drop the repeat','Keep both as separate items'], gtin:['List without a barcode until the seller confirms it','Ask the seller for the correct barcode'], claim:['Remove the claim from the description','Keep the claim (needs proof)']};
+  el.innerHTML = head('queue') + `<div class="callout">These failed checks need a person. Each fix you pick is logged and, where it is a pattern, saved for the next catalog from this seller.</div>
+    ${q.map((i, n) => `<div class="card" style="margin-top:8px"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><span><b class="mono">${esc(i.id)}</b> · ${esc(i.msg)}</span>
+      <select data-q="${n}">${fix[i.type].map((f,j)=>`<option value="${j}">${esc(f)}</option>`).join('')}</select></div></div>`).join('')}
+    <div class="actions"><button class="btn gate" id="ok">Resolve ${q.length} items</button></div>`;
+  $('#ok').onclick = () => {
+    el.querySelectorAll('select[data-q]').forEach(s => {
+      const i = q[+s.dataset.q], choice = fix[i.type][+s.value];
+      if (i.type === 'duplicate' && s.value === '0'){ const idx = st.items.map(x=>x.id).lastIndexOf(i.id); st.items.splice(idx, 1); }
+      if (i.type === 'gtin' && s.value === '0'){ const it = st.items.find(x => x.id === i.id); it.gtin = ''; }
+      if (i.type === 'claim' && s.value === '0'){ const it = st.items.find(x => x.id === i.id); it.desc = it.desc.replace(/\s*-\s*customers say it tastes like organic/i, '').trim(); }
+      audit('human', `Fallback queue: ${i.id} · ${choice}`);
+    });
+    st.gates.push(['FQ', `${q.length} items resolved`]);
+    next();
+  };
+};
+
+VIEWS.g3 = el => {
+  const s = st.seller, k = st.key;
+  const g3issues = st.issues.filter(i => i.sev === 'g3');
+  let body = `<div class="callout">Statutory values are yours to confirm. The agent only extracted them from your file, pre-filled them from your approved profile, or asks you below. It never fills them in itself.</div>
+    <h3>Pre-filled from your seller profile</h3>
+    <label class="small" style="display:block;margin:4px 0"><input type="checkbox" class="must"> Manufacturer or packer for own-packed items: <b>${esc(s.business_name)}</b>, ${esc(s.packer_address)}</label>
+    ${s.fssai ? `<label class="small" style="display:block;margin:4px 0"><input type="checkbox" class="must"> FSSAI licence: <span class="mono">${esc(s.fssai)}</span></label>` : ''}
+    <label class="small" style="display:block;margin:4px 0"><input type="checkbox" class="must"> Return terms: ${esc(s.returns)} · time to ship ${esc(s.time_to_ship)}</label>`;
+  if (k === 'B'){
+    const brands = [...new Set(st.items.map(i => i.brand).filter(Boolean))];
+    body += `<div class="section"><h3>Branded items packed by someone else</h3><p class="small muted">${st.items.filter(i=>i.brand).length} items carry another brand, so the packer and FSSAI licence are the brand owner's, not yours. Copy them from the pack label.</p>
+      ${brands.map((b,n)=>`<div style="display:grid;grid-template-columns:150px 1fr 170px;gap:8px;margin:6px 0;align-items:center"><b class="small">${esc(b)}</b><input type="text" class="must-t" data-b="${n}" placeholder="Packer name and address from label"><input type="text" class="must-t" placeholder="FSSAI licence from label"></div>`).join('')}
+      <button class="btn sm" id="demo-fill">Fill demo label values</button></div>`;
+  }
+  if (k === 'C'){
+    body += `<div class="section"><h3>Fashion declarations</h3><label class="small" style="display:block"><input type="checkbox" class="must"> MRP is the compare-at price on every variant</label><label class="small" style="display:block"><input type="checkbox" class="must"> Country of origin: India</label></div>`;
+  }
+  if (k === 'D'){
+    body += `<div class="section"><h3>Questions from the agent</h3>
+      <p class="small"><b>Your chat gives one price per item. Is that also the MRP?</b></p>
+      <label class="small"><input type="radio" name="mrp" value="same" class="must-r"> Yes, MRP equals the selling price for all ${st.items.length} items</label><br>
+      <label class="small"><input type="radio" name="mrp" value="later" class="must-r"> No, I will enter MRPs item by item</label>
+      <p class="small" style="margin-top:10px"><b>Your items are baked fresh. What should the month and year of packing be?</b></p>
+      <label class="small"><input type="radio" name="mfg" value="dispatch" class="must-r2"> Use the date of dispatch on each order</label>
+      <p class="small" style="margin-top:10px"><b>These items mention egg and will be marked non-veg:</b> ${st.items.filter(i=>i.veg==='non_veg').map(i=>esc(i.name)).join(', ')}</p>
+      <label class="small"><input type="checkbox" class="must"> Confirm the non-veg mark</label></div>`;
+  }
+  if (k === 'F'){
+    body += `<div class="section"><h3>Items that need your decision (${g3issues.length})</h3>${g3issues.map((i,n)=>`<div class="card" style="margin-top:6px"><b class="mono">${esc(i.id)}</b> · ${esc(i.msg)}<div style="margin-top:6px">${i.type==='mrp'
+      ? `<select data-g3="${n}"><option value="lower">Lower selling price to MRP minus ₹5</option><option value="delist">Remove from this catalog</option></select>`
+      : `<select data-g3="${n}"><option value="enter">I will enter the packer's licence from the label</option><option value="delist">Remove from this catalog until I have it</option></select>`}</div></div>`).join('')}</div>`;
+  }
+  el.innerHTML = head('g3') + body + `<div class="actions"><button class="btn gate" id="ok" disabled>Sign off statutory fields</button><span class="small muted" id="g3left"></span></div>`;
+  const check = () => {
+    const boxes = [...el.querySelectorAll('.must')].every(b => b.checked);
+    const texts = [...el.querySelectorAll('.must-t')].every(t => t.value.trim());
+    const r1 = !el.querySelector('.must-r') || el.querySelector('.must-r:checked');
+    const r2 = !el.querySelector('.must-r2') || el.querySelector('.must-r2:checked');
+    const ok = boxes && texts && r1 && r2;
+    $('#ok').disabled = !ok; $('#g3left').textContent = ok ? 'Ready to sign off' : 'Answer every item to sign off';
+  };
+  el.querySelectorAll('input').forEach(i => i.addEventListener('input', check));
+  el.querySelectorAll('input').forEach(i => i.addEventListener('change', check));
+  const df = $('#demo-fill'); if (df) df.onclick = () => { el.querySelectorAll('.must-t').forEach((t,n) => t.value = n % 2 ? '2' + String(90000000000 + n).padStart(13,'0') : 'Demo Brand Owner Pvt Ltd (fictional), Pune'); check(); };
+  $('#ok').onclick = () => {
+    if (k === 'D'){ st.items.forEach(i => { i.mrp = i.price; i.mfg = 'date of dispatch'; }); audit('human','G3: seller set MRP equal to selling price and packing date to date of dispatch'); }
+    if (k === 'B'){ audit('human', `G3: seller entered packer and FSSAI details for ${el.querySelectorAll('.must-t').length/2} brands from pack labels`); }
+    if (k === 'F'){
+      el.querySelectorAll('select[data-g3]').forEach(sel => {
+        const i = g3issues[+sel.dataset.g3];
+        if (sel.value === 'delist'){ st.items = st.items.filter(x => x.id !== i.id); audit('human', `G3: ${i.id} removed from this catalog`); }
+        if (sel.value === 'lower'){ const it = st.items.find(x => x.id === i.id); if (it){ it.price = it.mrp - 5; audit('human', `G3: ${i.id} selling price lowered to ${fmtINR(it.price)}`); } }
+        if (sel.value === 'enter'){ const it = st.items.find(x => x.id === i.id); if (it){ it.fssai = 'entered by seller'; audit('human', `G3: seller will enter packer licence for ${i.id}`); } }
+      });
+    }
+    audit('human', 'G3: seller signed off all statutory fields');
+    st.gates.push(['G3','Statutory fields signed off']);
+    next();
+  };
+  check();
+};
+
+function toOndc(it){
+  const s = st.seller, o = {id: it.id, descriptor: {name: it.name, ...(it.gtin ? {code: '1:' + it.gtin} : {})}, category_id: it.category,
+    price: {currency: 'INR', value: Number(it.price).toFixed(2), maximum_value: Number(it.mrp ?? it.price).toFixed(2)},
+    quantity: {available: {count: it.stock}}, '@ondc/org/returnable': !s.returns.startsWith('Not'), '@ondc/org/cancellable': true, '@ondc/org/time_to_ship': s.time_to_ship};
+  if (it.parent) Object.assign(o, {parent_item_id: it.parent, tags: [{code:'attributes', list:[{code:'size', value:it.size},{code:'colour', value:it.colour},{code:'material', value:it.material},{code:'gender', value:'female'}]}]});
+  if (s.category === 'Grocery'){
+    o['@ondc/org/statutory_reqs_packaged_commodities'] = {manufacturer_or_packer_name: it.brand && st.key === 'B' ? `${it.brand} (from label)` : s.business_name,
+      net_quantity_or_measure_of_commodity_in_pkg: it.net_qty, month_year_of_manufacture_packing_import: it.mfg};
+    o['@ondc/org/statutory_reqs_prepackaged_food'] = {brand_owner_FSSAI_license_no: it.brand && st.key === 'B' ? '(from label)' : (it.fssai || s.fssai)};
+    o.tags = [{code:'veg_nonveg', list:[{code: it.veg || 'veg', value:'yes'}]}];
+  }
+  return o;
+}
+
+VIEWS.build = el => {
+  el.innerHTML = head('build') + `<button class="btn primary" id="run-agent">Run catalog builder</button><div class="log" id="log"></div><div id="out"></div>`;
+  $('#run-agent').onclick = () => runAgent([`Building ONDC on_search catalog for ${st.items.length} items`, 'Attaching statutory blocks and seller terms', 'Writing short descriptions from source facts only', `Pilot phase: first 10 items`, ['ok','Catalog JSON ready']], 6, () => {
+    st.catalog = st.items.map(toOndc);
+    audit('agent', `Catalog builder: ${st.catalog.length} items, pilot phase of 10`);
+    $('#out').innerHTML = `<p class="small muted">First item, as it would be sent to the network (keys modelled on ONDC retail v1.2):</p><div class="pre">${esc(JSON.stringify(st.catalog[0], null, 2))}</div>
+      <div class="actions"><button class="btn gate" id="go">Go to G4 publish approval</button></div>`;
+    $('#go').onclick = next;
+  });
+};
+
+VIEWS.g4 = el => {
+  el.innerHTML = head('g4') + `<div class="callout">Publish happens in two phases. First the reviewer publishes a pilot phase of 10 items to the mock seller app. Then, if it is accepted, the seller approves the full catalog.</div>
+    <div class="actions"><button class="btn gate" id="pilot">Reviewer: publish pilot phase (10 items)</button></div><div class="log" id="log"></div><div id="out"></div>`;
+  $('#pilot').onclick = () => { $('#pilot').disabled = true; runAgent(['Sending 10 items to the mock seller app', 'Mock seller app: schema accepted', ['ok','Pilot phase: 10 of 10 items accepted (simulated)']], 3, () => {
+    audit('human','G4: reviewer approved the pilot phase'); audit('agent','Pilot phase: 10 of 10 accepted by the mock seller app');
+    $('#out').innerHTML = `<div class="actions"><button class="btn gate" id="full">Seller: approve the full catalog (${st.catalog.length} items)</button></div>`;
+    $('#full').onclick = () => { audit('human', `G4: seller approved the full catalog of ${st.catalog.length} items`); st.gates.push(['G4','Pilot accepted, full catalog approved']); next(); };
+  }); };
+};
+
+VIEWS.publish = el => {
+  el.innerHTML = head('publish') + `<button class="btn primary" id="run-agent">Publish full catalog</button><div class="log" id="log"></div><div id="out"></div>`;
+  $('#run-agent').onclick = () => runAgent([`Publishing ${st.catalog.length - 10} remaining items`, 'Mock seller app: all items accepted', 'Monitoring first-week errors: none in the simulation', ['ok','Seller is live on the mock seller app']], 5, () => {
+    st.published = true; audit('agent', `Published ${st.catalog.length} items; monitoring started`);
+    $('#out').innerHTML = `<div class="actions"><button class="btn primary" id="go">See the summary</button></div>`; $('#go').onclick = next;
+  });
+};
+
+VIEWS.done = el => {
+  if (st.key === 'G'){
+    el.innerHTML = `<h2>Stage 1 complete</h2><p>10 sellers are approved and can start catalog onboarding. 2 were sent back with a reason, and the checks that caught them were real code, not a model.</p><div class="actions"><a class="btn primary" href="#scorecard">Open the scorecard</a><button class="btn" id="again">Try another seller</button></div>`;
+  } else {
+    const m = metrics();
+    el.innerHTML = `<h2>${esc(st.seller.business_name)} is live on the mock seller app</h2><p>${st.catalog.length} items published after ${st.gates.length} human decisions. Every statutory value traces to the seller's file, the approved profile or the seller's own answer.</p>
+      <div class="grid g3">${metricCards(m).slice(0,3).join('')}</div><div class="actions"><a class="btn primary" href="#scorecard">Open the full scorecard</a><button class="btn" id="again">Try another seller</button></div>`;
+  }
+  $('#again').onclick = () => { st = null; showPick(); };
+  st.finished = true;
+};
+
+/* ---------------- scorecard ---------------- */
+function metrics(){
+  const maps = Object.values(st.map);
+  const auto = maps.filter(m => m.route === 'auto');
+  const autoCorrect = auto.filter(m => m.proposed === m.truth);
+  const noEdit = maps.filter(m => m.route !== 'fallback' && !m.edited);
+  const fb = maps.filter(m => m.route === 'fallback');
+  const finalCorrect = maps.filter(m => m.final === m.truth);
+  const elapsed = Math.round((Date.now() - st.t0)/1000) + st.agentSecs;
+  return {total:maps.length, auto:auto.length, prec: auto.length ? autoCorrect.length/auto.length : 1, autoMap: maps.length ? noEdit.length/maps.length : 0,
+    fb: maps.length ? fb.length/maps.length : 0, finalAcc: maps.length ? finalCorrect.length/maps.length : 0, edits: maps.filter(m=>m.edited).length,
+    recall: st.recall, invented:0, elapsed, agentSecs: st.agentSecs, items: st.catalog ? st.catalog.length : st.items.length};
+}
+const pct = x => Math.round(x*100) + '%';
+function metricCards(m){
+  const c = (v, lbl, tgt, ok) => `<div class="card metric"><b class="${ok==null?'':ok?'pass':'fail'}">${v}</b><div class="lbl">${lbl}</div><div class="tgt">${tgt}</div></div>`;
+  const mins = Math.floor(m.elapsed/60), secs = m.elapsed%60;
+  return [
+    c(pct(m.prec), 'Auto-accept precision', 'Target 95% or higher', m.prec >= .95),
+    c(pct(m.autoMap), 'Auto-map rate (no human edit)', 'Target 70% or higher', m.autoMap >= .7),
+    c(`${mins}m ${secs}s`, 'Time to publish-ready', `Includes ${m.agentSecs}s simulated agent time · target under 30 min`, m.elapsed < 1800),
+    c(pct(m.fb), 'Fallback queue rate', 'Target under 15%', m.fb < .15),
+    c(m.recall ? `${m.recall.caught} / ${m.recall.planted}` : 'n/a', 'Planted errors caught', m.recall ? 'Target 100% (set F only)' : 'Only measured on set F', m.recall ? m.recall.caught === m.recall.planted : null),
+    c(String(m.invented), 'Invented statutory values', 'Target 0', true),
+    c(pct(m.finalAcc), 'Final mapping accuracy', 'After human review, against ground truth', m.finalAcc === 1),
+    c(String(m.edits), 'Mappings changed by the reviewer', 'Each edit is a learning signal for templates', null),
+    c(String(m.items), 'Items published', 'To the mock seller app', null)];
+}
+function renderScore(){
+  const el = $('#score');
+  if (!st || !st.finished){
+    el.innerHTML = `<h2>Scorecard</h2><p class="muted">Finish a run in "Run the demo" and the scorecard fills in from what actually happened in your session: what the agent auto-accepted, what you changed, what the checks caught and how long it took.</p><a class="btn primary" href="#demo">Run the demo</a>`;
+    return;
+  }
+  if (st.key === 'G'){
+    el.innerHTML = `<h2>Scorecard · ${esc(SCEN.G.title)}</h2><div class="grid g3"><div class="card metric"><b class="pass">2 / 2</b><div class="lbl">Planted seller errors caught at verification</div><div class="tgt">Invalid GSTIN checksum, expired FSSAI licence</div></div><div class="card metric"><b>10</b><div class="lbl">Sellers approved at G0</div></div><div class="card metric"><b>48</b><div class="lbl">Real checks run</div></div></div>`;
+    return;
+  }
+  const m = metrics();
+  el.innerHTML = `<h2>Scorecard · ${esc(st.seller.business_name)}</h2><p class="muted">Computed from your session against the ground truth in the eval kit. Agent outputs were simulated; checks and scores are real.</p>
+    <div class="grid g3">${metricCards(m).join('')}</div>
+    <div class="section card"><h3>Human decisions</h3><table class="t"><tr><th>Gate</th><th>Outcome</th></tr>${st.gates.map(g=>`<tr><td><span class="chip gate">${g[0]}</span></td><td>${esc(g[1])}</td></tr>`).join('')}</table></div>
+    <div class="section card"><h3>Mapping decisions against ground truth</h3><div class="tbl-wrap"><table class="t"><tr><th>Column</th><th>Agent proposed</th><th>Route</th><th>Final</th><th>Ground truth</th><th></th></tr>${Object.values(st.map).map(x=>`<tr><td>${esc(x.col)}</td><td>${esc(tLabel(x.proposed))}</td><td>${x.route}</td><td>${esc(tLabel(x.final))}</td><td>${esc(tLabel(x.truth))}</td><td>${x.final===x.truth?'<span class="chip ok">match</span>':'<span class="chip bad">miss</span>'}</td></tr>`).join('')}</table></div></div>`;
+}
+
+/* ---------------- eval kit + downloads ---------------- */
+const KIT = [
+  ['A','Tilwari Masala Ghar, Nashik','Clean CSV, 40 items','Baseline mapping',[['catalog.csv','set-A/catalog.csv']]],
+  ['B','Rambhau Kirana Stores, Pune','Messy Excel, 60 items','Synonyms, unit and price normalisation',[['catalog.xlsx','set-B/catalog.xlsx'],['flat CSV','set-B/catalog_flat.csv']]],
+  ['C','Neelkurinji Threads, Kochi','Shopify-style export, 84 variants','Variants, size and colour',[['products_export.csv','set-C/products_export.csv']]],
+  ['D','Butterleaf Home Bakery, Indore','WhatsApp text, 25 items','Free-text extraction, G1',[['whatsapp_export.txt','set-D/whatsapp_export.txt']]],
+  ['E','Kanakchampa Sweets, Kolkata','Price-list photo, 20 items','Image extraction, G1',[['price_list_photo.png','set-E/price_list_photo.png']]],
+  ['F','Trapline Traders, Nagpur','CSV, 32 rows, 13 planted errors','Validation recall, no-invention guardrail',[['catalog.csv','set-F/catalog.csv'],['planted_errors.json','set-F/ground_truth/planted_errors.json']]],
+  ['G','Sakhi Annapurna cooperative, Satara','Bulk seller CSV, 12 sellers','Stage 1 and G0',[['cooperative_sellers.csv','set-G/cooperative_sellers.csv'],['planted_errors.json','set-G/planted_errors.json']]]
+];
+function renderKit(){
+  $('#kit-table').innerHTML = `<tr><th>Set</th><th>Seller (fictional)</th><th>Format</th><th>Tests</th><th>Files</th></tr>` + KIT.map(([k,s,f,t,files]) => `<tr><td><b>${k}</b></td><td>${esc(s)}</td><td>${esc(f)}</td><td class="small">${esc(t)}</td><td>${files.map(([n,p])=>`<button class="btn sm" data-dl="kit/${p}">${esc(n)}</button>`).join(' ')}${k!=='G'?` <button class="btn sm" data-dl="kit/set-${k}/ground_truth/golden_catalog.json">golden catalog</button> <button class="btn sm" data-dl="kit/set-${k}/ground_truth/field_mapping.json">mapping truth</button>`:''}</td></tr>`).join('');
+}
+
+/* ---------------- in-browser zip (stored) for the full kit ---------------- */
+const CRC_T = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++){ let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+function crc32(u8){ let c = 0xFFFFFFFF; for (let i = 0; i < u8.length; i++) c = CRC_T[(c ^ u8[i]) & 0xFF] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+function makeZip(files){
+  const enc = new TextEncoder(), parts = [], central = []; let off = 0;
+  for (const {name, data} of files){
+    const nm = enc.encode(name), crc = crc32(data), sz = data.length;
+    const h = new DataView(new ArrayBuffer(30));
+    h.setUint32(0,0x04034b50,true); h.setUint16(4,20,true); h.setUint16(6,0x0800,true); h.setUint16(8,0,true); h.setUint32(14,crc,true); h.setUint32(18,sz,true); h.setUint32(22,sz,true); h.setUint16(26,nm.length,true);
+    parts.push(new Uint8Array(h.buffer), nm, data);
+    const c = new DataView(new ArrayBuffer(46));
+    c.setUint32(0,0x02014b50,true); c.setUint16(4,20,true); c.setUint16(6,20,true); c.setUint16(8,0x0800,true); c.setUint32(16,crc,true); c.setUint32(20,sz,true); c.setUint32(24,sz,true); c.setUint16(28,nm.length,true); c.setUint32(42,off,true);
+    central.push(new Uint8Array(c.buffer), nm);
+    off += 30 + nm.length + sz;
+  }
+  const cdSize = central.reduce((a, b) => a + b.length, 0);
+  const e = new DataView(new ArrayBuffer(22));
+  e.setUint32(0,0x06054b50,true); e.setUint16(8,files.length,true); e.setUint16(10,files.length,true); e.setUint32(12,cdSize,true); e.setUint32(16,off,true);
+  return new Blob([...parts, ...central, new Uint8Array(e.buffer)], {type:'application/zip'});
+}
+const KIT_FILES = ["README.md", "set-A/catalog.csv", "set-A/ground_truth/field_mapping.json", "set-A/ground_truth/golden_catalog.json", "set-A/seller_pack/cancelled_cheque.png", "set-A/seller_pack/fssai_licence.png", "set-A/seller_pack/gst_certificate.png", "set-A/seller_pack/registration_form.json", "set-B/catalog.xlsx", "set-B/catalog_flat.csv", "set-B/ground_truth/field_mapping.json", "set-B/ground_truth/golden_catalog.json", "set-B/seller_pack/cancelled_cheque.png", "set-B/seller_pack/fssai_licence.png", "set-B/seller_pack/gst_certificate.png", "set-B/seller_pack/registration_form.json", "set-C/ground_truth/field_mapping.json", "set-C/ground_truth/golden_catalog.json", "set-C/products_export.csv", "set-C/seller_pack/cancelled_cheque.png", "set-C/seller_pack/gst_certificate.png", "set-C/seller_pack/registration_form.json", "set-D/ground_truth/field_mapping.json", "set-D/ground_truth/golden_catalog.json", "set-D/seller_pack/cancelled_cheque.png", "set-D/seller_pack/fssai_licence.png", "set-D/seller_pack/gst_certificate.png", "set-D/seller_pack/registration_form.json", "set-D/whatsapp_export.txt", "set-E/ground_truth/field_mapping.json", "set-E/ground_truth/golden_catalog.json", "set-E/price_list_photo.png", "set-E/seller_pack/cancelled_cheque.png", "set-E/seller_pack/fssai_licence.png", "set-E/seller_pack/gst_certificate.png", "set-E/seller_pack/registration_form.json", "set-F/catalog.csv", "set-F/ground_truth/field_mapping.json", "set-F/ground_truth/golden_catalog.json", "set-F/ground_truth/planted_errors.json", "set-F/seller_pack/cancelled_cheque.png", "set-F/seller_pack/fssai_licence.png", "set-F/seller_pack/gst_certificate.png", "set-F/seller_pack/registration_form.json", "set-G/README.json", "set-G/cooperative_sellers.csv", "set-G/planted_errors.json"];
+const SCORE_PY = "\"\"\"Score a run against the ground truth of one set.\n\nUsage: python3 score.py set-B/ground_truth/field_mapping.json my_run.json\nmy_run.json format: {\"decisions\": {\"<source column>\": {\"target\": \"<attr>\", \"route\": \"auto|review|fallback\"}}}\n\"\"\"\nimport json, sys\n\ntruth = json.load(open(sys.argv[1]))\nrun = json.load(open(sys.argv[2]))[\"decisions\"]\ncols = list(truth)\nauto = [c for c in cols if run.get(c, {}).get(\"route\") == \"auto\"]\ncorrect_auto = [c for c in auto if run[c][\"target\"] == truth[c]]\nfallback = [c for c in cols if run.get(c, {}).get(\"route\") == \"fallback\"]\nprint(f\"Columns: {len(cols)}\")\nprint(f\"Auto-map rate: {len(auto) / len(cols):.0%}\")\nprint(f\"Auto-accept precision: {(len(correct_auto) / len(auto)) if auto else 1:.0%}\")\nprint(f\"Fallback rate: {len(fallback) / len(cols):.0%}\")\n";
+const EMBED = {"set-B/catalog.xlsx": "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"};
+async function kitBytes(p){
+  if (EMBED[p]){ const bin = atob(EMBED[p]); const u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return u; }
+  const r = await fetch('kit/' + p); if (!r.ok) throw new Error('missing ' + p); return new Uint8Array(await r.arrayBuffer());
+}
+async function fullKitZip(){
+  const files = [];
+  for (const p of KIT_FILES) files.push({name: 'eval-kit-v1/' + p, data: await kitBytes(p)});
+  files.push({name: 'eval-kit-v1/score.py', data: new TextEncoder().encode(SCORE_PY)});
+  return makeZip(files);
+}
+
+let DL = null;
+async function initDownloads(){
+  try { DL = window.claude && window.claude.use ? await window.claude.use('downloads') : null; } catch(e){ DL = null; }
+  if (!DL) $('#dl-note').textContent = 'Downloads work when this page is opened on claude.ai. The full kit is also in the project repo.';
+}
+document.addEventListener('click', async e => {
+  const b = e.target.closest('[data-dl]'); if (!b) return;
+  if (!DL){ toast('Downloads are not available in this view'); return; }
+  try {
+    let blob;
+    if (b.dataset.dl === 'kit/eval-kit-v1.zip'){ b.disabled = true; b.textContent = 'Preparing zip…'; blob = await fullKitZip(); b.disabled = false; b.textContent = 'Download full kit (.zip)'; }
+    else { blob = new Blob([await kitBytes(b.dataset.dl.replace(/^kit\//, ''))]); }
+    await DL.save({filename: b.dataset.dl.split('/').slice(-1)[0], data: blob});
+  } catch(err){ if (err && err.code === 'declined') return; toast('Could not download that file here'); }
+});
+
+/* ---------------- router ---------------- */
+function route_(){
+  const v = (location.hash || '#overview').slice(1);
+  const name = ['overview','demo','scorecard','kit'].includes(v) ? v : 'overview';
+  document.querySelectorAll('.view').forEach(s => s.classList.toggle('on', s.id === 'v-' + name));
+  document.querySelectorAll('nav.tabs a').forEach(a => a.classList.toggle('on', a.dataset.v === name));
+  if (name === 'scorecard') renderScore();
+  if (name === 'demo' && !st) showPick();
+}
+window.addEventListener('hashchange', route_);
+renderKit(); route_(); initDownloads();
+</script>
+</body>
+</html>

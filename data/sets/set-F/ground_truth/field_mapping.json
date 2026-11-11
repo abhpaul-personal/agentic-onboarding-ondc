@@ -1,0 +1,13 @@
+{
+  "sku": "id",
+  "name": "descriptor.name",
+  "description": "descriptor.short_desc",
+  "mrp": "price.maximum_value",
+  "price": "price.value",
+  "pack_size": "net_quantity",
+  "ean": "descriptor.code",
+  "fssai_no": "brand_owner_FSSAI_license_no",
+  "packer": "manufacturer_or_packer_name",
+  "packed_month": "month_year_of_manufacture_packing_import",
+  "stock": "quantity.available.count"
+}

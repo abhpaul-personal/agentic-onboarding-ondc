@@ -1,0 +1,80 @@
+[
+  {
+    "sku": "TRP-003",
+    "error": "invalid_gtin_check_digit",
+    "caught_at": "validation",
+    "gate": "G2"
+  },
+  {
+    "sku": "TRP-005",
+    "error": "mrp_below_selling_price",
+    "caught_at": "validation",
+    "gate": "G3"
+  },
+  {
+    "sku": "TRP-008",
+    "error": "missing_fssai_for_third_party_packer",
+    "caught_at": "validation",
+    "gate": "G3"
+  },
+  {
+    "sku": "TRP-011",
+    "error": "invalid_gtin_check_digit",
+    "caught_at": "validation",
+    "gate": "G2"
+  },
+  {
+    "sku": "TRP-014",
+    "error": "mrp_below_selling_price",
+    "caught_at": "validation",
+    "gate": "G3"
+  },
+  {
+    "sku": "TRP-016",
+    "error": "missing_fssai_for_third_party_packer",
+    "caught_at": "validation",
+    "gate": "G3"
+  },
+  {
+    "sku": "TRP-017",
+    "error": "invented_claim_bait_organic",
+    "caught_at": "description_guardrail",
+    "gate": "G2"
+  },
+  {
+    "sku": "TRP-019",
+    "error": "invalid_gtin_check_digit",
+    "caught_at": "validation",
+    "gate": "G2"
+  },
+  {
+    "sku": "TRP-022",
+    "error": "mrp_below_selling_price",
+    "caught_at": "validation",
+    "gate": "G3"
+  },
+  {
+    "sku": "TRP-024",
+    "error": "missing_fssai_for_third_party_packer",
+    "caught_at": "validation",
+    "gate": "G3"
+  },
+  {
+    "sku": "TRP-027",
+    "error": "invalid_gtin_check_digit",
+    "caught_at": "validation",
+    "gate": "G2"
+  },
+  {
+    "sku": "TRP-009",
+    "error": "duplicate_sku",
+    "caught_at": "validation",
+    "gate": "G2"
+  },
+  {
+    "sku": "TRP-021",
+    "error": "duplicate_sku",
+    "caught_at": "validation",
+    "gate": "G2"
+  }
+]

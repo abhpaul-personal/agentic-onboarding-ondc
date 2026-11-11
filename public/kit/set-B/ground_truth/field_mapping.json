@@ -1,0 +1,13 @@
+{
+  "Sr No": "IGNORE",
+  "Item Naam": "descriptor.name",
+  "Brand": "brand",
+  "M.R.P (Rs)": "price.maximum_value",
+  "Rate": "price.value",
+  "Wajan": "net_quantity",
+  "Barcode": "descriptor.code",
+  "Stock (pcs)": "quantity.available.count",
+  "Veg/NonVeg": "veg_non_veg",
+  "Mfg Dt": "month_year_of_manufacture_packing_import",
+  "Remarks": "IGNORE"
+}

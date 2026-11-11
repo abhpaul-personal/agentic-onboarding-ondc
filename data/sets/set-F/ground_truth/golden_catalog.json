@@ -1,0 +1,1311 @@
+{
+  "context": {
+    "domain": "ONDC:RET10",
+    "action": "on_search",
+    "note": "Modelled on ONDC retail v1.2 keys; verify against the spec in M0"
+  },
+  "message": {
+    "catalog": {
+      "bpp/providers": [
+        {
+          "id": "SLR-F",
+          "descriptor": {
+            "name": "Trapline Traders"
+          },
+          "items": [
+            {
+              "id": "TRP-001",
+              "descriptor": {
+                "name": "Toor Dal",
+                "code": "1:2000006000019"
+              },
+              "category_id": "Dals and Pulses",
+              "price": {
+                "currency": "INR",
+                "value": "160.00",
+                "maximum_value": "165.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 23
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "1 kg",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Toor Dal",
+                "net_quantity_or_measure_of_commodity_in_pkg": "1 kg",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-002",
+              "descriptor": {
+                "name": "Moong Dal",
+                "code": "1:2000006000026"
+              },
+              "category_id": "Dals and Pulses",
+              "price": {
+                "currency": "INR",
+                "value": "70.00",
+                "maximum_value": "75.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 7
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "500 g",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Moong Dal",
+                "net_quantity_or_measure_of_commodity_in_pkg": "500 g",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-003",
+              "descriptor": {
+                "name": "Chana Dal",
+                "code": "1:2000006000033"
+              },
+              "category_id": "Dals and Pulses",
+              "price": {
+                "currency": "INR",
+                "value": "105.00",
+                "maximum_value": "110.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 21
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "1 kg",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Chana Dal",
+                "net_quantity_or_measure_of_commodity_in_pkg": "1 kg",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-004",
+              "descriptor": {
+                "name": "Basmati Rice",
+                "code": "1:2000006000040"
+              },
+              "category_id": "Rice and Rice Products",
+              "price": {
+                "currency": "INR",
+                "value": "135.00",
+                "maximum_value": "140.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 32
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "1 kg",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Basmati Rice",
+                "net_quantity_or_measure_of_commodity_in_pkg": "1 kg",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-005",
+              "descriptor": {
+                "name": "Kolam Rice",
+                "code": "1:2000006000057"
+              },
+              "category_id": "Rice and Rice Products",
+              "price": {
+                "currency": "INR",
+                "value": "415.00",
+                "maximum_value": "420.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 15
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "5 kg",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Kolam Rice",
+                "net_quantity_or_measure_of_commodity_in_pkg": "5 kg",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-006",
+              "descriptor": {
+                "name": "Wheat Atta",
+                "code": "1:2000006000064"
+              },
+              "category_id": "Atta, Flours and Sooji",
+              "price": {
+                "currency": "INR",
+                "value": "255.00",
+                "maximum_value": "260.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 9
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "5 kg",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Wheat Atta",
+                "net_quantity_or_measure_of_commodity_in_pkg": "5 kg",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-007",
+              "descriptor": {
+                "name": "Besan",
+                "code": "1:2000006000071"
+              },
+              "category_id": "Atta, Flours and Sooji",
+              "price": {
+                "currency": "INR",
+                "value": "55.00",
+                "maximum_value": "60.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 25
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "500 g",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Besan",
+                "net_quantity_or_measure_of_commodity_in_pkg": "500 g",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-008",
+              "descriptor": {
+                "name": "Rava Sooji",
+                "code": "1:2000006000088"
+              },
+              "category_id": "Atta, Flours and Sooji",
+              "price": {
+                "currency": "INR",
+                "value": "35.00",
+                "maximum_value": "40.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 6
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "500 g",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Rava Sooji",
+                "net_quantity_or_measure_of_commodity_in_pkg": "500 g",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-009",
+              "descriptor": {
+                "name": "Groundnut Oil",
+                "code": "1:2000006000095"
+              },
+              "category_id": "Oil and Ghee",
+              "price": {
+                "currency": "INR",
+                "value": "205.00",
+                "maximum_value": "210.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 40
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "1 kg",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Groundnut Oil",
+                "net_quantity_or_measure_of_commodity_in_pkg": "1 kg",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-010",
+              "descriptor": {
+                "name": "Sunflower Oil",
+                "code": "1:2000006000101"
+              },
+              "category_id": "Oil and Ghee",
+              "price": {
+                "currency": "INR",
+                "value": "160.00",
+                "maximum_value": "165.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 13
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "1 kg",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Sunflower Oil",
+                "net_quantity_or_measure_of_commodity_in_pkg": "1 kg",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-011",
+              "descriptor": {
+                "name": "Cow Ghee",
+                "code": "1:2000006000118"
+              },
+              "category_id": "Oil and Ghee",
+              "price": {
+                "currency": "INR",
+                "value": "335.00",
+                "maximum_value": "340.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 10
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "500 g",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Cow Ghee",
+                "net_quantity_or_measure_of_commodity_in_pkg": "500 g",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-012",
+              "descriptor": {
+                "name": "Sugar",
+                "code": "1:2000006000125"
+              },
+              "category_id": "Cooking and Baking Needs",
+              "price": {
+                "currency": "INR",
+                "value": "43.00",
+                "maximum_value": "48.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 21
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "1 kg",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Sugar",
+                "net_quantity_or_measure_of_commodity_in_pkg": "1 kg",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-013",
+              "descriptor": {
+                "name": "Jaggery Cubes",
+                "code": "1:2000006000132"
+              },
+              "category_id": "Cooking and Baking Needs",
+              "price": {
+                "currency": "INR",
+                "value": "65.00",
+                "maximum_value": "70.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 25
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "500 g",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Jaggery Cubes",
+                "net_quantity_or_measure_of_commodity_in_pkg": "500 g",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-014",
+              "descriptor": {
+                "name": "Rock Salt",
+                "code": "1:2000006000149"
+              },
+              "category_id": "Cooking and Baking Needs",
+              "price": {
+                "currency": "INR",
+                "value": "40.00",
+                "maximum_value": "45.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 39
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "1 kg",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Rock Salt",
+                "net_quantity_or_measure_of_commodity_in_pkg": "1 kg",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-015",
+              "descriptor": {
+                "name": "Poha Thick",
+                "code": "1:2000006000156"
+              },
+              "category_id": "Cereals and Breakfast",
+              "price": {
+                "currency": "INR",
+                "value": "40.00",
+                "maximum_value": "45.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 23
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "500 g",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Poha Thick",
+                "net_quantity_or_measure_of_commodity_in_pkg": "500 g",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-016",
+              "descriptor": {
+                "name": "Tea Dust",
+                "code": "1:2000006000163"
+              },
+              "category_id": "Beverages",
+              "price": {
+                "currency": "INR",
+                "value": "125.00",
+                "maximum_value": "130.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 21
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "250 g",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Tea Dust",
+                "net_quantity_or_measure_of_commodity_in_pkg": "250 g",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-017",
+              "descriptor": {
+                "name": "Instant Coffee",
+                "code": "1:2000006000170"
+              },
+              "category_id": "Beverages",
+              "price": {
+                "currency": "INR",
+                "value": "205.00",
+                "maximum_value": "210.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 20
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "100 g",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Instant Coffee",
+                "net_quantity_or_measure_of_commodity_in_pkg": "100 g",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-018",
+              "descriptor": {
+                "name": "Glucose Biscuits",
+                "code": "1:2000006000187"
+              },
+              "category_id": "Chocolates and Biscuits",
+              "price": {
+                "currency": "INR",
+                "value": "25.00",
+                "maximum_value": "30.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 32
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "250 g",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Glucose Biscuits",
+                "net_quantity_or_measure_of_commodity_in_pkg": "250 g",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-019",
+              "descriptor": {
+                "name": "Cream Biscuits",
+                "code": "1:2000006000194"
+              },
+              "category_id": "Chocolates and Biscuits",
+              "price": {
+                "currency": "INR",
+                "value": "20.00",
+                "maximum_value": "25.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 27
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "120 g",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Cream Biscuits",
+                "net_quantity_or_measure_of_commodity_in_pkg": "120 g",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-020",
+              "descriptor": {
+                "name": "Masala Noodles",
+                "code": "1:2000006000200"
+              },
+              "category_id": "Pasta, Soup and Noodles",
+              "price": {
+                "currency": "INR",
+                "value": "51.00",
+                "maximum_value": "56.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 25
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "280 g",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Masala Noodles",
+                "net_quantity_or_measure_of_commodity_in_pkg": "280 g",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-021",
+              "descriptor": {
+                "name": "Farsan Mix",
+                "code": "1:2000006000217"
+              },
+              "category_id": "Snacks and Namkeen",
+              "price": {
+                "currency": "INR",
+                "value": "115.00",
+                "maximum_value": "120.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 9
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "400 g",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Farsan Mix",
+                "net_quantity_or_measure_of_commodity_in_pkg": "400 g",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-022",
+              "descriptor": {
+                "name": "Chakli",
+                "code": "1:2000006000224"
+              },
+              "category_id": "Snacks and Namkeen",
+              "price": {
+                "currency": "INR",
+                "value": "75.00",
+                "maximum_value": "80.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 30
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "200 g",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Chakli",
+                "net_quantity_or_measure_of_commodity_in_pkg": "200 g",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-023",
+              "descriptor": {
+                "name": "Peanuts Raw",
+                "code": "1:2000006000231"
+              },
+              "category_id": "Dry Fruits, Nuts and Seeds",
+              "price": {
+                "currency": "INR",
+                "value": "90.00",
+                "maximum_value": "95.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 23
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "500 g",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Peanuts Raw",
+                "net_quantity_or_measure_of_commodity_in_pkg": "500 g",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-024",
+              "descriptor": {
+                "name": "Cashew W320",
+                "code": "1:2000006000248"
+              },
+              "category_id": "Dry Fruits, Nuts and Seeds",
+              "price": {
+                "currency": "INR",
+                "value": "285.00",
+                "maximum_value": "290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 8
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "250 g",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Cashew W320",
+                "net_quantity_or_measure_of_commodity_in_pkg": "250 g",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-025",
+              "descriptor": {
+                "name": "Raisins",
+                "code": "1:2000006000255"
+              },
+              "category_id": "Dry Fruits, Nuts and Seeds",
+              "price": {
+                "currency": "INR",
+                "value": "115.00",
+                "maximum_value": "120.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 36
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "250 g",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Raisins",
+                "net_quantity_or_measure_of_commodity_in_pkg": "250 g",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-026",
+              "descriptor": {
+                "name": "Tomato Ketchup",
+                "code": "1:2000006000262"
+              },
+              "category_id": "Sauces, Spreads and Dips",
+              "price": {
+                "currency": "INR",
+                "value": "115.00",
+                "maximum_value": "120.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 8
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "500 g",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Tomato Ketchup",
+                "net_quantity_or_measure_of_commodity_in_pkg": "500 g",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-027",
+              "descriptor": {
+                "name": "Mixed Fruit Jam",
+                "code": "1:2000006000279"
+              },
+              "category_id": "Sauces, Spreads and Dips",
+              "price": {
+                "currency": "INR",
+                "value": "155.00",
+                "maximum_value": "160.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 27
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "500 g",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Mixed Fruit Jam",
+                "net_quantity_or_measure_of_commodity_in_pkg": "500 g",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-028",
+              "descriptor": {
+                "name": "Turmeric Powder",
+                "code": "1:2000006000286"
+              },
+              "category_id": "Masala and Seasoning",
+              "price": {
+                "currency": "INR",
+                "value": "57.00",
+                "maximum_value": "62.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 10
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "200 g",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Turmeric Powder",
+                "net_quantity_or_measure_of_commodity_in_pkg": "200 g",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-029",
+              "descriptor": {
+                "name": "Chilli Powder",
+                "code": "1:2000006000293"
+              },
+              "category_id": "Masala and Seasoning",
+              "price": {
+                "currency": "INR",
+                "value": "73.00",
+                "maximum_value": "78.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 32
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "200 g",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Chilli Powder",
+                "net_quantity_or_measure_of_commodity_in_pkg": "200 g",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            },
+            {
+              "id": "TRP-030",
+              "descriptor": {
+                "name": "Hing",
+                "code": "1:2000006000309"
+              },
+              "category_id": "Masala and Seasoning",
+              "price": {
+                "currency": "INR",
+                "value": "80.00",
+                "maximum_value": "85.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 16
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P1D",
+              "tags": [
+                {
+                  "code": "veg_nonveg",
+                  "list": [
+                    {
+                      "code": "veg",
+                      "value": "yes"
+                    }
+                  ]
+                }
+              ],
+              "net_quantity": "50 g",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Trapline Traders",
+                "manufacturer_or_packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+                "common_or_generic_name_of_commodity": "Hing",
+                "net_quantity_or_measure_of_commodity_in_pkg": "50 g",
+                "month_year_of_manufacture_packing_import": "10/2026"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "brand_owner_FSSAI_license_no": "20000000000006"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

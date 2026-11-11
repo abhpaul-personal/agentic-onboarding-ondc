@@ -1,0 +1,61 @@
+Sr No,Item Naam,Brand,M.R.P (Rs),Rate,Wajan,Barcode,Stock (pcs),Veg/NonVeg,Mfg Dt,Remarks
+1,Toor Dal,Annakosh,Rs 165,Rs 160,1000 g,2000002000013,9,Veg,09-2026,new stock aaya
+2,Moong Dal,Panchvati Pantry,Rs. 75/-,₹73.00,1/2 kg,2000002000020,38,Shakahari,Oct-26,only 2 left
+3,Chana Dal,Panchvati Pantry,₹110.00,Rs 108,1000GM,2000002000037,3,Veg,09-2026,fast moving
+4,Basmati Rice,Gharkul Demo,Rs. 140/-,₹130.00,1000gm,2000002000044,23,Shakahari,Oct-26,only 2 left
+5,Kolam Rice,Annakosh,Rs. 420/-,₹415.00,5000 g,2000002000051,6,Veg,10/2026,
+6,Wheat Atta,Annakosh,Rs 260,Rs 258,5 kg,2000002000068,43,V,10/2026,fast moving
+7,Besan,,₹60.00,₹58.00,0.5 Kg,,33,Shakahari,10/2026,new stock aaya
+8,Rava Sooji,,40,Rs. 35/-,1/2 kg,,48,veg,09-2026,
+9,Groundnut Oil,Gharkul Demo,210,210,1000gm,2000002000099,3,Shakahari,Sept 2026,
+10,Sunflower Oil,Panchvati Pantry,₹165.00,165,1000gm,2000002000105,27,V,Oct-26,only 2 left
+11,Cow Ghee,Annakosh,Rs 340,338,0.5 Kg,2000002000112,40,Veg,Oct-26,
+12,Sugar,Panchvati Pantry,48,Rs 48,1000 g,2000002000129,41,veg,09-2026,
+13,Jaggery Cubes,Kesarbaug Foods,₹70.00,₹68.00,aadha kilo,2000002000136,3,Veg,10/2026,
+14,Rock Salt,Kesarbaug Foods,Rs 45,35,1000GM,2000002000143,52,Shakahari,10/2026,
+15,Poha Thick,Kesarbaug Foods,45,Rs. 45/-,500gm,2000002000150,60,V,Sept 2026,
+16,Tea Dust,,Rs. 130/-,₹125.00,250GM,,44,veg,09-2026,fast moving
+17,Instant Coffee,Kesarbaug Foods,210,₹210.00,100GM,2000002000174,44,Veg,10/2026,
+18,Glucose Biscuits,Kesarbaug Foods,Rs 30,Rs 30,250 g,2000002000181,35,Shakahari,Sept 2026,
+19,Cream Biscuits,Gharkul Demo,25,Rs. 20/-,120GM,2000002000198,32,Veg,10/2026,only 2 left
+20,Masala Noodles,Panchvati Pantry,Rs. 56/-,56,280g,2000002000204,26,V,Oct-26,
+21,Farsan Mix,,Rs. 120/-,Rs 115,400gm,,28,Veg,09-2026,
+22,Chakli,Annakosh,80,Rs 70,200g,2000002000228,55,Veg,Oct-26,
+23,Peanuts Raw,Kesarbaug Foods,95,Rs 90,0.5 Kg,2000002000235,40,V,Sept 2026,new stock aaya
+24,Cashew W320,Kesarbaug Foods,₹290.00,Rs 280,250gm,2000002000242,15,Shakahari,09-2026,
+25,Raisins,,₹120.00,120,250g,,49,Veg,Sept 2026,fast moving
+26,Tomato Ketchup,Gharkul Demo,120,₹118.00,1/2 kg,2000002000266,54,veg,Oct-26,
+27,Mixed Fruit Jam,Panchvati Pantry,160,155,500gm,2000002000273,52,V,10/2026,new stock aaya
+28,Turmeric Powder,Kesarbaug Foods,Rs. 62/-,₹62.00,200g,2000002000280,34,Shakahari,Oct-26,only 2 left
+29,Chilli Powder,Gharkul Demo,Rs. 78/-,Rs. 78/-,200 g,2000002000297,44,V,Sept 2026,new stock aaya
+30,Hing,Annakosh,Rs 85,₹80.00,50 g,2000002000303,41,Veg,Sept 2026,only 2 left
+31,Toor Dal (Gharkul Demo),Gharkul Demo,₹170.00,Rs. 165/-,1000GM,2000002000310,10,Veg,10/2026,
+32,Moong Dal (Gharkul Demo),Gharkul Demo,Rs. 80/-,Rs. 80/-,500gm,2000002000327,17,veg,10/2026,fast moving
+33,Chana Dal (Gharkul Demo),Gharkul Demo,₹115.00,Rs 115,1000gm,2000002000334,58,veg,10/2026,new stock aaya
+34,Basmati Rice (local loose),,Rs 145,Rs. 145/-,1 kg,,21,Veg,Sept 2026,
+35,Kolam Rice (Annakosh),Annakosh,Rs. 430/-,Rs 430,5 kg,2000002000358,43,veg,09-2026,only 2 left
+36,Wheat Atta (Gharkul Demo),Gharkul Demo,Rs 265,255,5000gm,2000002000365,60,Veg,Sept 2026,only 2 left
+37,Besan (Kesarbaug Foods),Kesarbaug Foods,₹65.00,Rs. 63/-,aadha kilo,2000002000372,47,V,09-2026,only 2 left
+38,Rava Sooji (Panchvati Pantry),Panchvati Pantry,50,Rs 45,0.5 Kg,2000002000389,22,Veg,10/2026,new stock aaya
+39,Groundnut Oil (Annakosh),Annakosh,Rs. 220/-,₹215.00,1000gm,2000002000396,33,V,Sept 2026,
+40,Sunflower Oil (Annakosh),Annakosh,175,₹175.00,1000 g,2000002000402,14,Shakahari,09-2026,new stock aaya
+41,Cow Ghee (Annakosh),Annakosh,Rs 350,348,0.5 Kg,2000002000419,34,V,10/2026,
+42,Sugar (Kesarbaug Foods),Kesarbaug Foods,₹58.00,48,1000gm,2000002000426,41,veg,09-2026,fast moving
+43,Jaggery Cubes (Annakosh),Annakosh,Rs. 80/-,Rs 80,0.5 Kg,2000002000433,13,Shakahari,Sept 2026,new stock aaya
+44,Rock Salt (local loose),,50,Rs. 48/-,1000gm,,51,Shakahari,09-2026,
+45,Poha Thick (Panchvati Pantry),Panchvati Pantry,Rs. 50/-,₹45.00,aadha kilo,2000002000457,60,Shakahari,Oct-26,
+46,Tea Dust (local loose),,Rs 135,₹133.00,250GM,,46,V,09-2026,new stock aaya
+47,Instant Coffee (local loose),,220,Rs 210,100gm,,26,V,Sept 2026,
+48,Glucose Biscuits (Kesarbaug Foods),Kesarbaug Foods,Rs 35,Rs. 30/-,250GM,2000002000488,19,Veg,Oct-26,only 2 left
+49,Cream Biscuits (Annakosh),Annakosh,₹35.00,Rs. 33/-,120gm,2000002000495,37,V,Oct-26,only 2 left
+50,Masala Noodles (local loose),,Rs. 61/-,₹59.00,280g,,41,Shakahari,Oct-26,new stock aaya
+51,Farsan Mix (Gharkul Demo),Gharkul Demo,Rs. 130/-,125,400 g,2000002000518,22,veg,Oct-26,fast moving
+52,Chakli (Panchvati Pantry),Panchvati Pantry,Rs 85,₹83.00,200g,2000002000525,37,veg,09-2026,fast moving
+53,Peanuts Raw (Gharkul Demo),Gharkul Demo,₹105.00,Rs. 103/-,500gm,2000002000532,32,V,Oct-26,
+54,Cashew W320 (Kesarbaug Foods),Kesarbaug Foods,Rs. 300/-,290,250GM,2000002000549,3,Veg,Sept 2026,
+55,Raisins (Panchvati Pantry),Panchvati Pantry,125,₹123.00,250g,2000002000556,44,Shakahari,Sept 2026,new stock aaya
+56,Tomato Ketchup (Panchvati Pantry),Panchvati Pantry,Rs. 130/-,Rs. 128/-,1/2 kg,2000002000563,17,Veg,Oct-26,
+57,Mixed Fruit Jam (local loose),,170,170,1/2 kg,,55,veg,10/2026,
+58,Turmeric Powder (local loose),,Rs 72,62,200 g,,34,veg,Oct-26,
+59,Chilli Powder (Panchvati Pantry),Panchvati Pantry,Rs. 83/-,₹78.00,200gm,2000002000594,30,Shakahari,09-2026,fast moving
+60,Hing (Panchvati Pantry),Panchvati Pantry,90,Rs. 90/-,50 g,2000002000600,14,V,Sept 2026,

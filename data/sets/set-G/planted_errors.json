@@ -1,0 +1,12 @@
+[
+  {
+    "row": 5,
+    "error": "invalid_gstin_checksum",
+    "gate": "G0"
+  },
+  {
+    "row": 9,
+    "error": "expired_fssai_licence",
+    "gate": "G0"
+  }
+]

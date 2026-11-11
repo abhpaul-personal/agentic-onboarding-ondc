@@ -1,0 +1,2373 @@
+{
+  "context": {
+    "domain": "ONDC:RET12",
+    "action": "on_search",
+    "note": "Modelled on ONDC retail v1.2 keys; verify against the spec in M0"
+  },
+  "message": {
+    "catalog": {
+      "bpp/providers": [
+        {
+          "id": "SLR-C",
+          "descriptor": {
+            "name": "Neelkurinji Threads"
+          },
+          "items": [
+            {
+              "id": "NKT-01-S",
+              "descriptor": {
+                "name": "Chanderi Kurta Set 01 - S",
+                "code": "1:2000003000104"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "1490.00",
+                "maximum_value": "1490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 3
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-kurta-set-01",
+              "colour": "Teal",
+              "size": "S",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-01-M",
+              "descriptor": {
+                "name": "Chanderi Kurta Set 01 - M",
+                "code": "1:2000003000111"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "1490.00",
+                "maximum_value": "1490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 6
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-kurta-set-01",
+              "colour": "Teal",
+              "size": "M",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-01-L",
+              "descriptor": {
+                "name": "Chanderi Kurta Set 01 - L",
+                "code": "1:2000003000128"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "1390.00",
+                "maximum_value": "1490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 3
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-kurta-set-01",
+              "colour": "Teal",
+              "size": "L",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-01-XL",
+              "descriptor": {
+                "name": "Chanderi Kurta Set 01 - XL",
+                "code": "1:2000003000135"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "1290.00",
+                "maximum_value": "1490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 9
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-kurta-set-01",
+              "colour": "Teal",
+              "size": "XL",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-02-FreeSize",
+              "descriptor": {
+                "name": "Linen Blend Saree 02 - Free Size",
+                "code": "1:2000003000203"
+              },
+              "category_id": "Sarees",
+              "price": {
+                "currency": "INR",
+                "value": "2490.00",
+                "maximum_value": "2490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 8
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "linen-blend-saree-02",
+              "colour": "Yellow",
+              "size": "Free Size",
+              "material": "Linen Blend",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-03-FreeSize",
+              "descriptor": {
+                "name": "Chanderi Dupatta 03 - Free Size",
+                "code": "1:2000003000302"
+              },
+              "category_id": "Dupattas",
+              "price": {
+                "currency": "INR",
+                "value": "790.00",
+                "maximum_value": "790.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 2
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-dupatta-03",
+              "colour": "Yellow",
+              "size": "Free Size",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-04-S",
+              "descriptor": {
+                "name": "Chanderi Top 04 - S",
+                "code": "1:2000003000401"
+              },
+              "category_id": "Tops",
+              "price": {
+                "currency": "INR",
+                "value": "3290.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 6
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-top-04",
+              "colour": "Olive",
+              "size": "S",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-04-M",
+              "descriptor": {
+                "name": "Chanderi Top 04 - M",
+                "code": "1:2000003000418"
+              },
+              "category_id": "Tops",
+              "price": {
+                "currency": "INR",
+                "value": "3190.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 6
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-top-04",
+              "colour": "Olive",
+              "size": "M",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-04-L",
+              "descriptor": {
+                "name": "Chanderi Top 04 - L",
+                "code": "1:2000003000425"
+              },
+              "category_id": "Tops",
+              "price": {
+                "currency": "INR",
+                "value": "3190.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 2
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-top-04",
+              "colour": "Olive",
+              "size": "L",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-04-XL",
+              "descriptor": {
+                "name": "Chanderi Top 04 - XL",
+                "code": "1:2000003000432"
+              },
+              "category_id": "Tops",
+              "price": {
+                "currency": "INR",
+                "value": "3290.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 7
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-top-04",
+              "colour": "Olive",
+              "size": "XL",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-05-S",
+              "descriptor": {
+                "name": "Handloom Cotton Kurta 05 - S",
+                "code": "1:2000003000500"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "2490.00",
+                "maximum_value": "2490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 10
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "handloom-cotton-kurta-05",
+              "colour": "Maroon",
+              "size": "S",
+              "material": "Handloom Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-05-M",
+              "descriptor": {
+                "name": "Handloom Cotton Kurta 05 - M",
+                "code": "1:2000003000517"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "2490.00",
+                "maximum_value": "2490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 1
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "handloom-cotton-kurta-05",
+              "colour": "Maroon",
+              "size": "M",
+              "material": "Handloom Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-05-L",
+              "descriptor": {
+                "name": "Handloom Cotton Kurta 05 - L",
+                "code": "1:2000003000524"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "2390.00",
+                "maximum_value": "2490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 1
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "handloom-cotton-kurta-05",
+              "colour": "Maroon",
+              "size": "L",
+              "material": "Handloom Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-05-XL",
+              "descriptor": {
+                "name": "Handloom Cotton Kurta 05 - XL",
+                "code": "1:2000003000531"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "2490.00",
+                "maximum_value": "2490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 7
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "handloom-cotton-kurta-05",
+              "colour": "Maroon",
+              "size": "XL",
+              "material": "Handloom Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-06-S",
+              "descriptor": {
+                "name": "Mul Cotton Kurta Set 06 - S",
+                "code": "1:2000003000609"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "1890.00",
+                "maximum_value": "1890.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 9
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "mul-cotton-kurta-set-06",
+              "colour": "Olive",
+              "size": "S",
+              "material": "Mul Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-06-M",
+              "descriptor": {
+                "name": "Mul Cotton Kurta Set 06 - M",
+                "code": "1:2000003000616"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "1890.00",
+                "maximum_value": "1890.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 4
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "mul-cotton-kurta-set-06",
+              "colour": "Olive",
+              "size": "M",
+              "material": "Mul Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-06-L",
+              "descriptor": {
+                "name": "Mul Cotton Kurta Set 06 - L",
+                "code": "1:2000003000623"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "1690.00",
+                "maximum_value": "1890.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 4
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "mul-cotton-kurta-set-06",
+              "colour": "Olive",
+              "size": "L",
+              "material": "Mul Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-06-XL",
+              "descriptor": {
+                "name": "Mul Cotton Kurta Set 06 - XL",
+                "code": "1:2000003000630"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "1690.00",
+                "maximum_value": "1890.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 12
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "mul-cotton-kurta-set-06",
+              "colour": "Olive",
+              "size": "XL",
+              "material": "Mul Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-07-FreeSize",
+              "descriptor": {
+                "name": "Mul Cotton Saree 07 - Free Size",
+                "code": "1:2000003000708"
+              },
+              "category_id": "Sarees",
+              "price": {
+                "currency": "INR",
+                "value": "1890.00",
+                "maximum_value": "1890.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 8
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "mul-cotton-saree-07",
+              "colour": "Red",
+              "size": "Free Size",
+              "material": "Mul Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-08-FreeSize",
+              "descriptor": {
+                "name": "Chanderi Dupatta 08 - Free Size",
+                "code": "1:2000003000807"
+              },
+              "category_id": "Dupattas",
+              "price": {
+                "currency": "INR",
+                "value": "790.00",
+                "maximum_value": "790.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 6
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-dupatta-08",
+              "colour": "Gold",
+              "size": "Free Size",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-09-S",
+              "descriptor": {
+                "name": "Handloom Cotton Top 09 - S",
+                "code": "1:2000003000906"
+              },
+              "category_id": "Tops",
+              "price": {
+                "currency": "INR",
+                "value": "3190.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 11
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "handloom-cotton-top-09",
+              "colour": "Indigo",
+              "size": "S",
+              "material": "Handloom Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-09-M",
+              "descriptor": {
+                "name": "Handloom Cotton Top 09 - M",
+                "code": "1:2000003000913"
+              },
+              "category_id": "Tops",
+              "price": {
+                "currency": "INR",
+                "value": "3090.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 11
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "handloom-cotton-top-09",
+              "colour": "Indigo",
+              "size": "M",
+              "material": "Handloom Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-09-L",
+              "descriptor": {
+                "name": "Handloom Cotton Top 09 - L",
+                "code": "1:2000003000920"
+              },
+              "category_id": "Tops",
+              "price": {
+                "currency": "INR",
+                "value": "3290.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 10
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "handloom-cotton-top-09",
+              "colour": "Indigo",
+              "size": "L",
+              "material": "Handloom Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-09-XL",
+              "descriptor": {
+                "name": "Handloom Cotton Top 09 - XL",
+                "code": "1:2000003000937"
+              },
+              "category_id": "Tops",
+              "price": {
+                "currency": "INR",
+                "value": "3290.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 7
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "handloom-cotton-top-09",
+              "colour": "Indigo",
+              "size": "XL",
+              "material": "Handloom Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-10-S",
+              "descriptor": {
+                "name": "Chanderi Kurta 10 - S",
+                "code": "1:2000003001002"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "3190.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 6
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-kurta-10",
+              "colour": "Maroon",
+              "size": "S",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-10-M",
+              "descriptor": {
+                "name": "Chanderi Kurta 10 - M",
+                "code": "1:2000003001019"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "3290.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 7
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-kurta-10",
+              "colour": "Maroon",
+              "size": "M",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-10-L",
+              "descriptor": {
+                "name": "Chanderi Kurta 10 - L",
+                "code": "1:2000003001026"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "3190.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 5
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-kurta-10",
+              "colour": "Maroon",
+              "size": "L",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-10-XL",
+              "descriptor": {
+                "name": "Chanderi Kurta 10 - XL",
+                "code": "1:2000003001033"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "3090.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 5
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-kurta-10",
+              "colour": "Maroon",
+              "size": "XL",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-11-S",
+              "descriptor": {
+                "name": "Linen Blend Kurta Set 11 - S",
+                "code": "1:2000003001101"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "1190.00",
+                "maximum_value": "1290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 11
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "linen-blend-kurta-set-11",
+              "colour": "Teal",
+              "size": "S",
+              "material": "Linen Blend",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-11-M",
+              "descriptor": {
+                "name": "Linen Blend Kurta Set 11 - M",
+                "code": "1:2000003001118"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "1290.00",
+                "maximum_value": "1290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 6
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "linen-blend-kurta-set-11",
+              "colour": "Teal",
+              "size": "M",
+              "material": "Linen Blend",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-11-L",
+              "descriptor": {
+                "name": "Linen Blend Kurta Set 11 - L",
+                "code": "1:2000003001125"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "1090.00",
+                "maximum_value": "1290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 10
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "linen-blend-kurta-set-11",
+              "colour": "Teal",
+              "size": "L",
+              "material": "Linen Blend",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-11-XL",
+              "descriptor": {
+                "name": "Linen Blend Kurta Set 11 - XL",
+                "code": "1:2000003001132"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "1090.00",
+                "maximum_value": "1290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 5
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "linen-blend-kurta-set-11",
+              "colour": "Teal",
+              "size": "XL",
+              "material": "Linen Blend",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-12-FreeSize",
+              "descriptor": {
+                "name": "Mul Cotton Saree 12 - Free Size",
+                "code": "1:2000003001200"
+              },
+              "category_id": "Sarees",
+              "price": {
+                "currency": "INR",
+                "value": "3190.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 12
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "mul-cotton-saree-12",
+              "colour": "Off White",
+              "size": "Free Size",
+              "material": "Mul Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-13-FreeSize",
+              "descriptor": {
+                "name": "Chanderi Dupatta 13 - Free Size",
+                "code": "1:2000003001309"
+              },
+              "category_id": "Dupattas",
+              "price": {
+                "currency": "INR",
+                "value": "490.00",
+                "maximum_value": "590.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 1
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-dupatta-13",
+              "colour": "Gold",
+              "size": "Free Size",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-14-S",
+              "descriptor": {
+                "name": "Handloom Cotton Top 14 - S",
+                "code": "1:2000003001408"
+              },
+              "category_id": "Tops",
+              "price": {
+                "currency": "INR",
+                "value": "1390.00",
+                "maximum_value": "1490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 10
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "handloom-cotton-top-14",
+              "colour": "Red",
+              "size": "S",
+              "material": "Handloom Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-14-M",
+              "descriptor": {
+                "name": "Handloom Cotton Top 14 - M",
+                "code": "1:2000003001415"
+              },
+              "category_id": "Tops",
+              "price": {
+                "currency": "INR",
+                "value": "1290.00",
+                "maximum_value": "1490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 5
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "handloom-cotton-top-14",
+              "colour": "Red",
+              "size": "M",
+              "material": "Handloom Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-14-L",
+              "descriptor": {
+                "name": "Handloom Cotton Top 14 - L",
+                "code": "1:2000003001422"
+              },
+              "category_id": "Tops",
+              "price": {
+                "currency": "INR",
+                "value": "1490.00",
+                "maximum_value": "1490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 12
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "handloom-cotton-top-14",
+              "colour": "Red",
+              "size": "L",
+              "material": "Handloom Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-14-XL",
+              "descriptor": {
+                "name": "Handloom Cotton Top 14 - XL",
+                "code": "1:2000003001439"
+              },
+              "category_id": "Tops",
+              "price": {
+                "currency": "INR",
+                "value": "1490.00",
+                "maximum_value": "1490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 12
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "handloom-cotton-top-14",
+              "colour": "Red",
+              "size": "XL",
+              "material": "Handloom Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-15-S",
+              "descriptor": {
+                "name": "Chanderi Kurta 15 - S",
+                "code": "1:2000003001507"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "2290.00",
+                "maximum_value": "2490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 4
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-kurta-15",
+              "colour": "Yellow",
+              "size": "S",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-15-M",
+              "descriptor": {
+                "name": "Chanderi Kurta 15 - M",
+                "code": "1:2000003001514"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "2490.00",
+                "maximum_value": "2490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 1
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-kurta-15",
+              "colour": "Yellow",
+              "size": "M",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-15-L",
+              "descriptor": {
+                "name": "Chanderi Kurta 15 - L",
+                "code": "1:2000003001521"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "2390.00",
+                "maximum_value": "2490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 12
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-kurta-15",
+              "colour": "Yellow",
+              "size": "L",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-15-XL",
+              "descriptor": {
+                "name": "Chanderi Kurta 15 - XL",
+                "code": "1:2000003001538"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "2390.00",
+                "maximum_value": "2490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 6
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-kurta-15",
+              "colour": "Yellow",
+              "size": "XL",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-16-S",
+              "descriptor": {
+                "name": "Chanderi Kurta Set 16 - S",
+                "code": "1:2000003001606"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "2290.00",
+                "maximum_value": "2490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 1
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-kurta-set-16",
+              "colour": "Off White",
+              "size": "S",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-16-M",
+              "descriptor": {
+                "name": "Chanderi Kurta Set 16 - M",
+                "code": "1:2000003001613"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "2390.00",
+                "maximum_value": "2490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 7
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-kurta-set-16",
+              "colour": "Off White",
+              "size": "M",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-16-L",
+              "descriptor": {
+                "name": "Chanderi Kurta Set 16 - L",
+                "code": "1:2000003001620"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "2290.00",
+                "maximum_value": "2490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 7
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-kurta-set-16",
+              "colour": "Off White",
+              "size": "L",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-16-XL",
+              "descriptor": {
+                "name": "Chanderi Kurta Set 16 - XL",
+                "code": "1:2000003001637"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "2290.00",
+                "maximum_value": "2490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 4
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-kurta-set-16",
+              "colour": "Off White",
+              "size": "XL",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-17-FreeSize",
+              "descriptor": {
+                "name": "Linen Blend Saree 17 - Free Size",
+                "code": "1:2000003001705"
+              },
+              "category_id": "Sarees",
+              "price": {
+                "currency": "INR",
+                "value": "2490.00",
+                "maximum_value": "2490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 5
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "linen-blend-saree-17",
+              "colour": "Red",
+              "size": "Free Size",
+              "material": "Linen Blend",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-18-FreeSize",
+              "descriptor": {
+                "name": "Linen Blend Dupatta 18 - Free Size",
+                "code": "1:2000003001804"
+              },
+              "category_id": "Dupattas",
+              "price": {
+                "currency": "INR",
+                "value": "590.00",
+                "maximum_value": "590.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 11
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "linen-blend-dupatta-18",
+              "colour": "Red",
+              "size": "Free Size",
+              "material": "Linen Blend",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-19-S",
+              "descriptor": {
+                "name": "Handloom Cotton Top 19 - S",
+                "code": "1:2000003001903"
+              },
+              "category_id": "Tops",
+              "price": {
+                "currency": "INR",
+                "value": "1290.00",
+                "maximum_value": "1490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 11
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "handloom-cotton-top-19",
+              "colour": "Maroon",
+              "size": "S",
+              "material": "Handloom Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-19-M",
+              "descriptor": {
+                "name": "Handloom Cotton Top 19 - M",
+                "code": "1:2000003001910"
+              },
+              "category_id": "Tops",
+              "price": {
+                "currency": "INR",
+                "value": "1390.00",
+                "maximum_value": "1490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 6
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "handloom-cotton-top-19",
+              "colour": "Maroon",
+              "size": "M",
+              "material": "Handloom Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-19-L",
+              "descriptor": {
+                "name": "Handloom Cotton Top 19 - L",
+                "code": "1:2000003001927"
+              },
+              "category_id": "Tops",
+              "price": {
+                "currency": "INR",
+                "value": "1390.00",
+                "maximum_value": "1490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 11
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "handloom-cotton-top-19",
+              "colour": "Maroon",
+              "size": "L",
+              "material": "Handloom Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-19-XL",
+              "descriptor": {
+                "name": "Handloom Cotton Top 19 - XL",
+                "code": "1:2000003001934"
+              },
+              "category_id": "Tops",
+              "price": {
+                "currency": "INR",
+                "value": "1290.00",
+                "maximum_value": "1490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 8
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "handloom-cotton-top-19",
+              "colour": "Maroon",
+              "size": "XL",
+              "material": "Handloom Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-20-S",
+              "descriptor": {
+                "name": "Mul Cotton Kurta 20 - S",
+                "code": "1:2000003002009"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "3090.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 8
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "mul-cotton-kurta-20",
+              "colour": "Olive",
+              "size": "S",
+              "material": "Mul Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-20-M",
+              "descriptor": {
+                "name": "Mul Cotton Kurta 20 - M",
+                "code": "1:2000003002016"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "3090.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 5
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "mul-cotton-kurta-20",
+              "colour": "Olive",
+              "size": "M",
+              "material": "Mul Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-20-L",
+              "descriptor": {
+                "name": "Mul Cotton Kurta 20 - L",
+                "code": "1:2000003002023"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "3090.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 6
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "mul-cotton-kurta-20",
+              "colour": "Olive",
+              "size": "L",
+              "material": "Mul Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-20-XL",
+              "descriptor": {
+                "name": "Mul Cotton Kurta 20 - XL",
+                "code": "1:2000003002030"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "3290.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 12
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "mul-cotton-kurta-20",
+              "colour": "Olive",
+              "size": "XL",
+              "material": "Mul Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-21-S",
+              "descriptor": {
+                "name": "Linen Blend Kurta Set 21 - S",
+                "code": "1:2000003002108"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "1290.00",
+                "maximum_value": "1290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 10
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "linen-blend-kurta-set-21",
+              "colour": "Off White",
+              "size": "S",
+              "material": "Linen Blend",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-21-M",
+              "descriptor": {
+                "name": "Linen Blend Kurta Set 21 - M",
+                "code": "1:2000003002115"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "1090.00",
+                "maximum_value": "1290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 2
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "linen-blend-kurta-set-21",
+              "colour": "Off White",
+              "size": "M",
+              "material": "Linen Blend",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-21-L",
+              "descriptor": {
+                "name": "Linen Blend Kurta Set 21 - L",
+                "code": "1:2000003002122"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "1090.00",
+                "maximum_value": "1290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 1
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "linen-blend-kurta-set-21",
+              "colour": "Off White",
+              "size": "L",
+              "material": "Linen Blend",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-21-XL",
+              "descriptor": {
+                "name": "Linen Blend Kurta Set 21 - XL",
+                "code": "1:2000003002139"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "1090.00",
+                "maximum_value": "1290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 8
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "linen-blend-kurta-set-21",
+              "colour": "Off White",
+              "size": "XL",
+              "material": "Linen Blend",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-22-FreeSize",
+              "descriptor": {
+                "name": "Kasavu Cotton Saree 22 - Free Size",
+                "code": "1:2000003002207"
+              },
+              "category_id": "Sarees",
+              "price": {
+                "currency": "INR",
+                "value": "1690.00",
+                "maximum_value": "1890.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 12
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "kasavu-cotton-saree-22",
+              "colour": "Teal",
+              "size": "Free Size",
+              "material": "Kasavu Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-23-FreeSize",
+              "descriptor": {
+                "name": "Mul Cotton Dupatta 23 - Free Size",
+                "code": "1:2000003002306"
+              },
+              "category_id": "Dupattas",
+              "price": {
+                "currency": "INR",
+                "value": "390.00",
+                "maximum_value": "590.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 9
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "mul-cotton-dupatta-23",
+              "colour": "Gold",
+              "size": "Free Size",
+              "material": "Mul Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-24-S",
+              "descriptor": {
+                "name": "Handloom Cotton Top 24 - S",
+                "code": "1:2000003002405"
+              },
+              "category_id": "Tops",
+              "price": {
+                "currency": "INR",
+                "value": "3290.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 8
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "handloom-cotton-top-24",
+              "colour": "Maroon",
+              "size": "S",
+              "material": "Handloom Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-24-M",
+              "descriptor": {
+                "name": "Handloom Cotton Top 24 - M",
+                "code": "1:2000003002412"
+              },
+              "category_id": "Tops",
+              "price": {
+                "currency": "INR",
+                "value": "3090.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 4
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "handloom-cotton-top-24",
+              "colour": "Maroon",
+              "size": "M",
+              "material": "Handloom Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-24-L",
+              "descriptor": {
+                "name": "Handloom Cotton Top 24 - L",
+                "code": "1:2000003002429"
+              },
+              "category_id": "Tops",
+              "price": {
+                "currency": "INR",
+                "value": "3090.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 5
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "handloom-cotton-top-24",
+              "colour": "Maroon",
+              "size": "L",
+              "material": "Handloom Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-24-XL",
+              "descriptor": {
+                "name": "Handloom Cotton Top 24 - XL",
+                "code": "1:2000003002436"
+              },
+              "category_id": "Tops",
+              "price": {
+                "currency": "INR",
+                "value": "3090.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 5
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "handloom-cotton-top-24",
+              "colour": "Maroon",
+              "size": "XL",
+              "material": "Handloom Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-25-S",
+              "descriptor": {
+                "name": "Kasavu Cotton Kurta 25 - S",
+                "code": "1:2000003002504"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "2290.00",
+                "maximum_value": "2490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 7
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "kasavu-cotton-kurta-25",
+              "colour": "Indigo",
+              "size": "S",
+              "material": "Kasavu Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-25-M",
+              "descriptor": {
+                "name": "Kasavu Cotton Kurta 25 - M",
+                "code": "1:2000003002511"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "2290.00",
+                "maximum_value": "2490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 7
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "kasavu-cotton-kurta-25",
+              "colour": "Indigo",
+              "size": "M",
+              "material": "Kasavu Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-25-L",
+              "descriptor": {
+                "name": "Kasavu Cotton Kurta 25 - L",
+                "code": "1:2000003002528"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "2390.00",
+                "maximum_value": "2490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 5
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "kasavu-cotton-kurta-25",
+              "colour": "Indigo",
+              "size": "L",
+              "material": "Kasavu Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-25-XL",
+              "descriptor": {
+                "name": "Kasavu Cotton Kurta 25 - XL",
+                "code": "1:2000003002535"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "2390.00",
+                "maximum_value": "2490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 3
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "kasavu-cotton-kurta-25",
+              "colour": "Indigo",
+              "size": "XL",
+              "material": "Kasavu Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-26-S",
+              "descriptor": {
+                "name": "Kasavu Cotton Kurta Set 26 - S",
+                "code": "1:2000003002603"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "2290.00",
+                "maximum_value": "2490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 4
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "kasavu-cotton-kurta-set-26",
+              "colour": "Olive",
+              "size": "S",
+              "material": "Kasavu Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-26-M",
+              "descriptor": {
+                "name": "Kasavu Cotton Kurta Set 26 - M",
+                "code": "1:2000003002610"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "2290.00",
+                "maximum_value": "2490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 7
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "kasavu-cotton-kurta-set-26",
+              "colour": "Olive",
+              "size": "M",
+              "material": "Kasavu Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-26-L",
+              "descriptor": {
+                "name": "Kasavu Cotton Kurta Set 26 - L",
+                "code": "1:2000003002627"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "2290.00",
+                "maximum_value": "2490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 5
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "kasavu-cotton-kurta-set-26",
+              "colour": "Olive",
+              "size": "L",
+              "material": "Kasavu Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-26-XL",
+              "descriptor": {
+                "name": "Kasavu Cotton Kurta Set 26 - XL",
+                "code": "1:2000003002634"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "2490.00",
+                "maximum_value": "2490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 9
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "kasavu-cotton-kurta-set-26",
+              "colour": "Olive",
+              "size": "XL",
+              "material": "Kasavu Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-27-FreeSize",
+              "descriptor": {
+                "name": "Handloom Cotton Saree 27 - Free Size",
+                "code": "1:2000003002702"
+              },
+              "category_id": "Sarees",
+              "price": {
+                "currency": "INR",
+                "value": "3190.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 10
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "handloom-cotton-saree-27",
+              "colour": "Red",
+              "size": "Free Size",
+              "material": "Handloom Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-28-FreeSize",
+              "descriptor": {
+                "name": "Linen Blend Dupatta 28 - Free Size",
+                "code": "1:2000003002801"
+              },
+              "category_id": "Dupattas",
+              "price": {
+                "currency": "INR",
+                "value": "490.00",
+                "maximum_value": "590.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 6
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "linen-blend-dupatta-28",
+              "colour": "Off White",
+              "size": "Free Size",
+              "material": "Linen Blend",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-29-S",
+              "descriptor": {
+                "name": "Chanderi Top 29 - S",
+                "code": "1:2000003002900"
+              },
+              "category_id": "Tops",
+              "price": {
+                "currency": "INR",
+                "value": "3290.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 2
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-top-29",
+              "colour": "Indigo",
+              "size": "S",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-29-M",
+              "descriptor": {
+                "name": "Chanderi Top 29 - M",
+                "code": "1:2000003002917"
+              },
+              "category_id": "Tops",
+              "price": {
+                "currency": "INR",
+                "value": "3090.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 12
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-top-29",
+              "colour": "Indigo",
+              "size": "M",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-29-L",
+              "descriptor": {
+                "name": "Chanderi Top 29 - L",
+                "code": "1:2000003002924"
+              },
+              "category_id": "Tops",
+              "price": {
+                "currency": "INR",
+                "value": "3190.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 3
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-top-29",
+              "colour": "Indigo",
+              "size": "L",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-29-XL",
+              "descriptor": {
+                "name": "Chanderi Top 29 - XL",
+                "code": "1:2000003002931"
+              },
+              "category_id": "Tops",
+              "price": {
+                "currency": "INR",
+                "value": "3290.00",
+                "maximum_value": "3290.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 7
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "chanderi-top-29",
+              "colour": "Indigo",
+              "size": "XL",
+              "material": "Chanderi",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-30-S",
+              "descriptor": {
+                "name": "Mul Cotton Kurta 30 - S",
+                "code": "1:2000003003006"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "1290.00",
+                "maximum_value": "1490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 1
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "mul-cotton-kurta-30",
+              "colour": "Indigo",
+              "size": "S",
+              "material": "Mul Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-30-M",
+              "descriptor": {
+                "name": "Mul Cotton Kurta 30 - M",
+                "code": "1:2000003003013"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "1390.00",
+                "maximum_value": "1490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 10
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "mul-cotton-kurta-30",
+              "colour": "Indigo",
+              "size": "M",
+              "material": "Mul Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-30-L",
+              "descriptor": {
+                "name": "Mul Cotton Kurta 30 - L",
+                "code": "1:2000003003020"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "1490.00",
+                "maximum_value": "1490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 11
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "mul-cotton-kurta-30",
+              "colour": "Indigo",
+              "size": "L",
+              "material": "Mul Cotton",
+              "gender": "female"
+            },
+            {
+              "id": "NKT-30-XL",
+              "descriptor": {
+                "name": "Mul Cotton Kurta 30 - XL",
+                "code": "1:2000003003037"
+              },
+              "category_id": "Kurtas and Kurta Sets",
+              "price": {
+                "currency": "INR",
+                "value": "1390.00",
+                "maximum_value": "1490.00"
+              },
+              "quantity": {
+                "available": {
+                  "count": 7
+                }
+              },
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/time_to_ship": "P2D",
+              "tags": [],
+              "brand": "Neelkurinji",
+              "parent_item_id": "mul-cotton-kurta-30",
+              "colour": "Indigo",
+              "size": "XL",
+              "material": "Mul Cotton",
+              "gender": "female"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

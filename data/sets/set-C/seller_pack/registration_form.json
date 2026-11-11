@@ -1,0 +1,18 @@
+{
+  "seller_id": "SLR-C",
+  "business_name": "Neelkurinji Threads",
+  "owner": "Anitha Varghese",
+  "city": "Kochi",
+  "state": "Kerala",
+  "category": "Fashion",
+  "gstin": "32ZZZPV0003C1ZV",
+  "pan": "ZZZPV0003C",
+  "fssai": "",
+  "fssai_expiry": "",
+  "ifsc": "DEMO0000003",
+  "account": "000000000303",
+  "packer_address": "2nd Floor, Demo Weavers Lane, Kochi 682000",
+  "returns": "Returnable within 7 days",
+  "time_to_ship": "P2D",
+  "note": "Fictional seller. All identifiers are synthetic test values."
+}

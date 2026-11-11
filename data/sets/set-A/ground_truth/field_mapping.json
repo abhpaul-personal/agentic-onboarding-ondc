@@ -1,0 +1,14 @@
+{
+  "sku": "id",
+  "product_name": "descriptor.name",
+  "brand": "brand",
+  "mrp": "price.maximum_value",
+  "selling_price": "price.value",
+  "net_qty": "net_quantity",
+  "unit": "net_quantity",
+  "gtin": "descriptor.code",
+  "veg": "veg_non_veg",
+  "packed_on": "month_year_of_manufacture_packing_import",
+  "stock": "quantity.available.count",
+  "shelf_life_days": "shelf_life"
+}

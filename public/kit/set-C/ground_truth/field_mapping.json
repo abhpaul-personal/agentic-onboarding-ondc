@@ -1,0 +1,17 @@
+{
+  "Handle": "parent_item_id",
+  "Title": "descriptor.name",
+  "Body (HTML)": "descriptor.short_desc",
+  "Vendor": "brand",
+  "Type": "category_id",
+  "Tags": "IGNORE",
+  "Option1 Name": "IGNORE",
+  "Option1 Value": "size",
+  "Option2 Name": "IGNORE",
+  "Option2 Value": "colour",
+  "Variant SKU": "id",
+  "Variant Price": "price.value",
+  "Variant Compare At Price": "price.maximum_value",
+  "Variant Barcode": "descriptor.code",
+  "Image Src": "descriptor.images"
+}
