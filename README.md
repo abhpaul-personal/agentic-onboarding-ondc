@@ -52,7 +52,7 @@ This repo is being built milestone by milestone, PRD-first. See
 `reference/claude-code-prompt-agentic-onboarding.md` for the milestone plan.
 
 - [x] M0: setup, eval kit imported, tests running
-- [ ] M1: deterministic checks, zod schemas, target schema
+- [x] M1: deterministic checks, zod schemas, target schema
 - [ ] M2: cache layer
 - [ ] M3: agents and the warm script
 - [ ] M4: orchestrator and gates
