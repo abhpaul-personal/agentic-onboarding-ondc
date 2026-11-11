@@ -54,7 +54,7 @@ This repo is being built milestone by milestone, PRD-first. See
 - [x] M0: setup, eval kit imported, tests running
 - [x] M1: deterministic checks, zod schemas, target schema
 - [x] M2: cache layer
-- [ ] M3: agents and the warm script
+- [x] M3: agents and the warm script (code ready; the real warm run on set B needs a go-ahead since it spends API tokens)
 - [ ] M4: orchestrator and gates
 - [ ] M5: demo UI, scorecard, kit pages
 - [ ] M6: landing and case-study pages
