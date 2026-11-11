@@ -15,6 +15,13 @@
  */
 import { readFileSync } from "fs";
 import { join } from "path";
+import { config as loadEnv } from "dotenv";
+
+// Loaded before any other project import, so ANTHROPIC_API_KEY from a local
+// .env.local (gitignored) is available regardless of which shell runs this.
+loadEnv({ path: join(process.cwd(), ".env.local") });
+loadEnv(); // .env, without overriding anything .env.local already set
+
 import { createCacheStore } from "@/lib/cache";
 import { getAnthropicClient, defaultModelId } from "@/lib/llm/client";
 import { parseCsvRecords } from "@/lib/parse/csv";

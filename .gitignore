@@ -35,6 +35,10 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+
+# per-visitor run state (not the committed sample-set cache)
+/data/runs/
 
 # vercel
 .vercel
