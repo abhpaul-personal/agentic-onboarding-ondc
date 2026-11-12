@@ -1,0 +1,485 @@
+{
+  "note": "Statutory fields the seller enters at G3 for every branded item, from the pack label. Scored to confirm these came from the seller, never invented by an agent.",
+  "items": [
+    {
+      "sku": "RKS-001",
+      "brand": "Annakosh",
+      "fields": {
+        "manufacturer_or_packer_name": "Annakosh Agro Pvt Ltd",
+        "manufacturer_or_packer_address": "Demo Estate, Kolhapur 416000",
+        "brand_owner_FSSAI_license_no": "20000000000903"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-002",
+      "brand": "Panchvati Pantry",
+      "fields": {
+        "manufacturer_or_packer_name": "Panchvati Pantry Foods LLP",
+        "manufacturer_or_packer_address": "4 Demo Road, Nashik 422000",
+        "brand_owner_FSSAI_license_no": "20000000000902"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-003",
+      "brand": "Panchvati Pantry",
+      "fields": {
+        "manufacturer_or_packer_name": "Panchvati Pantry Foods LLP",
+        "manufacturer_or_packer_address": "4 Demo Road, Nashik 422000",
+        "brand_owner_FSSAI_license_no": "20000000000902"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-004",
+      "brand": "Gharkul Demo",
+      "fields": {
+        "manufacturer_or_packer_name": "Gharkul Demo Foods Pvt Ltd",
+        "manufacturer_or_packer_address": "Plot 11, Demo MIDC, Pune 411000",
+        "brand_owner_FSSAI_license_no": "20000000000901"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-005",
+      "brand": "Annakosh",
+      "fields": {
+        "manufacturer_or_packer_name": "Annakosh Agro Pvt Ltd",
+        "manufacturer_or_packer_address": "Demo Estate, Kolhapur 416000",
+        "brand_owner_FSSAI_license_no": "20000000000903"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-006",
+      "brand": "Annakosh",
+      "fields": {
+        "manufacturer_or_packer_name": "Annakosh Agro Pvt Ltd",
+        "manufacturer_or_packer_address": "Demo Estate, Kolhapur 416000",
+        "brand_owner_FSSAI_license_no": "20000000000903"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-009",
+      "brand": "Gharkul Demo",
+      "fields": {
+        "manufacturer_or_packer_name": "Gharkul Demo Foods Pvt Ltd",
+        "manufacturer_or_packer_address": "Plot 11, Demo MIDC, Pune 411000",
+        "brand_owner_FSSAI_license_no": "20000000000901"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-010",
+      "brand": "Panchvati Pantry",
+      "fields": {
+        "manufacturer_or_packer_name": "Panchvati Pantry Foods LLP",
+        "manufacturer_or_packer_address": "4 Demo Road, Nashik 422000",
+        "brand_owner_FSSAI_license_no": "20000000000902"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-011",
+      "brand": "Annakosh",
+      "fields": {
+        "manufacturer_or_packer_name": "Annakosh Agro Pvt Ltd",
+        "manufacturer_or_packer_address": "Demo Estate, Kolhapur 416000",
+        "brand_owner_FSSAI_license_no": "20000000000903"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-012",
+      "brand": "Panchvati Pantry",
+      "fields": {
+        "manufacturer_or_packer_name": "Panchvati Pantry Foods LLP",
+        "manufacturer_or_packer_address": "4 Demo Road, Nashik 422000",
+        "brand_owner_FSSAI_license_no": "20000000000902"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-013",
+      "brand": "Kesarbaug Foods",
+      "fields": {
+        "manufacturer_or_packer_name": "Kesarbaug Foods Pvt Ltd",
+        "manufacturer_or_packer_address": "9 Demo Lane, Satara 415000",
+        "brand_owner_FSSAI_license_no": "20000000000904"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-014",
+      "brand": "Kesarbaug Foods",
+      "fields": {
+        "manufacturer_or_packer_name": "Kesarbaug Foods Pvt Ltd",
+        "manufacturer_or_packer_address": "9 Demo Lane, Satara 415000",
+        "brand_owner_FSSAI_license_no": "20000000000904"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-015",
+      "brand": "Kesarbaug Foods",
+      "fields": {
+        "manufacturer_or_packer_name": "Kesarbaug Foods Pvt Ltd",
+        "manufacturer_or_packer_address": "9 Demo Lane, Satara 415000",
+        "brand_owner_FSSAI_license_no": "20000000000904"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-017",
+      "brand": "Kesarbaug Foods",
+      "fields": {
+        "manufacturer_or_packer_name": "Kesarbaug Foods Pvt Ltd",
+        "manufacturer_or_packer_address": "9 Demo Lane, Satara 415000",
+        "brand_owner_FSSAI_license_no": "20000000000904"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-018",
+      "brand": "Kesarbaug Foods",
+      "fields": {
+        "manufacturer_or_packer_name": "Kesarbaug Foods Pvt Ltd",
+        "manufacturer_or_packer_address": "9 Demo Lane, Satara 415000",
+        "brand_owner_FSSAI_license_no": "20000000000904"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-019",
+      "brand": "Gharkul Demo",
+      "fields": {
+        "manufacturer_or_packer_name": "Gharkul Demo Foods Pvt Ltd",
+        "manufacturer_or_packer_address": "Plot 11, Demo MIDC, Pune 411000",
+        "brand_owner_FSSAI_license_no": "20000000000901"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-020",
+      "brand": "Panchvati Pantry",
+      "fields": {
+        "manufacturer_or_packer_name": "Panchvati Pantry Foods LLP",
+        "manufacturer_or_packer_address": "4 Demo Road, Nashik 422000",
+        "brand_owner_FSSAI_license_no": "20000000000902"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-022",
+      "brand": "Annakosh",
+      "fields": {
+        "manufacturer_or_packer_name": "Annakosh Agro Pvt Ltd",
+        "manufacturer_or_packer_address": "Demo Estate, Kolhapur 416000",
+        "brand_owner_FSSAI_license_no": "20000000000903"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-023",
+      "brand": "Kesarbaug Foods",
+      "fields": {
+        "manufacturer_or_packer_name": "Kesarbaug Foods Pvt Ltd",
+        "manufacturer_or_packer_address": "9 Demo Lane, Satara 415000",
+        "brand_owner_FSSAI_license_no": "20000000000904"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-024",
+      "brand": "Kesarbaug Foods",
+      "fields": {
+        "manufacturer_or_packer_name": "Kesarbaug Foods Pvt Ltd",
+        "manufacturer_or_packer_address": "9 Demo Lane, Satara 415000",
+        "brand_owner_FSSAI_license_no": "20000000000904"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-026",
+      "brand": "Gharkul Demo",
+      "fields": {
+        "manufacturer_or_packer_name": "Gharkul Demo Foods Pvt Ltd",
+        "manufacturer_or_packer_address": "Plot 11, Demo MIDC, Pune 411000",
+        "brand_owner_FSSAI_license_no": "20000000000901"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-027",
+      "brand": "Panchvati Pantry",
+      "fields": {
+        "manufacturer_or_packer_name": "Panchvati Pantry Foods LLP",
+        "manufacturer_or_packer_address": "4 Demo Road, Nashik 422000",
+        "brand_owner_FSSAI_license_no": "20000000000902"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-028",
+      "brand": "Kesarbaug Foods",
+      "fields": {
+        "manufacturer_or_packer_name": "Kesarbaug Foods Pvt Ltd",
+        "manufacturer_or_packer_address": "9 Demo Lane, Satara 415000",
+        "brand_owner_FSSAI_license_no": "20000000000904"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-029",
+      "brand": "Gharkul Demo",
+      "fields": {
+        "manufacturer_or_packer_name": "Gharkul Demo Foods Pvt Ltd",
+        "manufacturer_or_packer_address": "Plot 11, Demo MIDC, Pune 411000",
+        "brand_owner_FSSAI_license_no": "20000000000901"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-030",
+      "brand": "Annakosh",
+      "fields": {
+        "manufacturer_or_packer_name": "Annakosh Agro Pvt Ltd",
+        "manufacturer_or_packer_address": "Demo Estate, Kolhapur 416000",
+        "brand_owner_FSSAI_license_no": "20000000000903"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-031",
+      "brand": "Gharkul Demo",
+      "fields": {
+        "manufacturer_or_packer_name": "Gharkul Demo Foods Pvt Ltd",
+        "manufacturer_or_packer_address": "Plot 11, Demo MIDC, Pune 411000",
+        "brand_owner_FSSAI_license_no": "20000000000901"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-032",
+      "brand": "Gharkul Demo",
+      "fields": {
+        "manufacturer_or_packer_name": "Gharkul Demo Foods Pvt Ltd",
+        "manufacturer_or_packer_address": "Plot 11, Demo MIDC, Pune 411000",
+        "brand_owner_FSSAI_license_no": "20000000000901"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-033",
+      "brand": "Gharkul Demo",
+      "fields": {
+        "manufacturer_or_packer_name": "Gharkul Demo Foods Pvt Ltd",
+        "manufacturer_or_packer_address": "Plot 11, Demo MIDC, Pune 411000",
+        "brand_owner_FSSAI_license_no": "20000000000901"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-035",
+      "brand": "Annakosh",
+      "fields": {
+        "manufacturer_or_packer_name": "Annakosh Agro Pvt Ltd",
+        "manufacturer_or_packer_address": "Demo Estate, Kolhapur 416000",
+        "brand_owner_FSSAI_license_no": "20000000000903"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-036",
+      "brand": "Gharkul Demo",
+      "fields": {
+        "manufacturer_or_packer_name": "Gharkul Demo Foods Pvt Ltd",
+        "manufacturer_or_packer_address": "Plot 11, Demo MIDC, Pune 411000",
+        "brand_owner_FSSAI_license_no": "20000000000901"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-037",
+      "brand": "Kesarbaug Foods",
+      "fields": {
+        "manufacturer_or_packer_name": "Kesarbaug Foods Pvt Ltd",
+        "manufacturer_or_packer_address": "9 Demo Lane, Satara 415000",
+        "brand_owner_FSSAI_license_no": "20000000000904"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-038",
+      "brand": "Panchvati Pantry",
+      "fields": {
+        "manufacturer_or_packer_name": "Panchvati Pantry Foods LLP",
+        "manufacturer_or_packer_address": "4 Demo Road, Nashik 422000",
+        "brand_owner_FSSAI_license_no": "20000000000902"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-039",
+      "brand": "Annakosh",
+      "fields": {
+        "manufacturer_or_packer_name": "Annakosh Agro Pvt Ltd",
+        "manufacturer_or_packer_address": "Demo Estate, Kolhapur 416000",
+        "brand_owner_FSSAI_license_no": "20000000000903"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-040",
+      "brand": "Annakosh",
+      "fields": {
+        "manufacturer_or_packer_name": "Annakosh Agro Pvt Ltd",
+        "manufacturer_or_packer_address": "Demo Estate, Kolhapur 416000",
+        "brand_owner_FSSAI_license_no": "20000000000903"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-041",
+      "brand": "Annakosh",
+      "fields": {
+        "manufacturer_or_packer_name": "Annakosh Agro Pvt Ltd",
+        "manufacturer_or_packer_address": "Demo Estate, Kolhapur 416000",
+        "brand_owner_FSSAI_license_no": "20000000000903"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-042",
+      "brand": "Kesarbaug Foods",
+      "fields": {
+        "manufacturer_or_packer_name": "Kesarbaug Foods Pvt Ltd",
+        "manufacturer_or_packer_address": "9 Demo Lane, Satara 415000",
+        "brand_owner_FSSAI_license_no": "20000000000904"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-043",
+      "brand": "Annakosh",
+      "fields": {
+        "manufacturer_or_packer_name": "Annakosh Agro Pvt Ltd",
+        "manufacturer_or_packer_address": "Demo Estate, Kolhapur 416000",
+        "brand_owner_FSSAI_license_no": "20000000000903"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-045",
+      "brand": "Panchvati Pantry",
+      "fields": {
+        "manufacturer_or_packer_name": "Panchvati Pantry Foods LLP",
+        "manufacturer_or_packer_address": "4 Demo Road, Nashik 422000",
+        "brand_owner_FSSAI_license_no": "20000000000902"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-048",
+      "brand": "Kesarbaug Foods",
+      "fields": {
+        "manufacturer_or_packer_name": "Kesarbaug Foods Pvt Ltd",
+        "manufacturer_or_packer_address": "9 Demo Lane, Satara 415000",
+        "brand_owner_FSSAI_license_no": "20000000000904"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-049",
+      "brand": "Annakosh",
+      "fields": {
+        "manufacturer_or_packer_name": "Annakosh Agro Pvt Ltd",
+        "manufacturer_or_packer_address": "Demo Estate, Kolhapur 416000",
+        "brand_owner_FSSAI_license_no": "20000000000903"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-051",
+      "brand": "Gharkul Demo",
+      "fields": {
+        "manufacturer_or_packer_name": "Gharkul Demo Foods Pvt Ltd",
+        "manufacturer_or_packer_address": "Plot 11, Demo MIDC, Pune 411000",
+        "brand_owner_FSSAI_license_no": "20000000000901"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-052",
+      "brand": "Panchvati Pantry",
+      "fields": {
+        "manufacturer_or_packer_name": "Panchvati Pantry Foods LLP",
+        "manufacturer_or_packer_address": "4 Demo Road, Nashik 422000",
+        "brand_owner_FSSAI_license_no": "20000000000902"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-053",
+      "brand": "Gharkul Demo",
+      "fields": {
+        "manufacturer_or_packer_name": "Gharkul Demo Foods Pvt Ltd",
+        "manufacturer_or_packer_address": "Plot 11, Demo MIDC, Pune 411000",
+        "brand_owner_FSSAI_license_no": "20000000000901"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-054",
+      "brand": "Kesarbaug Foods",
+      "fields": {
+        "manufacturer_or_packer_name": "Kesarbaug Foods Pvt Ltd",
+        "manufacturer_or_packer_address": "9 Demo Lane, Satara 415000",
+        "brand_owner_FSSAI_license_no": "20000000000904"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-055",
+      "brand": "Panchvati Pantry",
+      "fields": {
+        "manufacturer_or_packer_name": "Panchvati Pantry Foods LLP",
+        "manufacturer_or_packer_address": "4 Demo Road, Nashik 422000",
+        "brand_owner_FSSAI_license_no": "20000000000902"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-056",
+      "brand": "Panchvati Pantry",
+      "fields": {
+        "manufacturer_or_packer_name": "Panchvati Pantry Foods LLP",
+        "manufacturer_or_packer_address": "4 Demo Road, Nashik 422000",
+        "brand_owner_FSSAI_license_no": "20000000000902"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-059",
+      "brand": "Panchvati Pantry",
+      "fields": {
+        "manufacturer_or_packer_name": "Panchvati Pantry Foods LLP",
+        "manufacturer_or_packer_address": "4 Demo Road, Nashik 422000",
+        "brand_owner_FSSAI_license_no": "20000000000902"
+      },
+      "source": "seller_entered_from_label"
+    },
+    {
+      "sku": "RKS-060",
+      "brand": "Panchvati Pantry",
+      "fields": {
+        "manufacturer_or_packer_name": "Panchvati Pantry Foods LLP",
+        "manufacturer_or_packer_address": "4 Demo Road, Nashik 422000",
+        "brand_owner_FSSAI_license_no": "20000000000902"
+      },
+      "source": "seller_entered_from_label"
+    }
+  ]
+}

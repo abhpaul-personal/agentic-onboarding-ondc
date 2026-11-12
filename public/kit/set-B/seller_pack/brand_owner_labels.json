@@ -1,0 +1,25 @@
+{
+  "note": "Fictional test data. What is printed on each brand's own pack label, for the branded items in set B's catalog. The seller (Rambhau Kirana Stores) is not the packer for these; the seller copies these values at G3 from the label, they are never invented by an agent.",
+  "brands": {
+    "Gharkul Demo": {
+      "manufacturer_or_packer_name": "Gharkul Demo Foods Pvt Ltd",
+      "manufacturer_or_packer_address": "Plot 11, Demo MIDC, Pune 411000",
+      "brand_owner_FSSAI_license_no": "20000000000901"
+    },
+    "Panchvati Pantry": {
+      "manufacturer_or_packer_name": "Panchvati Pantry Foods LLP",
+      "manufacturer_or_packer_address": "4 Demo Road, Nashik 422000",
+      "brand_owner_FSSAI_license_no": "20000000000902"
+    },
+    "Annakosh": {
+      "manufacturer_or_packer_name": "Annakosh Agro Pvt Ltd",
+      "manufacturer_or_packer_address": "Demo Estate, Kolhapur 416000",
+      "brand_owner_FSSAI_license_no": "20000000000903"
+    },
+    "Kesarbaug Foods": {
+      "manufacturer_or_packer_name": "Kesarbaug Foods Pvt Ltd",
+      "manufacturer_or_packer_address": "9 Demo Lane, Satara 415000",
+      "brand_owner_FSSAI_license_no": "20000000000904"
+    }
+  }
+}

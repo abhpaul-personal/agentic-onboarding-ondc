@@ -21,6 +21,17 @@ export function buildItemsFromMappedColumns(
   });
 }
 
+/**
+ * Rule-based price normalisation (PRD: "Rs. 120/-", "₹120.00" -> 120.00
+ * INR, handled by a rule, not the model). Takes the first run of digits
+ * (with optional comma thousands separators and a decimal part),
+ * dropping any currency symbol, "Rs"/"Rs." prefix or "/-" suffix.
+ */
+function parsePrice(raw: string): number {
+  const match = raw.match(/[\d,]+(?:\.\d+)?/);
+  return match ? Number(match[0].replace(/,/g, "")) : NaN;
+}
+
 function applyField(item: CatalogItem, target: MappingTargetKey, value: string): void {
   const trimmed = value.trim();
   if (trimmed === "") return;
@@ -47,10 +58,10 @@ function applyField(item: CatalogItem, target: MappingTargetKey, value: string):
       item.netQty = trimmed;
       break;
     case "price.value":
-      item.price = Number(trimmed);
+      item.price = parsePrice(trimmed);
       break;
     case "price.maximum_value":
-      item.mrp = Number(trimmed);
+      item.mrp = parsePrice(trimmed);
       break;
     case "quantity.available.count":
       item.stock = Number(trimmed);

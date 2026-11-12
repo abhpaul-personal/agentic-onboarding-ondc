@@ -6,17 +6,25 @@ import type { SellerProfile } from "@/lib/schemas/seller-profile";
 import type { CatalogItem, ValidationIssue } from "./types";
 
 /**
- * FR-15: pre-fills statutory fields from the approved seller profile,
- * unless the source already supplied its own value (a column mapped to
- * manufacturer_or_packer_name or brand_owner_FSSAI_license_no) — PRD G3:
- * "one profile can cover products with different packers or licences."
- * Never inferred from the item's brand name: a differently-branded item
- * can still be packed by the seller themselves (set B's "Annakosh").
+ * FR-15: pre-fills statutory fields from the approved seller profile —
+ * but only for a loose item with no brand, which the seller packs
+ * themselves. A branded item is never defaulted to the seller, even when
+ * the source gave no explicit packer column: PRD G3, "Branded items
+ * packed by someone else... the packer and FSSAI licence are the brand
+ * owner's, not yours. Copy them from the pack label." Left unset here,
+ * it is caught by validateItems' packer_missing/fssai checks and the
+ * seller fills it in at G3 (see enterPackerDetailsAtG3 in catalog-run.ts).
+ * An explicit source-mapped value (manufacturer_or_packer_name or
+ * brand_owner_FSSAI_license_no) always wins either way.
  */
 export function preFillFromSellerProfile(item: CatalogItem, seller: SellerProfile): CatalogItem {
+  if (item.brand) {
+    return item;
+  }
   return {
     ...item,
     manufacturerOrPackerName: item.manufacturerOrPackerName ?? seller.business_name,
+    manufacturerOrPackerAddress: item.manufacturerOrPackerAddress ?? seller.packer_address,
     fssaiLicenceNo: item.fssaiLicenceNo ?? (seller.fssai || undefined),
   };
 }
@@ -62,6 +70,14 @@ export function validateItems(
         type: "fssai",
         severity: "g3",
         message: "No FSSAI licence for third-party packed item",
+      });
+    }
+    if (grocery && item.brand && (!item.manufacturerOrPackerName || !item.manufacturerOrPackerAddress)) {
+      issues.push({
+        itemId: item.id,
+        type: "packer_missing",
+        severity: "g3",
+        message: `No packer name or address for "${item.brand}"-branded item; seller must enter them from the pack label`,
       });
     }
   }

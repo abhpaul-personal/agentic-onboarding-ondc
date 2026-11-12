@@ -315,6 +315,79 @@ export function finishFallbackQueue(state: CatalogRunState): CatalogRunState {
   return advance(next);
 }
 
+export interface PackerLabelDetails {
+  manufacturerOrPackerName: string;
+  manufacturerOrPackerAddress: string;
+  fssaiLicenceNo: string;
+}
+
+/**
+ * G3: the seller enters a branded item's packer name, address and FSSAI
+ * licence from the pack label, resolving the packer_missing/fssai issues
+ * validate() raised for it. Never invented by an agent — only this
+ * function, driven by the seller's own input, can set these for a
+ * branded item (see preFillFromSellerProfile in validate.ts).
+ */
+function applyPackerDetails(item: CatalogItem, details: PackerLabelDetails): CatalogItem {
+  return {
+    ...item,
+    manufacturerOrPackerName: details.manufacturerOrPackerName,
+    manufacturerOrPackerAddress: details.manufacturerOrPackerAddress,
+    fssaiLicenceNo: details.fssaiLicenceNo,
+  };
+}
+
+function isPackerIssue(issue: ValidationIssue): boolean {
+  return issue.type === "packer_missing" || issue.type === "fssai";
+}
+
+/** For an exception — one item that does not follow its brand's usual label (a one-off correction, a mislabelled unit). */
+export function enterPackerDetailsAtG3(
+  state: CatalogRunState,
+  itemId: string,
+  details: PackerLabelDetails,
+): CatalogRunState {
+  assertStep(state, "g3");
+  const items = state.items.map((item) => (item.id === itemId ? applyPackerDetails(item, details) : item));
+  const issues = state.issues.filter((i) => !(i.itemId === itemId && isPackerIssue(i)));
+  return appendAudit(
+    { ...state, items, issues },
+    "human",
+    `G3: seller entered packer details for ${itemId} from the pack label`,
+  );
+}
+
+/**
+ * The common case: one pack label covers every item of that brand. Applies
+ * the same packer name, address and FSSAI licence to every item of
+ * `brand` that still has a packer_missing or fssai issue, in one pass,
+ * and writes a single audit entry for the whole brand rather than one per
+ * item.
+ */
+export function enterPackerDetailsForBrandAtG3(
+  state: CatalogRunState,
+  brand: string,
+  details: PackerLabelDetails,
+): CatalogRunState {
+  assertStep(state, "g3");
+  const flaggedIds = new Set(state.issues.filter(isPackerIssue).map((i) => i.itemId));
+  const affectedIds = new Set(
+    state.items.filter((item) => item.brand === brand && flaggedIds.has(item.id)).map((item) => item.id),
+  );
+  if (affectedIds.size === 0) {
+    throw new OrchestratorStateError(
+      `No packer_missing or fssai issue for brand "${brand}" in run ${state.runId}.`,
+    );
+  }
+  const items = state.items.map((item) => (affectedIds.has(item.id) ? applyPackerDetails(item, details) : item));
+  const issues = state.issues.filter((i) => !(affectedIds.has(i.itemId) && isPackerIssue(i)));
+  return appendAudit(
+    { ...state, items, issues },
+    "human",
+    `G3: seller entered packer details for ${affectedIds.size} "${brand}" item(s) from the pack label`,
+  );
+}
+
 /** G3: the seller signs off every statutory field (PRD: always required). */
 export function signOffG3(state: CatalogRunState): CatalogRunState {
   assertStep(state, "g3");

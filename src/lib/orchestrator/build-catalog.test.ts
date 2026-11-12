@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { ondcItemSchema } from "@/lib/schemas/ondc-item";
 import type { SellerProfile } from "@/lib/schemas/seller-profile";
-import { buildOndcItem } from "./build-catalog";
+import { buildOndcItem, MissingPackerDetailsError } from "./build-catalog";
 import type { CatalogItem } from "./types";
 
 const grocerySeller: SellerProfile = {
@@ -27,7 +27,6 @@ describe("buildOndcItem", () => {
     const item: CatalogItem = {
       id: "TMG-001",
       name: "Turmeric Powder 200g",
-      brand: "Tilwari",
       category: "Masala and Seasoning",
       gtin: "2000001000014",
       netQty: "200 g",
@@ -49,33 +48,57 @@ describe("buildOndcItem", () => {
     );
   });
 
-  it("credits the seller as packer even for a differently-branded item, matching set B's golden catalog", () => {
+  it("uses a branded item's packer details as entered by the seller at G3, not the seller's own", () => {
+    // By the time buildOndcItem runs, enterPackerDetailsAtG3 (catalog-run.ts) has already
+    // filled these in for a branded item; PRD G3, "Branded items packed by someone else".
     const item: CatalogItem = {
       id: "RKS-001",
       name: "Toor Dal",
       brand: "Annakosh",
       category: "Dals and Pulses",
+      manufacturerOrPackerName: "Annakosh Agro Pvt Ltd",
+      manufacturerOrPackerAddress: "Demo Estate, Kolhapur 416000",
+      fssaiLicenceNo: "20000000000903",
     };
     const seller = { ...grocerySeller, business_name: "Rambhau Kirana Stores" };
     const ondcItem = buildOndcItem(item, seller);
     expect(ondcItem["@ondc/org/statutory_reqs_packaged_commodities"]?.manufacturer_or_packer_name).toBe(
-      "Rambhau Kirana Stores",
+      "Annakosh Agro Pvt Ltd",
+    );
+    expect(ondcItem["@ondc/org/statutory_reqs_packaged_commodities"]?.manufacturer_or_packer_address).toBe(
+      "Demo Estate, Kolhapur 416000",
+    );
+    expect(ondcItem["@ondc/org/statutory_reqs_prepackaged_food"]?.brand_owner_FSSAI_license_no).toBe(
+      "20000000000903",
     );
   });
 
-  it("uses an explicitly mapped manufacturer/packer name over the seller's own", () => {
-    const item: CatalogItem = {
-      id: "ITEM-01",
-      name: "Imported Olive Oil",
-      manufacturerOrPackerName: "Mediterranean Foods Pvt Ltd",
-    };
+  it("falls back to the seller's own name and address only when the item has none (a loose item)", () => {
+    const item: CatalogItem = { id: "ITEM-01", name: "Besan" };
     const ondcItem = buildOndcItem(item, grocerySeller);
     expect(ondcItem["@ondc/org/statutory_reqs_packaged_commodities"]?.manufacturer_or_packer_name).toBe(
-      "Mediterranean Foods Pvt Ltd",
+      grocerySeller.business_name,
     );
     expect(ondcItem["@ondc/org/statutory_reqs_packaged_commodities"]?.manufacturer_or_packer_address).toBe(
-      "(from label)",
+      grocerySeller.packer_address,
     );
+  });
+
+  it("throws rather than defaulting a branded item to the seller when G3 was skipped", () => {
+    const item: CatalogItem = { id: "RKS-001", name: "Toor Dal", brand: "Annakosh" };
+    expect(() => buildOndcItem(item, grocerySeller)).toThrow(MissingPackerDetailsError);
+    expect(() => buildOndcItem(item, grocerySeller)).toThrow(/RKS-001/);
+  });
+
+  it("throws if only some of a branded item's packer fields were entered", () => {
+    const item: CatalogItem = {
+      id: "RKS-001",
+      name: "Toor Dal",
+      brand: "Annakosh",
+      manufacturerOrPackerName: "Annakosh Agro Pvt Ltd",
+      // address and FSSAI licence missing
+    };
+    expect(() => buildOndcItem(item, grocerySeller)).toThrow(MissingPackerDetailsError);
   });
 
   it("carries Fashion variant fields and omits statutory blocks", () => {

@@ -44,6 +44,18 @@ describe("buildItemsFromMappedColumns", () => {
     expect(item.packedMonth).toBe("09/2026");
   });
 
+  it("strips currency symbols before parsing a price (set B's real formats)", () => {
+    const rows = [
+      { A: "120" }, // plain
+      { A: "Rs 165" },
+      { A: "Rs. 75/-" },
+      { A: "₹110.00" }, // "₹110.00"
+      { A: "Rs. 1,250/-" }, // thousands separator
+    ];
+    const prices = buildItemsFromMappedColumns(rows, { A: "price.value" as const }).map((i) => i.price);
+    expect(prices).toEqual([120, 165, 75, 110, 1250]);
+  });
+
   it("recognises a non-veg value", () => {
     const [item] = buildItemsFromMappedColumns(
       [{ Mark: "Non-Veg" }],

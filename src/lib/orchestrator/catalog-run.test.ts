@@ -1,5 +1,11 @@
+import { readFileSync } from "fs";
+import { join } from "path";
 import { describe, expect, it } from "vitest";
 import type { SellerProfile } from "@/lib/schemas/seller-profile";
+import type { MappingTargetKey } from "@/lib/schemas/mapping-target";
+import { targetRisk } from "@/lib/schemas/mapping-target";
+import { parseCsvRecords } from "@/lib/parse/csv";
+import { profileColumns } from "@/lib/parse/profile-columns";
 import { OrchestratorStateError } from "./errors";
 import {
   approveG2,
@@ -14,6 +20,8 @@ import {
   completeValidation,
   confirmG1,
   createCatalogRun,
+  enterPackerDetailsAtG3,
+  enterPackerDetailsForBrandAtG3,
   finishFallbackQueue,
   resolveFallbackQueueItem,
   signOffG3,
@@ -50,7 +58,7 @@ describe("catalog run: structured source (set B style)", () => {
     const rawRows = [
       {
         "Item Naam": "Toor Dal",
-        Brand: "Rambhau Kirana Stores",
+        Brand: "", // loose item, no brand column value: pre-fills from the seller
         "M.R.P (Rs)": "165",
         Rate: "160",
         Wajan: "1 kg",
@@ -123,6 +131,52 @@ describe("catalog run: structured source (set B style)", () => {
     expect(state.published).toBe(true);
   });
 
+  it("a branded item with no packer column ends up in G3, never pre-filled with the seller", () => {
+    let state = createCatalogRun("run-b2", grocerySeller, "csv");
+    state = completeSourceIntake(state, "Excel workbook, header found on row 3");
+    state = completeExtraction(state, {
+      rawRows: [
+        { "Item Naam": "Toor Dal", Brand: "Annakosh", "M.R.P (Rs)": "165", Rate: "160", "Mfg Dt": "09/2026" },
+      ],
+      hadParseErrors: false,
+    });
+    state = completeMapping(state, [
+      { column: "Item Naam", candidates: [], proposed: "descriptor.name", confidence: 0.95, risk: "low", reason: "x" },
+      { column: "Brand", candidates: [], proposed: "brand", confidence: 0.95, risk: "low", reason: "x" },
+      { column: "M.R.P (Rs)", candidates: [], proposed: "price.maximum_value", confidence: 0.92, risk: "high", reason: "x" },
+      { column: "Rate", candidates: [], proposed: "price.value", confidence: 0.92, risk: "high", reason: "x" },
+      { column: "Mfg Dt", candidates: [], proposed: "month_year_of_manufacture_packing_import", confidence: 0.9, risk: "high", reason: "x" },
+    ]);
+    state = approveG2(state, {
+      "M.R.P (Rs)": "price.maximum_value",
+      Rate: "price.value",
+      "Mfg Dt": "month_year_of_manufacture_packing_import",
+    });
+    // No column mapped to manufacturer_or_packer_name or brand_owner_FSSAI_license_no.
+    expect(state.items[0].manufacturerOrPackerName).toBeUndefined();
+    expect(state.items[0].fssaiLicenceNo).toBeUndefined();
+
+    state = completeCategory(state, [{ itemId: "row-1", categoryId: "Dals and Pulses", confidence: 0.9 }]);
+    const issues = validateItems(state.items, grocerySeller);
+    expect(issues.some((i) => i.type === "packer_missing")).toBe(true);
+    expect(issues.some((i) => i.type === "fssai")).toBe(true);
+    state = completeValidation(state, issues);
+    expect(state.step).toBe("g3");
+
+    expect(() => signOffG3(state)).toThrow(OrchestratorStateError);
+
+    state = enterPackerDetailsAtG3(state, "row-1", {
+      manufacturerOrPackerName: "Annakosh Agro Pvt Ltd",
+      manufacturerOrPackerAddress: "Demo Estate, Kolhapur 416000",
+      fssaiLicenceNo: "20000000000903",
+    });
+    expect(state.items[0].manufacturerOrPackerName).toBe("Annakosh Agro Pvt Ltd");
+    expect(state.issues.some((i) => i.type === "packer_missing" || i.type === "fssai")).toBe(false);
+
+    state = signOffG3(state);
+    expect(state.step).toBe("build");
+  });
+
   it("routes a planted validation issue through the fallback queue and G3", () => {
     let state = createCatalogRun("run-f", grocerySeller, "csv");
     state = completeSourceIntake(state, "CSV, header found on row 1");
@@ -153,6 +207,80 @@ describe("catalog run: structured source (set B style)", () => {
 
     // The planted MRP-below-price issue (severity "g3") is still open: sign-off must fail until resolved.
     expect(() => signOffG3(state)).toThrow(OrchestratorStateError);
+  });
+
+  it("resolves all 48 of set B's real packer_missing issues with four brand-level G3 entries", () => {
+    const raw = readFileSync(join(process.cwd(), "data/sets/set-B/catalog_flat.csv"), "utf-8");
+    const records = parseCsvRecords(raw);
+    expect(records).toHaveLength(60);
+
+    const fieldMap: Record<string, MappingTargetKey> = {
+      "Sr No": "IGNORE",
+      "Item Naam": "descriptor.name",
+      Brand: "brand",
+      "M.R.P (Rs)": "price.maximum_value",
+      Rate: "price.value",
+      Wajan: "net_quantity",
+      Barcode: "descriptor.code",
+      "Stock (pcs)": "quantity.available.count",
+      "Veg/NonVeg": "veg_non_veg",
+      "Mfg Dt": "month_year_of_manufacture_packing_import",
+      Remarks: "IGNORE",
+    };
+
+    let state = createCatalogRun("run-b3", grocerySeller, "csv");
+    state = completeSourceIntake(state, "Excel workbook, header found on row 3");
+    state = completeExtraction(state, { rawRows: records, hadParseErrors: false });
+
+    const columns = profileColumns(records);
+    state = completeMapping(
+      state,
+      columns.map((column) => ({
+        column: column.column,
+        candidates: [],
+        proposed: fieldMap[column.column],
+        confidence: 0.95,
+        risk: targetRisk(fieldMap[column.column]),
+        reason: "ground truth",
+      })),
+    );
+    state = approveG2(state, fieldMap);
+    expect(state.items).toHaveLength(60);
+
+    state = completeCategory(state, []);
+
+    const issues = validateItems(state.items, grocerySeller);
+    const packerIssues = issues.filter((i) => i.type === "packer_missing");
+    const fssaiIssues = issues.filter((i) => i.type === "fssai");
+    expect(packerIssues).toHaveLength(48);
+    expect(fssaiIssues).toHaveLength(48);
+
+    state = completeValidation(state, issues);
+    expect(state.step).toBe("g3");
+
+    const labels = JSON.parse(
+      readFileSync(join(process.cwd(), "data/sets/set-B/seller_pack/brand_owner_labels.json"), "utf-8"),
+    ).brands;
+
+    for (const [brand, label] of Object.entries<{
+      manufacturer_or_packer_name: string;
+      manufacturer_or_packer_address: string;
+      brand_owner_FSSAI_license_no: string;
+    }>(labels)) {
+      state = enterPackerDetailsForBrandAtG3(state, brand, {
+        manufacturerOrPackerName: label.manufacturer_or_packer_name,
+        manufacturerOrPackerAddress: label.manufacturer_or_packer_address,
+        fssaiLicenceNo: label.brand_owner_FSSAI_license_no,
+      });
+    }
+
+    expect(state.issues.filter((i) => i.type === "packer_missing" || i.type === "fssai")).toHaveLength(0);
+    // Four brand-level entries, not one per item.
+    const brandEntries = state.auditLog.filter((e) => e.text.includes('item(s) from the pack label'));
+    expect(brandEntries).toHaveLength(4);
+
+    state = signOffG3(state);
+    expect(state.step).toBe("build");
   });
 });
 

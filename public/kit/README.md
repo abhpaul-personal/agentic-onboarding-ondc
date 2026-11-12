@@ -1,4 +1,4 @@
-# Evaluation kit v1: Agentic Onboarding for ONDC Sellers
+# Evaluation kit v1.1: Agentic Onboarding for ONDC Sellers
 
 Personal case-study project. Not affiliated with ONDC or any network participant.
 Every business, person, GSTIN, PAN, FSSAI number, bank account and barcode in this kit is fictional test data.
@@ -18,6 +18,17 @@ GTINs use the GS1 restricted-circulation prefix 2 so they cannot match real reta
 Each set A to F holds the raw seller file, a seller_pack (registration form and specimen documents) and ground_truth
 (field mapping, golden ONDC-style catalog, planted errors where relevant).
 Golden catalogs are modelled on ONDC retail v1.2 keys and must be checked against the official spec.
+
+## Changelog
+
+**v1.1**
+- Set B: branded items now carry brand-owner packer details from the pack label; added
+  `brand_owner_labels.json` and `g3_expected.json`. Previously, set B's golden catalog
+  credited the seller as packer for every item, including the 48 items sold under
+  someone else's brand (Gharkul Demo, Panchvati Pantry, Annakosh, Kesarbaug Foods); the
+  PRD's own G3 rule says a branded item's packer and FSSAI licence are the brand owner's,
+  copied from the pack label, not defaulted to the seller. Every other set, and every
+  other value in set B (prices, quantities, GTINs, stock, dates), is unchanged from v1.
 
 ## Scoring
 python3 score.py set-B/ground_truth/field_mapping.json your_run.json

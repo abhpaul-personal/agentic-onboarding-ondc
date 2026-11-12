@@ -33,12 +33,14 @@ export interface CatalogItem {
   stock?: number;
   vegNonVeg?: "veg" | "non_veg";
   packedMonth?: string; // month_year_of_manufacture_packing_import
-  // Set explicitly only when the source maps a column to these targets (a
-  // genuinely different packer/licence); otherwise pre-filled from the
-  // seller profile (FR-15), never from the item's brand name — the eval
-  // kit's own golden catalogs credit the seller as packer even for a
-  // differently-branded item (set B's "Annakosh"-branded Toor Dal).
+  // Set explicitly when the source maps a column to these targets, or
+  // when the seller enters them at G3 from the pack label. Pre-filled
+  // from the seller profile (FR-15) only for a loose item with no brand;
+  // a branded item with no explicit packer column is never defaulted to
+  // the seller and is flagged for G3 instead (PRD G3, "Branded items
+  // packed by someone else").
   manufacturerOrPackerName?: string;
+  manufacturerOrPackerAddress?: string;
   fssaiLicenceNo?: string;
   // Fashion variants
   parentItemId?: string;
@@ -56,7 +58,7 @@ export type ValidationIssueSeverity = (typeof VALIDATION_ISSUE_SEVERITIES)[numbe
 
 export interface ValidationIssue {
   itemId: string;
-  type: "duplicate" | "gtin" | "mrp" | "claim" | "fssai" | "mrp_missing" | "mfg_missing";
+  type: "duplicate" | "gtin" | "mrp" | "claim" | "fssai" | "packer_missing" | "mrp_missing" | "mfg_missing";
   severity: ValidationIssueSeverity;
   message: string;
 }

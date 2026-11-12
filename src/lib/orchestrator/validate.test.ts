@@ -27,12 +27,28 @@ describe("preFillFromSellerProfile", () => {
     expect(preFillFromSellerProfile(item, seller).fssaiLicenceNo).toBe(seller.fssai);
   });
 
-  it("pre-fills the seller's FSSAI licence even for a differently-branded item (set B's 'Annakosh')", () => {
+  it("never defaults a branded item to the seller (PRD G3, set B's 'Annakosh')", () => {
     const item: CatalogItem = { id: "RKS-001", name: "Toor Dal", brand: "Annakosh" };
-    expect(preFillFromSellerProfile(item, seller).fssaiLicenceNo).toBe(seller.fssai);
+    const result = preFillFromSellerProfile(item, seller);
+    expect(result.fssaiLicenceNo).toBeUndefined();
+    expect(result.manufacturerOrPackerName).toBeUndefined();
+    expect(result.manufacturerOrPackerAddress).toBeUndefined();
   });
 
-  it("keeps an explicitly mapped FSSAI licence over the seller's own", () => {
+  it("keeps an explicit packer mapping on a branded item, without touching it", () => {
+    const item: CatalogItem = {
+      id: "RKS-002",
+      name: "Imported Olive Oil",
+      brand: "Annakosh",
+      fssaiLicenceNo: "19876543210987",
+      manufacturerOrPackerName: "Annakosh Agro Pvt Ltd",
+    };
+    const result = preFillFromSellerProfile(item, seller);
+    expect(result.fssaiLicenceNo).toBe("19876543210987");
+    expect(result.manufacturerOrPackerName).toBe("Annakosh Agro Pvt Ltd");
+  });
+
+  it("keeps an explicitly mapped FSSAI licence on a loose item over the seller's own", () => {
     const item: CatalogItem = { id: "ITEM-01", name: "Imported Olive Oil", fssaiLicenceNo: "19876543210987" };
     expect(preFillFromSellerProfile(item, seller).fssaiLicenceNo).toBe("19876543210987");
   });
@@ -92,6 +108,32 @@ describe("validateItems", () => {
     const item: CatalogItem = { id: "RKS-001", name: "Toor Dal", brand: "Annakosh" };
     const issues = validateItems([item], seller);
     expect(issues.some((i) => i.type === "fssai" && i.severity === "g3")).toBe(true);
+  });
+
+  it("catches a branded item with no packer column: packer_missing AND fssai, not a seller default", () => {
+    const item: CatalogItem = { id: "RKS-001", name: "Toor Dal", brand: "Annakosh" };
+    const issues = validateItems([preFillFromSellerProfile(item, seller)], seller);
+    expect(issues.some((i) => i.type === "packer_missing" && i.severity === "g3")).toBe(true);
+    expect(issues.some((i) => i.type === "fssai" && i.severity === "g3")).toBe(true);
+  });
+
+  it("does not flag packer_missing for a loose item (pre-filled from the seller)", () => {
+    const item: CatalogItem = { id: "RKS-010", name: "Besan" };
+    const issues = validateItems([preFillFromSellerProfile(item, seller)], seller);
+    expect(issues.some((i) => i.type === "packer_missing")).toBe(false);
+  });
+
+  it("does not flag packer_missing once the seller has entered the label details", () => {
+    const item: CatalogItem = {
+      id: "RKS-001",
+      name: "Toor Dal",
+      brand: "Annakosh",
+      manufacturerOrPackerName: "Annakosh Agro Pvt Ltd",
+      manufacturerOrPackerAddress: "Demo Estate, Kolhapur 416000",
+      fssaiLicenceNo: "20000000000903",
+    };
+    const issues = validateItems([item], seller);
+    expect(issues.some((i) => i.type === "packer_missing" || i.type === "fssai")).toBe(false);
   });
 
   it("never flags FSSAI for a Fashion seller", () => {
