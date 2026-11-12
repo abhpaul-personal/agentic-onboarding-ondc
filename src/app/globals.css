@@ -5,7 +5,9 @@
   --panel: #ffffff;
   --ink: #1d1f24;
   --ink2: #5b616e;
-  --ink3: #8a909c;
+  /* #656c78, not the lighter #8a909c the reference demo used: that failed WCAG AA
+     contrast (2.94:1) at the small sizes this token is used at (timestamps, labels). */
+  --ink3: #656c78;
   --line: #e3e1da;
   --line2: #efede7;
   --accent: #0f766e;

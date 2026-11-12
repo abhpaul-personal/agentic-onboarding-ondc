@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import * as actions from "./actions";
 import { CatalogPanel } from "./catalog-panel";
 import { ScorecardLink } from "./scorecard-link";
+import { useLiveModePassphrase } from "./live-mode-context";
 import { SAMPLE_SETS, type SampleSetId } from "@/lib/demo/sample-sets";
 import type { DemoState } from "@/lib/demo/state";
 import { AuditLog } from "@/components/audit-log";
@@ -295,6 +296,7 @@ function SellerPanel({
   isPending: boolean;
 }) {
   const { seller } = state;
+  const liveModePassphrase = useLiveModePassphrase();
 
   if (seller.step === "s1") {
     return (
@@ -304,7 +306,11 @@ function SellerPanel({
           Reads the registration form and the GST certificate, FSSAI licence and cancelled cheque images,
           and cross-fills the seller profile.
         </p>
-        <Button variant="primary" disabled={isPending} onClick={() => run(() => actions.singleRunIntake(state))}>
+        <Button
+          variant="primary"
+          disabled={isPending}
+          onClick={() => run(() => actions.singleRunIntake(state, liveModePassphrase ?? undefined))}
+        >
           Run seller intake agent
         </Button>
       </Card>

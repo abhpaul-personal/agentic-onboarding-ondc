@@ -3,8 +3,13 @@
 import { randomUUID } from "crypto";
 import { createCacheStore } from "@/lib/cache";
 import { createRunStore } from "@/lib/orchestrator/run-store";
-import { defaultModelId } from "@/lib/llm/client";
+import { defaultModelId, getAnthropicClient } from "@/lib/llm/client";
 import { getSampleSet, type SampleSetId } from "@/lib/demo/sample-sets";
+import {
+  liveModeAvailable,
+  verifyPassphrase,
+  checkAndIncrementRateLimit,
+} from "@/lib/demo/live-mode";
 import {
   loadRawRows,
   loadSellerIntakeInput,
@@ -14,10 +19,10 @@ import {
   buildBulkSellerProfiles,
 } from "@/lib/demo/load-set-data";
 import type { DemoState } from "@/lib/demo/state";
-import { peekSellerIntakeCache } from "@/lib/agents/seller-intake";
-import { peekExtractionCache } from "@/lib/agents/extraction";
-import { peekMappingCache } from "@/lib/agents/mapping";
-import { peekCategoryCache } from "@/lib/agents/category";
+import { peekSellerIntakeCache, runSellerIntakeAgent } from "@/lib/agents/seller-intake";
+import { peekExtractionCache, runExtractionAgent } from "@/lib/agents/extraction";
+import { peekMappingCache, runMappingAgent } from "@/lib/agents/mapping";
+import { peekCategoryCache, runCategoryAgent } from "@/lib/agents/category";
 import { runNameMatch, verifySellerChecks } from "@/lib/agents/verification";
 import { profileColumns } from "@/lib/parse/profile-columns";
 import type { MappingTargetKey } from "@/lib/schemas/mapping-target";
@@ -64,6 +69,29 @@ const model = defaultModelId();
 const NOT_WARMED = (step: string) =>
   `This step hasn't been warmed yet. Run "npm run agents:warm" with a valid ANTHROPIC_API_KEY, then it will replay here (step: ${step}).`;
 
+/** Owner-only: can this request call the model live? Returns null for "no, use the cache-only path" (not requested). */
+async function liveClientOrThrow(passphrase: string | undefined) {
+  if (!passphrase) return null;
+  if (!liveModeAvailable()) {
+    throw new Error(
+      "Live mode is not configured on this deployment (needs ANTHROPIC_API_KEY and LIVE_MODE_PASSPHRASE).",
+    );
+  }
+  if (!verifyPassphrase(passphrase)) {
+    throw new Error("Incorrect live-mode passphrase.");
+  }
+  const { allowed } = await checkAndIncrementRateLimit(store);
+  if (!allowed) {
+    throw new Error("Live mode rate limit reached (10 runs per hour). Try again later.");
+  }
+  return getAnthropicClient();
+}
+
+/** For the UI to check before prompting: is live mode even possible on this deployment? */
+export async function isLiveModeAvailable(): Promise<boolean> {
+  return liveModeAvailable();
+}
+
 export async function startDemo(setId: SampleSetId): Promise<DemoState> {
   const set = getSampleSet(setId);
   if (!set) throw new Error(`Unknown sample set "${setId}".`);
@@ -98,9 +126,16 @@ export async function bulkApproveG0(
 
 /* ---------------- stage 1, single seller ---------------- */
 
-export async function singleRunIntake(state: DemoState): Promise<DemoState> {
+export async function singleRunIntake(state: DemoState, liveModePassphrase?: string): Promise<DemoState> {
   if (state.kind !== "single") throw new Error("Not a single-seller run.");
   const input = loadSellerIntakeInput(state.setId);
+
+  const liveClient = await liveClientOrThrow(liveModePassphrase);
+  if (liveClient) {
+    const result = await runSellerIntakeAgent({ store, client: liveClient, model, input });
+    return { ...state, seller: completeSellerIntake(state.seller, result.output), pending: undefined };
+  }
+
   const output = await peekSellerIntakeCache(store, model, input);
   if (!output) return { ...state, pending: { step: "s1", note: NOT_WARMED("seller-intake") } };
   return { ...state, seller: completeSellerIntake(state.seller, output), pending: undefined };
@@ -142,7 +177,7 @@ export async function catalogRunIntake(state: DemoState): Promise<DemoState> {
   return { ...state, catalog: completeSourceIntake(catalog, note) };
 }
 
-export async function catalogRunExtraction(state: DemoState): Promise<DemoState> {
+export async function catalogRunExtraction(state: DemoState, liveModePassphrase?: string): Promise<DemoState> {
   assertCatalog(state);
   const catalog = state.catalog;
   const set = getSampleSet(state.setId)!;
@@ -156,7 +191,11 @@ export async function catalogRunExtraction(state: DemoState): Promise<DemoState>
     set.sourceFormat === "whatsapp_text"
       ? ({ source_format: "whatsapp_text" as const, raw_text: loadWhatsappText(state.setId) })
       : ({ source_format: "price_list_photo" as const, image: loadPriceListPhoto(state.setId) });
-  const output = await peekExtractionCache(store, model, input);
+
+  const liveClient = await liveClientOrThrow(liveModePassphrase);
+  const output = liveClient
+    ? (await runExtractionAgent({ store, client: liveClient, model, input })).output
+    : await peekExtractionCache(store, model, input);
   if (!output) return { ...state, pending: { step: "extract", note: NOT_WARMED("extraction") } };
   const items = output.items.map((item, index) => ({
     id: `item-${index + 1}`,
@@ -176,14 +215,18 @@ export async function catalogConfirmG1(state: DemoState): Promise<DemoState> {
   return { ...state, catalog: confirmG1(catalog, {}) };
 }
 
-export async function catalogRunMapping(state: DemoState): Promise<DemoState> {
+export async function catalogRunMapping(state: DemoState, liveModePassphrase?: string): Promise<DemoState> {
   assertCatalog(state);
   const catalog = state.catalog;
   const rows = catalog.rawRows ?? [];
   const columns = profileColumns(rows);
+
+  const liveClient = await liveClientOrThrow(liveModePassphrase);
   const proposals = [];
   for (const column of columns) {
-    const proposal = await peekMappingCache(store, column);
+    const proposal = liveClient
+      ? (await runMappingAgent({ store, client: liveClient, model, column })).proposal
+      : await peekMappingCache(store, column);
     if (!proposal) {
       return {
         ...state,
@@ -204,7 +247,7 @@ export async function catalogApproveG2(
   return { ...state, catalog: approveG2(catalog, resolutions) };
 }
 
-export async function catalogRunCategory(state: DemoState): Promise<DemoState> {
+export async function catalogRunCategory(state: DemoState, liveModePassphrase?: string): Promise<DemoState> {
   assertCatalog(state);
   const catalog = state.catalog;
   const set = getSampleSet(state.setId)!;
@@ -214,7 +257,11 @@ export async function catalogRunCategory(state: DemoState): Promise<DemoState> {
     items,
     allowed_categories: allowedCategories.length ? allowedCategories : [set.category ?? "Uncategorised"],
   };
-  const output = await peekCategoryCache(store, model, input);
+
+  const liveClient = await liveClientOrThrow(liveModePassphrase);
+  const output = liveClient
+    ? (await runCategoryAgent({ store, client: liveClient, model, input })).output
+    : await peekCategoryCache(store, model, input);
   if (!output) return { ...state, pending: { step: "category", note: NOT_WARMED("category") } };
   const proposals = output.proposals.map((p) => ({ itemId: p.item_id, categoryId: p.category_id, confidence: p.confidence }));
   return { ...state, catalog: completeCategory(catalog, proposals), pending: undefined };

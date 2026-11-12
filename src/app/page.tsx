@@ -35,7 +35,7 @@ export default function Home() {
           </div>
         </div>
         <Card>
-          <h3 className="mb-2 text-sm font-semibold">The gap this targets</h3>
+          <h2 className="mb-2 text-sm font-semibold">The gap this targets</h2>
           <div className="grid grid-cols-2 gap-3">
             <div>
               <b className="block text-2xl tracking-tight">7 lakh+</b>

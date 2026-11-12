@@ -3,6 +3,7 @@
 import { useState } from "react";
 import * as actions from "./actions";
 import { ScorecardLink } from "./scorecard-link";
+import { useLiveModePassphrase } from "./live-mode-context";
 import type { DemoState } from "@/lib/demo/state";
 import { Button, Card, Chip, Confidence } from "@/components/ui";
 import { targetLabel } from "@/lib/schemas/mapping-target";
@@ -30,6 +31,7 @@ export function CatalogPanel({
   isPending: boolean;
 }) {
   const { catalog } = state;
+  const liveModePassphrase = useLiveModePassphrase();
   if (!catalog) return null;
 
   switch (catalog.step) {
@@ -51,7 +53,11 @@ export function CatalogPanel({
           <p className="mb-3 text-sm text-[var(--ink2)]">
             {catalog.rawRows ? `Parses ${catalog.rawRows.length} rows.` : "Reads the chat text or price-list photo into draft items."}
           </p>
-          <Button variant="primary" disabled={isPending} onClick={() => run(() => actions.catalogRunExtraction(state))}>
+          <Button
+            variant="primary"
+            disabled={isPending}
+            onClick={() => run(() => actions.catalogRunExtraction(state, liveModePassphrase ?? undefined))}
+          >
             Run extraction agent
           </Button>
         </Card>
@@ -100,7 +106,11 @@ export function CatalogPanel({
             For each column, proposes a target attribute with a confidence and a reason that quotes the
             seller&apos;s own values.
           </p>
-          <Button variant="primary" disabled={isPending} onClick={() => run(() => actions.catalogRunMapping(state))}>
+          <Button
+            variant="primary"
+            disabled={isPending}
+            onClick={() => run(() => actions.catalogRunMapping(state, liveModePassphrase ?? undefined))}
+          >
             Run mapping agent
           </Button>
         </Card>
@@ -117,7 +127,11 @@ export function CatalogPanel({
             Classifies {catalog.items.length} items into the seller&apos;s allowed ONDC categories, using
             each item&apos;s now-resolved name.
           </p>
-          <Button variant="primary" disabled={isPending} onClick={() => run(() => actions.catalogRunCategory(state))}>
+          <Button
+            variant="primary"
+            disabled={isPending}
+            onClick={() => run(() => actions.catalogRunCategory(state, liveModePassphrase ?? undefined))}
+          >
             Run category agent
           </Button>
         </Card>
