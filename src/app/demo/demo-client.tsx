@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import Link from "next/link";
 import * as actions from "./actions";
 import { CatalogPanel } from "./catalog-panel";
+import { ScorecardLink } from "./scorecard-link";
 import { SAMPLE_SETS, type SampleSetId } from "@/lib/demo/sample-sets";
 import type { DemoState } from "@/lib/demo/state";
 import { AuditLog } from "@/components/audit-log";
@@ -278,9 +278,7 @@ function BulkPanel({
         {approved.length} sellers are approved and can start catalog onboarding. {sentBack.length} were sent
         back with a reason, and the checks that caught them were real code, not a model.
       </p>
-      <Link href="/scorecard" className="mt-3 inline-block font-semibold text-[var(--accent)]">
-        Open the scorecard →
-      </Link>
+      <ScorecardLink state={state} />
     </Card>
   );
 }

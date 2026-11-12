@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import * as actions from "./actions";
+import { ScorecardLink } from "./scorecard-link";
 import type { DemoState } from "@/lib/demo/state";
 import { Button, Card, Chip, Confidence } from "@/components/ui";
 import { targetLabel } from "@/lib/schemas/mapping-target";
@@ -194,9 +194,7 @@ export function CatalogPanel({
           <p className="text-sm text-[var(--ink2)]">
             {catalog.catalogItems?.length ?? 0} items published after {catalog.gates.length} human decisions.
           </p>
-          <Link href="/scorecard" className="mt-3 inline-block font-semibold text-[var(--accent)]">
-            Open the scorecard →
-          </Link>
+          <ScorecardLink state={state} />
         </Card>
       );
 

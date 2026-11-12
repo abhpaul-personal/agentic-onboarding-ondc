@@ -1,6 +1,8 @@
 "use server";
 
+import { randomUUID } from "crypto";
 import { createCacheStore } from "@/lib/cache";
+import { createRunStore } from "@/lib/orchestrator/run-store";
 import { defaultModelId } from "@/lib/llm/client";
 import { getSampleSet, type SampleSetId } from "@/lib/demo/sample-sets";
 import {
@@ -56,6 +58,7 @@ import { validateItems } from "@/lib/orchestrator/validate";
 import { buildOndcItem } from "@/lib/orchestrator/build-catalog";
 
 const store = createCacheStore();
+const runStore = createRunStore();
 const model = defaultModelId();
 
 const NOT_WARMED = (step: string) =>
@@ -290,4 +293,17 @@ export async function catalogPublish(state: DemoState): Promise<DemoState> {
   assertCatalog(state);
   const catalog = state.catalog;
   return { ...state, catalog: completePublish(catalog) };
+}
+
+/* ---------------- scorecard hand-off ---------------- */
+
+/** Persists a finished run so /scorecard can load it after navigation (PRD: run state by a URL-safe id). */
+export async function persistRun(state: DemoState): Promise<string> {
+  const runId = randomUUID();
+  await runStore.set(runId, state);
+  return runId;
+}
+
+export async function loadRun(runId: string): Promise<DemoState | null> {
+  return runStore.get<DemoState>(runId);
 }
