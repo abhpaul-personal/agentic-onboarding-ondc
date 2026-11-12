@@ -5,6 +5,8 @@ All sellers and identifiers are fictional test data.
 
 Full PRD: [docs/PRD.md](docs/PRD.md) (readable copy, with diagrams; `reference/PRD.docx` is the source).
 
+![Landing page](docs/media/screenshot-landing.jpg)
+
 ## The problem
 
 Small sellers get onboarded to ONDC through seller apps, but far fewer go live with a
@@ -54,6 +56,29 @@ The deployed public site runs in demo mode: every sample-set agent step replays 
 committed cache (see `data/cache/`), so it needs no API key and spends no tokens. Live
 mode (owner only) runs real model calls behind a passphrase and rate limit.
 
+![A gate in the demo: G0 blocking on two planted seller errors](docs/media/screenshot-demo-gate.jpg)
+
+## The demo and scorecard
+
+`/demo` picks a sample seller or the bulk set, then walks every agent step and gate
+with the timeline on the left, the step in the middle and the audit log on the right.
+`/scorecard` scores the finished run against ground truth.
+
+![Picking a sample set in the demo](docs/media/screenshot-demo-picker.jpg)
+
+Set G (bulk Stage 1, fully deterministic, no model needed) runs end to end with no
+warming required, and is covered by the Playwright suite:
+
+![Scorecard for set G: 2 of 12 planted seller errors caught, 10 approved, 72 real checks run](docs/media/screenshot-scorecard.jpg)
+
+Sets B, C, D, E and F also need a model step (seller intake, mapping or category), so on
+a deployment with no `ANTHROPIC_API_KEY` ever used, those steps show an honest "not
+warmed yet" card instead of a live call or a fabricated result. Run `agents:warm` locally
+with your own key to populate `data/cache/` and commit it (see below); once warmed, the
+full-catalog metrics (auto-accept precision, auto-map rate, fallback rate, set F's
+planted-error recall, invented statutory values, which must stay 0) show on the
+scorecard the same way.
+
 ## Status
 
 This repo is being built milestone by milestone, PRD-first. See
@@ -67,7 +92,7 @@ This repo is being built milestone by milestone, PRD-first. See
 - [x] M5: demo UI, scorecard, kit pages (demo mode replays the committed cache only; sets needing a model step show "not warmed yet" until a successful `agents:warm` run)
 - [x] M6: landing and case-study pages
 - [x] M7: hardening and live mode
-- [ ] M8: launch
+- [x] M8: launch
 
 ## Running locally
 
@@ -80,7 +105,30 @@ npm run dev
 npm run lint
 npm run test
 npm run build
+npm run test:e2e
 ```
+
+## Warming the agent cache
+
+The deployed demo only ever replays from committed cache files in `data/cache/` and
+never calls the model, even with an API key configured. To populate that cache (or add
+a new sample set), set `ANTHROPIC_API_KEY` in `.env.local` and run every agent step once
+per sample set:
+
+```bash
+npm run agents:warm
+```
+
+Running it again makes no further model calls for inputs already in the cache. Review
+the new `data/cache/*.json` files, then commit them, exactly as any other code change.
+
+## Live mode
+
+Set `ANTHROPIC_API_KEY` and `LIVE_MODE_PASSPHRASE` to enable an owner-only live mode on
+a deployment: a banner on `/demo` accepts the passphrase, and the four model-backed
+steps then call the real model, write to the cache and are rate limited to 10 runs per
+hour. With no passphrase configured, the banner never appears and the public site stays
+demo-only.
 
 ## Evaluation kit
 
