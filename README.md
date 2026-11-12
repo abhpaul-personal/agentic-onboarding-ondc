@@ -65,7 +65,7 @@ This repo is being built milestone by milestone, PRD-first. See
 - [x] M3: agents and the warm script (code ready; real warm run pending a valid API key)
 - [x] M4: orchestrator and gates
 - [x] M5: demo UI, scorecard, kit pages (demo mode replays the committed cache only; sets needing a model step show "not warmed yet" until a successful `agents:warm` run)
-- [ ] M6: landing and case-study pages
+- [x] M6: landing and case-study pages
 - [ ] M7: hardening and live mode
 - [ ] M8: launch
 

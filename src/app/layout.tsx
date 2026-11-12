@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { TopNav } from "@/components/top-nav";
+import { Footer } from "@/components/footer";
 import "./globals.css";
 
 const inter = Inter({
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col font-sans text-[14px] leading-[1.5]">
         <TopNav />
         <main className="mx-auto w-full max-w-[1320px] flex-1 px-5 py-6">{children}</main>
+        <Footer />
       </body>
     </html>
   );

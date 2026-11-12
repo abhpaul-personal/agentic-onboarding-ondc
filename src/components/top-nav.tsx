@@ -8,6 +8,7 @@ const TABS = [
   { href: "/demo", label: "Run the demo" },
   { href: "/scorecard", label: "Scorecard" },
   { href: "/kit", label: "Eval kit" },
+  { href: "/case-study", label: "Case study" },
 ] as const;
 
 export function TopNav() {
