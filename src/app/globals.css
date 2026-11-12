@@ -1,26 +1,54 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #f6f5f1;
+  --panel: #ffffff;
+  --ink: #1d1f24;
+  --ink2: #5b616e;
+  --ink3: #8a909c;
+  --line: #e3e1da;
+  --line2: #efede7;
+  --accent: #0f766e;
+  --accent-soft: #e3f2ef;
+  --gate: #4338ca;
+  --gate-soft: #eceafd;
+  --sim: #b45309;
+  --sim-soft: #fdf1e2;
+  --real: #166534;
+  --real-soft: #e5f4ea;
+  --bad: #b91c1c;
+  --bad-soft: #fdeaea;
+  --warn: #a16207;
+  --warn-soft: #fdf6dc;
+  --radius: 10px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink2);
+  --color-ink-3: var(--ink3);
+  --color-line: var(--line);
+  --color-line-2: var(--line2);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-gate: var(--gate);
+  --color-gate-soft: var(--gate-soft);
+  --color-sim: var(--sim);
+  --color-sim-soft: var(--sim-soft);
+  --color-real: var(--real);
+  --color-real-soft: var(--real-soft);
+  --color-bad: var(--bad);
+  --color-bad-soft: var(--bad-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
+  --radius-card: var(--radius);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
 }
