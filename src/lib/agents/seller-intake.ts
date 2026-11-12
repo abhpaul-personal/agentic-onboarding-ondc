@@ -78,3 +78,21 @@ export async function runSellerIntakeAgent(
 
   return { output, cached };
 }
+
+/** Reads the cached seller-intake output without ever calling the model (demo mode). */
+export async function peekSellerIntakeCache(
+  store: CacheStore,
+  model: string,
+  input: SellerIntakeInput,
+): Promise<SellerIntakeOutput | null> {
+  const parsed = sellerIntakeInputSchema.parse(input);
+  const key = computeStepCacheKey({
+    step: "seller-intake",
+    promptVersion: PROMPT_VERSION,
+    schemaVersion: SELLER_INTAKE_SCHEMA_VERSION,
+    modelId: model,
+    input: parsed,
+  });
+  const entry = await store.get<SellerIntakeOutput>(key);
+  return entry ? entry.output : null;
+}

@@ -68,3 +68,30 @@ export async function runMappingAgent(
 }
 
 export { PROMPT_VERSION as MAPPING_PROMPT_VERSION };
+
+/**
+ * Reads this column's cached mapping decision without ever calling the
+ * model — the demo site's "replay only" mode (PRD: demo mode never calls
+ * the model, even when a key is configured).
+ */
+export async function peekMappingCache(
+  store: CacheStore,
+  column: ColumnProfile,
+): Promise<MappingProposal | null> {
+  const key = computeColumnCacheKey({
+    header: column.column,
+    sampleValues: column.sample_values,
+    schemaVersion: MAPPING_SCHEMA_VERSION,
+  });
+  const entry = await store.get<import("@/lib/schemas/agents/mapping").MappingModelOutput>(key);
+  if (!entry) return null;
+  const output = entry.output;
+  return {
+    column: column.column,
+    candidates: output.candidates,
+    proposed: output.proposed,
+    confidence: output.confidence,
+    risk: targetRisk(output.proposed),
+    reason: output.reason,
+  };
+}

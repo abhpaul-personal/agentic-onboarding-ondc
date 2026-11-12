@@ -62,3 +62,21 @@ export async function runCategoryAgent(
 
   return { output, cached };
 }
+
+/** Reads the cached category classification without ever calling the model (demo mode). */
+export async function peekCategoryCache(
+  store: CacheStore,
+  model: string,
+  input: CategoryInput,
+): Promise<CategoryOutput | null> {
+  const parsed = categoryInputSchema.parse(input);
+  const key = computeStepCacheKey({
+    step: "category",
+    promptVersion: PROMPT_VERSION,
+    schemaVersion: CATEGORY_SCHEMA_VERSION,
+    modelId: model,
+    input: parsed,
+  });
+  const entry = await store.get<CategoryOutput>(key);
+  return entry ? entry.output : null;
+}

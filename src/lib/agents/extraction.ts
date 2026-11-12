@@ -72,3 +72,21 @@ export async function runExtractionAgent(
 
   return { output, cached };
 }
+
+/** Reads the cached extraction output without ever calling the model (demo mode). */
+export async function peekExtractionCache(
+  store: CacheStore,
+  model: string,
+  input: ExtractionInput,
+): Promise<ExtractionOutput | null> {
+  const parsed = extractionInputSchema.parse(input);
+  const key = computeStepCacheKey({
+    step: "extraction",
+    promptVersion: PROMPT_VERSION,
+    schemaVersion: EXTRACTION_SCHEMA_VERSION,
+    modelId: model,
+    input: parsed,
+  });
+  const entry = await store.get<ExtractionOutput>(key);
+  return entry ? entry.output : null;
+}
