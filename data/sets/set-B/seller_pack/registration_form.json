@@ -14,5 +14,6 @@
   "packer_address": "Shop 12, Demo Market Road, Pune 411000",
   "returns": "Returnable within 2 days if damaged",
   "time_to_ship": "PT4H",
+  "own_brands": [],
   "note": "Fictional seller. All identifiers are synthetic test values."
 }

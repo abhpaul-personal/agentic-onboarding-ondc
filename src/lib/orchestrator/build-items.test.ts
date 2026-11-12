@@ -37,11 +37,37 @@ describe("buildItemsFromMappedColumns", () => {
     expect(item.brand).toBe("Annakosh");
     expect(item.mrp).toBe(165);
     expect(item.price).toBe(160);
-    expect(item.netQty).toBe("1 kg");
+    expect(item.netQty).toBe("1000 g"); // "1 kg" normalised to grams
     expect(item.gtin).toBe("2000002000013");
     expect(item.stock).toBe(9);
     expect(item.vegNonVeg).toBe("veg");
     expect(item.packedMonth).toBe("09/2026");
+  });
+
+  it("normalises set B's real Wajan formats, never dropping to blank or NaN", () => {
+    const rows = [
+      { Wajan: "500gm" },
+      { Wajan: "0.5 Kg" },
+      { Wajan: "aadha kilo" }, // a word form: kept raw, flagged by validateItems
+      { Wajan: "1/2 kg" },
+      { Wajan: "1 kg" },
+      { Wajan: "250GM" },
+    ];
+    const netQtys = buildItemsFromMappedColumns(rows, { Wajan: "net_quantity" as const }).map((i) => i.netQty);
+    expect(netQtys).toEqual(["500 g", "500 g", "aadha kilo", "500 g", "1000 g", "250 g"]);
+  });
+
+  it("normalises set B's real Mfg Dt formats, never dropping to blank or NaN", () => {
+    const rows = [
+      { "Mfg Dt": "Oct-26" },
+      { "Mfg Dt": "10/2026" },
+      { "Mfg Dt": "Sept 2026" },
+      { "Mfg Dt": "09-2026" },
+    ];
+    const months = buildItemsFromMappedColumns(rows, {
+      "Mfg Dt": "month_year_of_manufacture_packing_import" as const,
+    }).map((i) => i.packedMonth);
+    expect(months).toEqual(["10/2026", "10/2026", "09/2026", "09/2026"]);
   });
 
   it("strips currency symbols before parsing a price (set B's real formats)", () => {

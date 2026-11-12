@@ -14,5 +14,6 @@
   "packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
   "returns": "Returnable within 2 days if damaged",
   "time_to_ship": "P1D",
+  "own_brands": [],
   "note": "Fictional seller. All identifiers are synthetic test values."
 }

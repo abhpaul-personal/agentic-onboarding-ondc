@@ -1,4 +1,4 @@
-# Evaluation kit v1.1: Agentic Onboarding for ONDC Sellers
+# Evaluation kit v1.2: Agentic Onboarding for ONDC Sellers
 
 Personal case-study project. Not affiliated with ONDC or any network participant.
 Every business, person, GSTIN, PAN, FSSAI number, bank account and barcode in this kit is fictional test data.
@@ -20,6 +20,13 @@ Each set A to F holds the raw seller file, a seller_pack (registration form and 
 Golden catalogs are modelled on ONDC retail v1.2 keys and must be checked against the official spec.
 
 ## Changelog
+
+**v1.2**
+- Every set's `registration_form.json` now has `own_brands`: the brand names a seller
+  packs under themselves (A: `["Tilwari"]`, C: `["Neelkurinji"]`, D: `["Butterleaf"]`,
+  E: `["Kanakchampa"]`, B and F: `[]`). An item whose brand is blank or matches one of
+  these is self-packed; only a genuinely third-party brand needs the seller's G3
+  pack-label entry. No change to any golden catalog.
 
 **v1.1**
 - Set B: branded items now carry brand-owner packer details from the pack label; added

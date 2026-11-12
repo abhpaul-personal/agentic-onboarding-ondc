@@ -1,6 +1,11 @@
+import { readFileSync } from "fs";
+import { join } from "path";
 import { describe, expect, it } from "vitest";
-import { preFillFromSellerProfile, validateItems } from "./validate";
-import type { SellerProfile } from "@/lib/schemas/seller-profile";
+import { isSelfPacked, preFillFromSellerProfile, validateItems } from "./validate";
+import { buildItemsFromMappedColumns } from "./build-items";
+import { parseCsvRecords } from "@/lib/parse/csv";
+import { registrationFormSchema, type SellerProfile } from "@/lib/schemas/seller-profile";
+import type { MappingTargetKey } from "@/lib/schemas/mapping-target";
 import type { CatalogItem } from "./types";
 
 const seller: SellerProfile = {
@@ -19,6 +24,7 @@ const seller: SellerProfile = {
   packer_address: "Unit 9, Demo Warehouse Zone, Nagpur 440000",
   returns: "Returnable within 2 days if damaged",
   time_to_ship: "P1D",
+  own_brands: [],
 };
 
 describe("preFillFromSellerProfile", () => {
@@ -104,6 +110,35 @@ describe("validateItems", () => {
     expect(issues.some((i) => i.type === "claim")).toBe(true);
   });
 
+  it("routes an unparseable net quantity to the fallback queue rather than publishing it blank", () => {
+    const item: CatalogItem = { id: "ITEM-01", name: "Toor Dal", netQty: "aadha kilo" };
+    const issues = validateItems([item], seller);
+    expect(issues).toContainEqual({
+      itemId: "ITEM-01",
+      type: "net_qty_unparsed",
+      severity: "queue",
+      message: 'Net quantity "aadha kilo" could not be parsed into a standard unit',
+    });
+  });
+
+  it("does not flag a normalised net quantity", () => {
+    const item: CatalogItem = { id: "ITEM-01", name: "Toor Dal", netQty: "500 g" };
+    const issues = validateItems([item], seller);
+    expect(issues.some((i) => i.type === "net_qty_unparsed")).toBe(false);
+  });
+
+  it("routes an unparseable packing date to the fallback queue for a Grocery seller", () => {
+    const item: CatalogItem = { id: "ITEM-01", name: "Toor Dal", packedMonth: "whenever it was made" };
+    const issues = validateItems([item], seller);
+    expect(issues.some((i) => i.type === "mfg_date_unparsed" && i.severity === "queue")).toBe(true);
+  });
+
+  it("does not flag a normalised packing date", () => {
+    const item: CatalogItem = { id: "ITEM-01", name: "Toor Dal", packedMonth: "10/2026" };
+    const issues = validateItems([item], seller);
+    expect(issues.some((i) => i.type === "mfg_date_unparsed")).toBe(false);
+  });
+
   it("catches a Grocery item with no FSSAI licence at all (pre-fill not yet applied)", () => {
     const item: CatalogItem = { id: "RKS-001", name: "Toor Dal", brand: "Annakosh" };
     const issues = validateItems([item], seller);
@@ -141,5 +176,47 @@ describe("validateItems", () => {
     const item: CatalogItem = { id: "NKT-01-S", name: "Kurta" };
     const issues = validateItems([item], fashionSeller);
     expect(issues.some((i) => i.type === "fssai")).toBe(false);
+  });
+});
+
+function loadSellerProfile(set: string): SellerProfile {
+  const raw = readFileSync(
+    join(process.cwd(), "data/sets", `set-${set}`, "seller_pack/registration_form.json"),
+    "utf-8",
+  );
+  return registrationFormSchema.parse(JSON.parse(raw)) as SellerProfile;
+}
+
+function buildRealItems(set: string, catalogFile: string): CatalogItem[] {
+  const raw = readFileSync(join(process.cwd(), "data/sets", `set-${set}`, catalogFile), "utf-8");
+  const records = parseCsvRecords(raw);
+  const fieldMap = JSON.parse(
+    readFileSync(
+      join(process.cwd(), "data/sets", `set-${set}`, "ground_truth/field_mapping.json"),
+      "utf-8",
+    ),
+  ) as Record<string, MappingTargetKey>;
+  return buildItemsFromMappedColumns(records, fieldMap);
+}
+
+describe("own_brands / self-packed (real sets)", () => {
+  it("set A's seller lists its own brand, so Tilwari-branded items are self-packed", () => {
+    const seller = loadSellerProfile("A");
+    expect(seller.own_brands).toEqual(["Tilwari"]);
+    const items = buildRealItems("A", "catalog.csv").map((item) => preFillFromSellerProfile(item, seller));
+    expect(items.every((item) => isSelfPacked(item, seller))).toBe(true);
+
+    const issues = validateItems(items, seller);
+    expect(issues.filter((i) => i.type === "packer_missing")).toHaveLength(0);
+  });
+
+  it("set B's seller has no own brands, so its 48 branded items still raise packer_missing", () => {
+    const seller = loadSellerProfile("B");
+    expect(seller.own_brands).toEqual([]);
+    const items = buildRealItems("B", "catalog_flat.csv").map((item) => preFillFromSellerProfile(item, seller));
+
+    const issues = validateItems(items, seller);
+    expect(issues.filter((i) => i.type === "packer_missing")).toHaveLength(48);
+    expect(issues.filter((i) => i.type === "fssai")).toHaveLength(48);
   });
 });

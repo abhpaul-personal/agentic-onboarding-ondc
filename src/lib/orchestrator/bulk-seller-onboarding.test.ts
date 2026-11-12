@@ -24,6 +24,7 @@ function makeProfile(name: string, gstin: string): SellerProfile {
     packer_address: "Demo address",
     returns: "Returnable within 2 days",
     time_to_ship: "P1D",
+    own_brands: [],
   };
 }
 

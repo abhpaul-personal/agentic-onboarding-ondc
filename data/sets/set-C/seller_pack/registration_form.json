@@ -14,5 +14,8 @@
   "packer_address": "2nd Floor, Demo Weavers Lane, Kochi 682000",
   "returns": "Returnable within 7 days",
   "time_to_ship": "P2D",
+  "own_brands": [
+    "Neelkurinji"
+  ],
   "note": "Fictional seller. All identifiers are synthetic test values."
 }

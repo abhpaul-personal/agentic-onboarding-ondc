@@ -14,5 +14,8 @@
   "packer_address": "14 Demo Para Lane, Kolkata 700000",
   "returns": "Not returnable (perishable)",
   "time_to_ship": "PT6H",
+  "own_brands": [
+    "Kanakchampa"
+  ],
   "note": "Fictional seller. All identifiers are synthetic test values."
 }

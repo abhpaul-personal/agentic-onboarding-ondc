@@ -1,18 +1,20 @@
 import type { SellerProfile } from "@/lib/schemas/seller-profile";
 import type { OndcItem } from "@/lib/schemas/ondc-item";
 import type { CatalogItem } from "./types";
+import { isSelfPacked } from "./validate";
 
 /**
- * Raised when a branded Grocery item reaches the builder with no packer
- * name, address or FSSAI licence. That can only mean G3 was skipped —
- * signOffG3 (catalog-run.ts) should have blocked on its packer_missing
- * issue first. A loose item (no brand) may legitimately fall back to the
- * seller's own details.
+ * Raised when a third-party-branded Grocery item reaches the builder
+ * with no packer name, address or FSSAI licence. That can only mean G3
+ * was skipped — signOffG3 (catalog-run.ts) should have blocked on its
+ * packer_missing issue first. A self-packed item (no brand, or one of
+ * the seller's own_brands) may legitimately fall back to the seller's
+ * own details.
  */
 export class MissingPackerDetailsError extends Error {
   constructor(itemId: string) {
     super(
-      `Item ${itemId} is branded but has no packer name, address or FSSAI licence. ` +
+      `Item ${itemId} carries a third-party brand but has no packer name, address or FSSAI licence. ` +
         `G3 must have been skipped for it.`,
     );
     this.name = "MissingPackerDetailsError";
@@ -21,26 +23,27 @@ export class MissingPackerDetailsError extends Error {
 
 /**
  * 6. Catalog builder: turns a validated, signed-off item into the ONDC
- * item shape. A loose item (no brand) falls back to the seller's own
- * packer details; a branded item never falls back — it must already
- * carry its own, entered by the seller at G3 from the pack label.
+ * item shape. A self-packed item falls back to the seller's own packer
+ * details; a third-party-branded item never falls back — it must
+ * already carry its own, entered by the seller at G3 from the pack
+ * label.
  */
 export function buildOndcItem(item: CatalogItem, seller: SellerProfile): OndcItem {
-  const isBranded = Boolean(item.brand);
+  const selfPacked = isSelfPacked(item, seller);
   if (
-    isBranded &&
+    !selfPacked &&
     seller.category === "Grocery" &&
     (!item.manufacturerOrPackerName || !item.manufacturerOrPackerAddress || !item.fssaiLicenceNo)
   ) {
     throw new MissingPackerDetailsError(item.id);
   }
 
-  const manufacturerOrPackerName = isBranded
-    ? item.manufacturerOrPackerName!
-    : item.manufacturerOrPackerName ?? seller.business_name;
-  const manufacturerOrPackerAddress = isBranded
-    ? item.manufacturerOrPackerAddress!
-    : item.manufacturerOrPackerAddress ?? seller.packer_address;
+  const manufacturerOrPackerName = selfPacked
+    ? item.manufacturerOrPackerName ?? seller.business_name
+    : item.manufacturerOrPackerName!;
+  const manufacturerOrPackerAddress = selfPacked
+    ? item.manufacturerOrPackerAddress ?? seller.packer_address
+    : item.manufacturerOrPackerAddress!;
 
   const ondcItem: OndcItem = {
     id: item.id,
@@ -78,7 +81,7 @@ export function buildOndcItem(item: CatalogItem, seller: SellerProfile): OndcIte
       month_year_of_manufacture_packing_import: item.packedMonth ?? "",
     };
     ondcItem["@ondc/org/statutory_reqs_prepackaged_food"] = {
-      brand_owner_FSSAI_license_no: isBranded ? item.fssaiLicenceNo! : item.fssaiLicenceNo ?? seller.fssai,
+      brand_owner_FSSAI_license_no: selfPacked ? item.fssaiLicenceNo ?? seller.fssai : item.fssaiLicenceNo!,
     };
     ondcItem.tags = [{ code: "veg_nonveg", list: [{ code: item.vegNonVeg ?? "veg", value: "yes" }] }];
   }

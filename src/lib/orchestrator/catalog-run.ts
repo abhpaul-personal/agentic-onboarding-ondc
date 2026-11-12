@@ -283,10 +283,17 @@ export function completeValidation(state: CatalogRunState, issues: readonly Vali
 }
 
 /** Fallback queue: resolves a validation issue of severity "queue" (duplicate, bad GTIN, unsupported claim). */
+export type FallbackResolution =
+  | "drop"
+  | "clear_gtin"
+  | "remove_claim"
+  | { kind: "set_net_qty"; value: string }
+  | { kind: "set_packed_month"; value: string };
+
 export function resolveFallbackQueueItem(
   state: CatalogRunState,
   itemId: string,
-  resolution: "drop" | "clear_gtin" | "remove_claim",
+  resolution: FallbackResolution,
 ): CatalogRunState {
   assertStep(state, "queue");
   let items = state.items;
@@ -296,9 +303,14 @@ export function resolveFallbackQueueItem(
     items = items.map((i) => (i.id === itemId ? { ...i, gtin: undefined } : i));
   } else if (resolution === "remove_claim") {
     items = items.map((i) => (i.id === itemId ? { ...i, description: undefined } : i));
+  } else if (typeof resolution === "object" && resolution.kind === "set_net_qty") {
+    items = items.map((i) => (i.id === itemId ? { ...i, netQty: resolution.value } : i));
+  } else if (typeof resolution === "object" && resolution.kind === "set_packed_month") {
+    items = items.map((i) => (i.id === itemId ? { ...i, packedMonth: resolution.value } : i));
   }
   const issues = state.issues.filter((i) => !(i.itemId === itemId && i.severity === "queue"));
-  return appendAudit({ ...state, items, issues }, "human", `Fallback queue: ${itemId} resolved (${resolution})`);
+  const label = typeof resolution === "string" ? resolution : resolution.kind;
+  return appendAudit({ ...state, items, issues }, "human", `Fallback queue: ${itemId} resolved (${label})`);
 }
 
 /** Finishes the fallback queue step once every queued issue is resolved. */

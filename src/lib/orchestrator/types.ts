@@ -58,7 +58,17 @@ export type ValidationIssueSeverity = (typeof VALIDATION_ISSUE_SEVERITIES)[numbe
 
 export interface ValidationIssue {
   itemId: string;
-  type: "duplicate" | "gtin" | "mrp" | "claim" | "fssai" | "packer_missing" | "mrp_missing" | "mfg_missing";
+  type:
+    | "duplicate"
+    | "gtin"
+    | "mrp"
+    | "claim"
+    | "fssai"
+    | "packer_missing"
+    | "mrp_missing"
+    | "mfg_missing"
+    | "net_qty_unparsed"
+    | "mfg_date_unparsed";
   severity: ValidationIssueSeverity;
   message: string;
 }

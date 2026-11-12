@@ -1,4 +1,6 @@
 import type { MappingTargetKey } from "@/lib/schemas/mapping-target";
+import { formatNetQuantityGrams, parseNetQuantityGrams } from "@/lib/parse/net-quantity";
+import { parsePackedMonth } from "@/lib/parse/packed-month";
 import type { CatalogItem } from "./types";
 
 /**
@@ -54,9 +56,14 @@ function applyField(item: CatalogItem, target: MappingTargetKey, value: string):
     case "descriptor.code":
       item.gtin = trimmed;
       break;
-    case "net_quantity":
-      item.netQty = trimmed;
+    case "net_quantity": {
+      // Rule-based unit normalisation ("500gm", "0.5 kg" -> "500 g"). A word
+      // form like "aadha kilo" needs the LLM (PRD): kept as the raw value,
+      // never blanked, so validateItems can flag it for G2/the fallback queue.
+      const grams = parseNetQuantityGrams(trimmed);
+      item.netQty = grams != null ? formatNetQuantityGrams(grams) : trimmed;
       break;
+    }
     case "price.value":
       item.price = parsePrice(trimmed);
       break;
@@ -69,9 +76,14 @@ function applyField(item: CatalogItem, target: MappingTargetKey, value: string):
     case "veg_non_veg":
       item.vegNonVeg = /non[\s_-]?veg/i.test(trimmed) ? "non_veg" : "veg";
       break;
-    case "month_year_of_manufacture_packing_import":
-      item.packedMonth = trimmed;
+    case "month_year_of_manufacture_packing_import": {
+      // Rule-based date normalisation ("Oct-26", "Sept 2026" -> "10/2026").
+      // Kept as the raw value when unparseable, never blanked, so
+      // validateItems can flag it for the fallback queue.
+      const canonical = parsePackedMonth(trimmed);
+      item.packedMonth = canonical ?? trimmed;
       break;
+    }
     case "brand_owner_FSSAI_license_no":
       item.fssaiLicenceNo = trimmed;
       break;

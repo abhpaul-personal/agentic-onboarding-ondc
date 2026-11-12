@@ -45,6 +45,7 @@ const grocerySeller: SellerProfile = {
   packer_address: "Shop 12, Demo Market Road, Pune 411000",
   returns: "Returnable within 2 days if damaged",
   time_to_ship: "PT4H",
+  own_brands: [],
 };
 
 describe("catalog run: structured source (set B style)", () => {
@@ -209,6 +210,32 @@ describe("catalog run: structured source (set B style)", () => {
     expect(() => signOffG3(state)).toThrow(OrchestratorStateError);
   });
 
+  it("routes an unparseable net quantity to the fallback queue and lets the reviewer correct it", () => {
+    let state = createCatalogRun("run-wajan", grocerySeller, "csv");
+    state = completeSourceIntake(state, "CSV, header found on row 1");
+    state = completeExtraction(state, {
+      rawRows: [{ sku: "RKS-099", name: "Besan", wajan: "aadha kilo" }],
+      hadParseErrors: false,
+    });
+    state = completeMapping(state, [
+      { column: "sku", candidates: [], proposed: "id", confidence: 0.95, risk: "low", reason: "x" },
+      { column: "name", candidates: [], proposed: "descriptor.name", confidence: 0.95, risk: "low", reason: "x" },
+      { column: "wajan", candidates: [], proposed: "net_quantity", confidence: 0.95, risk: "high", reason: "x" },
+    ]);
+    state = approveG2(state, { wajan: "net_quantity" });
+    expect(state.items[0].netQty).toBe("aadha kilo"); // kept raw, not blanked
+    state = completeCategory(state, []);
+
+    const issues = validateItems(state.items, grocerySeller);
+    expect(issues.some((i) => i.type === "net_qty_unparsed" && i.severity === "queue")).toBe(true);
+    state = completeValidation(state, issues);
+    expect(state.step).toBe("queue");
+
+    state = resolveFallbackQueueItem(state, "RKS-099", { kind: "set_net_qty", value: "500 g" });
+    expect(state.items[0].netQty).toBe("500 g");
+    expect(state.issues.some((i) => i.type === "net_qty_unparsed")).toBe(false);
+  });
+
   it("resolves all 48 of set B's real packer_missing issues with four brand-level G3 entries", () => {
     const raw = readFileSync(join(process.cwd(), "data/sets/set-B/catalog_flat.csv"), "utf-8");
     const records = parseCsvRecords(raw);
@@ -255,7 +282,17 @@ describe("catalog run: structured source (set B style)", () => {
     expect(packerIssues).toHaveLength(48);
     expect(fssaiIssues).toHaveLength(48);
 
+    // Set B's real data has 3 rows with "aadha kilo" (a word form, needs the
+    // LLM, not the rule): they land in the fallback queue, not g3 directly.
+    const netQtyIssues = issues.filter((i) => i.type === "net_qty_unparsed");
+    expect(netQtyIssues).toHaveLength(3);
+
     state = completeValidation(state, issues);
+    expect(state.step).toBe("queue");
+    for (const issue of netQtyIssues) {
+      state = resolveFallbackQueueItem(state, issue.itemId, { kind: "set_net_qty", value: "500 g" });
+    }
+    state = finishFallbackQueue(state);
     expect(state.step).toBe("g3");
 
     const labels = JSON.parse(

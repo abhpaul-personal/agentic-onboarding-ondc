@@ -24,6 +24,10 @@ export const sellerProfileSchema = z.object({
   packer_address: z.string().min(1),
   returns: z.string().min(1),
   time_to_ship: z.string().min(1), // ISO 8601 duration
+  // Brand names the seller packs under themselves. An item whose brand is
+  // blank, or matches one of these (case-insensitive, trimmed), counts as
+  // self-packed; anything else is a third-party brand (PRD G3).
+  own_brands: z.array(z.string()).default([]),
 });
 export type SellerProfile = z.infer<typeof sellerProfileSchema>;
 

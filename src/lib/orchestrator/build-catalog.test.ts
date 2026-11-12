@@ -20,6 +20,7 @@ const grocerySeller: SellerProfile = {
   packer_address: "Plot 4, Demo Industrial Lane, Nashik 422000",
   returns: "Not returnable (food)",
   time_to_ship: "P1D",
+  own_brands: ["Tilwari"],
 };
 
 describe("buildOndcItem", () => {
@@ -27,6 +28,7 @@ describe("buildOndcItem", () => {
     const item: CatalogItem = {
       id: "TMG-001",
       name: "Turmeric Powder 200g",
+      brand: "Tilwari", // the seller's own brand (own_brands), so it falls back fine
       category: "Masala and Seasoning",
       gtin: "2000001000014",
       netQty: "200 g",

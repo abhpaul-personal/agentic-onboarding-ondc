@@ -25,6 +25,7 @@ const profile: SellerProfile = {
   packer_address: "Plot 4, Demo Industrial Lane, Nashik 422000",
   returns: "Not returnable (food)",
   time_to_ship: "P1D",
+  own_brands: ["Tilwari"],
 };
 
 function runThroughS2(passing: boolean) {
