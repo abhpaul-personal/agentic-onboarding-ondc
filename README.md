@@ -3,6 +3,8 @@
 Personal case-study project. Not affiliated with ONDC or any network participant.
 All sellers and identifiers are fictional test data.
 
+Full PRD: [docs/PRD.md](docs/PRD.md) (readable copy, with diagrams; `reference/PRD.docx` is the source).
+
 ## The problem
 
 Small sellers get onboarded to ONDC through seller apps, but far fewer go live with a
@@ -19,16 +21,22 @@ A two-stage flow runs under one orchestrator:
 - **Stage 1** (once per seller): seller intake agent, verification agent, gate G0
   (seller app reviewer approves the seller). Supports bulk onboarding from one CSV.
 - **Stage 2** (per catalog): source intake, extraction, gate G1 (seller confirms
-  extracted items, for photo and text sources), category agent, smart mapping agent,
-  gate G2 (reviewer approves risky mappings, plus the fallback queue), validation, gate
-  G3 (seller signs off statutory fields), catalog builder, gate G4 (pilot phase, then
-  full catalog), publish to a mock seller app and monitor.
+  extracted items, for photo and text sources), smart mapping agent, gate G2 (reviewer
+  approves risky mappings, plus the fallback queue), category agent, validation, gate
+  G3 (seller signs off statutory fields, including a branded item's pack-label packer
+  details), catalog builder, gate G4 (pilot phase, then full catalog), publish to a mock
+  seller app and monitor. For a spreadsheet catalog, category runs after mapping/G2
+  resolve the item's real name; for a photo or WhatsApp catalog, extraction already
+  gives each item a name, so category runs right after G1.
 
 Mappings route by confidence and field risk: low-risk fields at 0.90 or above are
 auto-accepted, high-risk fields (prices, net quantity, FSSAI, packer, veg mark, return
 terms) always go to a human, and anything below 0.60 goes to a fallback queue. An agent
 never invents a statutory value — it may only extract it from the source, pre-fill it
-from the approved seller profile, or ask the seller.
+from the approved seller profile, or ask the seller. An item with no brand, or one of
+the seller's own brands, is pre-filled from the profile; an item carrying someone
+else's brand is never defaulted to the seller — it is flagged at G3 for the seller to
+enter that brand owner's packer details from the pack label.
 
 ## Run once, replay forever
 
