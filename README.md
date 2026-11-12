@@ -5,6 +5,8 @@ All sellers and identifiers are fictional test data.
 
 Full PRD: [docs/PRD.md](docs/PRD.md) (readable copy, with diagrams; `reference/PRD.docx` is the source).
 
+**Live:** [agentic-onboarding-ondc.vercel.app](https://agentic-onboarding-ondc.vercel.app)
+
 ![Landing page](docs/media/screenshot-landing.jpg)
 
 ## The problem
@@ -55,6 +57,13 @@ replayed after that:
 The deployed public site runs in demo mode: every sample-set agent step replays from a
 committed cache (see `data/cache/`), so it needs no API key and spends no tokens. Live
 mode (owner only) runs real model calls behind a passphrase and rate limit.
+
+A finished demo run also needs to persist its state between finishing Stage 1 and
+opening its scorecard (`/scorecard?run=<id>`), which happens as separate requests to a
+serverless function with no shared, writable filesystem. In production this run-state
+store, and the agent cache if live mode writes to it, use Upstash Redis
+(`UPSTASH_REDIS_REST_URL`/`UPSTASH_REDIS_REST_TOKEN`); locally and in tests they fall
+back to committed or temp-dir JSON files.
 
 ![A gate in the demo: G0 blocking on two planted seller errors](docs/media/screenshot-demo-gate.jpg)
 

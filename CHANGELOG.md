@@ -6,8 +6,12 @@ Built milestone by milestone, PRD-first. See
 
 ## M8: launch
 
-Production deploy on Vercel. LICENSE file (MIT for code). README gained
-screenshots, real scorecard numbers, cache-warming and live-mode instructions.
+Production deploy on Vercel, with Upstash Redis backing the run-state store
+(a run's state has to persist across serverless invocations between
+finishing Stage 1 and opening its scorecard, which a committed file store
+can't do on a read-only production filesystem). LICENSE file (MIT for
+code). README gained screenshots, real scorecard numbers, cache-warming
+and live-mode instructions, and the live URL.
 
 ## M7: hardening
 
