@@ -1,7 +1,7 @@
 "use server";
 
 import { randomUUID } from "crypto";
-import { createCacheStore } from "@/lib/cache";
+import { createCacheStore, createReplayCacheStore } from "@/lib/cache";
 import { createRunStore } from "@/lib/orchestrator/run-store";
 import { defaultModelId, getAnthropicClient } from "@/lib/llm/client";
 import { getSampleSet, type SampleSetId } from "@/lib/demo/sample-sets";
@@ -64,6 +64,9 @@ import { validateItems } from "@/lib/orchestrator/validate";
 import { buildOndcItem } from "@/lib/orchestrator/build-catalog";
 
 const store = createCacheStore();
+// Demo-mode peek reads must always replay the committed sample-set cache,
+// never Upstash (see createReplayCacheStore's doc comment).
+const replayStore = createReplayCacheStore();
 const runStore = createRunStore();
 const model = defaultModelId();
 
@@ -137,7 +140,7 @@ export async function singleRunIntake(state: DemoState, liveModePassphrase?: str
     return { ...state, seller: completeSellerIntake(state.seller, result.output), pending: undefined };
   }
 
-  const output = await peekSellerIntakeCache(store, model, input);
+  const output = await peekSellerIntakeCache(replayStore, model, input);
   if (!output) return { ...state, pending: { step: "s1", note: NOT_WARMED("seller-intake") } };
   return { ...state, seller: completeSellerIntake(state.seller, output), pending: undefined };
 }
@@ -204,7 +207,7 @@ export async function catalogRunExtraction(state: DemoState, liveModePassphrase?
   const liveClient = await liveClientOrThrow(liveModePassphrase);
   const output = liveClient
     ? (await runExtractionAgent({ store, client: liveClient, model, input })).output
-    : await peekExtractionCache(store, model, input);
+    : await peekExtractionCache(replayStore, model, input);
   if (!output) return { ...state, pending: { step: "extract", note: NOT_WARMED("extraction") } };
   const items = output.items.map((item, index) => ({
     id: `item-${index + 1}`,
@@ -235,7 +238,7 @@ export async function catalogRunMapping(state: DemoState, liveModePassphrase?: s
   for (const column of columns) {
     const proposal = liveClient
       ? (await runMappingAgent({ store, client: liveClient, model, column })).proposal
-      : await peekMappingCache(store, column);
+      : await peekMappingCache(replayStore, column);
     if (!proposal) {
       return {
         ...state,
@@ -270,7 +273,7 @@ export async function catalogRunCategory(state: DemoState, liveModePassphrase?: 
   const liveClient = await liveClientOrThrow(liveModePassphrase);
   const output = liveClient
     ? (await runCategoryAgent({ store, client: liveClient, model, input })).output
-    : await peekCategoryCache(store, model, input);
+    : await peekCategoryCache(replayStore, model, input);
   if (!output) return { ...state, pending: { step: "category", note: NOT_WARMED("category") } };
   const proposals = output.proposals.map((p) => ({ itemId: p.item_id, categoryId: p.category_id, confidence: p.confidence }));
   return { ...state, catalog: completeCategory(catalog, proposals), pending: undefined };
