@@ -80,13 +80,22 @@ warming required, and is covered by the Playwright suite:
 
 ![Scorecard for set G: 2 of 12 planted seller errors caught, 10 approved, 72 real checks run](docs/media/screenshot-scorecard.jpg)
 
-Sets B, C, D, E and F also need a model step (seller intake, mapping or category), so on
-a deployment with no `ANTHROPIC_API_KEY` ever used, those steps show an honest "not
-warmed yet" card instead of a live call or a fabricated result. Run `agents:warm` locally
-with your own key to populate `data/cache/` and commit it (see below); once warmed, the
-full-catalog metrics (auto-accept precision, auto-map rate, fallback rate, set F's
-planted-error recall, invented statutory values, which must stay 0) show on the
-scorecard the same way.
+Sets B, C, D, E and F also need a model step (seller intake, mapping or category); all
+five are warmed, so the deployed site replays them from `data/cache/` with no
+`ANTHROPIC_API_KEY` set and no live call. A sample set the cache doesn't have an entry
+for (for example after editing a seed file or bumping a prompt version) shows an honest
+"not warmed yet" card instead of a live call or a fabricated result, until `agents:warm`
+is run again. The full-catalog metrics (auto-accept precision, auto-map rate, fallback
+rate, set F's planted-error recall, invented statutory values, which must stay 0) show
+on the scorecard the same way as set G's.
+
+Warming surfaced a real, recurring finding worth noting: the seller-intake agent's
+vision read of a synthetic GST certificate has, on more than one sample set, misread the
+GSTIN's run of "Z" placeholder characters (the certificate images themselves are
+correct). The real GSTIN checksum check correctly fails the result and blocks
+auto-approval at G0, exactly the deterministic-check-plus-human-gate design this project
+is built around; the one gap it exposed, a single seller with a failing check having no
+way forward in the UI, is now fixed with a "send back" action alongside "approve".
 
 ## Status
 
@@ -96,9 +105,9 @@ This repo is being built milestone by milestone, PRD-first. See
 - [x] M0: setup, eval kit imported, tests running
 - [x] M1: deterministic checks, zod schemas, target schema
 - [x] M2: cache layer
-- [x] M3: agents and the warm script (code ready; real warm run pending a valid API key)
+- [x] M3: agents and the warm script, warmed against the real model for every sample set
 - [x] M4: orchestrator and gates
-- [x] M5: demo UI, scorecard, kit pages (demo mode replays the committed cache only; sets needing a model step show "not warmed yet" until a successful `agents:warm` run)
+- [x] M5: demo UI, scorecard, kit pages (demo mode replays the committed cache only; every sample set's agent steps are warmed)
 - [x] M6: landing and case-study pages
 - [x] M7: hardening and live mode
 - [x] M8: launch

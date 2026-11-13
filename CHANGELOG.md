@@ -4,6 +4,19 @@ Built milestone by milestone, PRD-first. See
 `reference/claude-code-prompt-agentic-onboarding.md` for the milestone plan and
 [docs/PRD.md](docs/PRD.md) for the full spec.
 
+## Agent cache warmed against the real model
+
+`npm run agents:warm` run for the first time against the real model for every
+sample set, which surfaced and fixed several real bugs no unit test had
+covered: current models reject forced `tool_choice`; adaptive thinking's
+token spend needed a larger `max_tokens` budget; a blank `ANTHROPIC_MODEL`
+in `.env.local` wasn't falling back to the default; a Shopify-style variant
+export left names blank past a group's first row; and "Approve mappings"
+crashed on any column needing G2 review. Also added a "Send back" action at
+the single-seller G0 gate, so a failing verification check (which a
+synthetic GST certificate's vision misread can trigger non-deterministically)
+no longer leaves the reviewer stuck.
+
 ## M8: launch
 
 Production deploy on Vercel, with Upstash Redis backing the run-state store
