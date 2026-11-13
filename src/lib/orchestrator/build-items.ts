@@ -13,13 +13,56 @@ export function buildItemsFromMappedColumns(
   rows: readonly Record<string, string>[],
   columnTargets: Readonly<Record<string, MappingTargetKey | null>>,
 ): CatalogItem[] {
-  return rows.map((row, index) => {
+  const items = rows.map((row, index) => {
     const item: CatalogItem = { id: `row-${index + 1}`, name: "" };
     for (const [column, target] of Object.entries(columnTargets)) {
       if (target == null || target === "IGNORE") continue;
       applyField(item, target, row[column] ?? "");
     }
     return item;
+  });
+  // Never leave a truly blank name: a mapping agent that misreads a variant
+  // group's column (e.g. proposing "id" instead of "parent_item_id" for a
+  // Shopify "Handle" column) can leave later rows with no name and no
+  // group to inherit from, same as other unparseable fields in this file —
+  // kept rather than blanked, so downstream steps see it and a human can
+  // still fix it, instead of the catalog step crashing outright.
+  return applyVariantGroupInheritance(items).map((item) => (item.name ? item : { ...item, name: item.id }));
+}
+
+/**
+ * A variant export (Shopify-style: parent_item_id mapped from a "Handle"
+ * column) fills name/description/brand/category only on a group's first
+ * row; later rows share the same parent_item_id but leave them blank.
+ * Forward-fills those shared fields from the group's first non-blank
+ * value, then appends each row's own size (or colour, if no size) to
+ * every row's name so variants stay distinguishable, matching how a real
+ * seller app would title variant SKUs.
+ */
+function applyVariantGroupInheritance(items: CatalogItem[]): CatalogItem[] {
+  const sharedByGroup = new Map<string, { name: string; description?: string; brand?: string; category?: string }>();
+  for (const item of items) {
+    if (!item.parentItemId) continue;
+    const shared = sharedByGroup.get(item.parentItemId) ?? { name: "" };
+    if (!shared.name && item.name) shared.name = item.name;
+    if (!shared.description && item.description) shared.description = item.description;
+    if (!shared.brand && item.brand) shared.brand = item.brand;
+    if (!shared.category && item.category) shared.category = item.category;
+    sharedByGroup.set(item.parentItemId, shared);
+  }
+
+  return items.map((item) => {
+    if (!item.parentItemId) return item;
+    const shared = sharedByGroup.get(item.parentItemId);
+    if (!shared || !shared.name) return item;
+    const variantSuffix = item.size || item.colour;
+    return {
+      ...item,
+      name: variantSuffix ? `${shared.name} - ${variantSuffix}` : shared.name,
+      description: item.description ?? shared.description,
+      brand: item.brand ?? shared.brand,
+      category: item.category ?? shared.category,
+    };
   });
 }
 

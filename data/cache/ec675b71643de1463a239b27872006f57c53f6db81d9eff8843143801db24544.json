@@ -1,0 +1,25 @@
+{
+  "key": "ec675b71643de1463a239b27872006f57c53f6db81d9eff8843143801db24544",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:15:02.232Z",
+  "token_usage": {
+    "input_tokens": 1790,
+    "output_tokens": 217
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "id",
+        "confidence": 0.97
+      },
+      {
+        "target": "parent_item_id",
+        "confidence": 0.02
+      }
+    ],
+    "proposed": "id",
+    "confidence": 0.97,
+    "reason": "Header \"sku\" with unique values per row such as \"TRP-001\" and \"TRP-002\" (30 distinct) is a stock keeping unit identifier, matching Item ID (SKU)."
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "454fa8d149017ea5a28435828e4fdeb2c580414b8ebd7c86f3df401ae9f9910f",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:12:44.916Z",
+  "token_usage": {
+    "input_tokens": 1759,
+    "output_tokens": 188
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "veg_non_veg",
+        "confidence": 0.9
+      }
+    ],
+    "proposed": "veg_non_veg",
+    "confidence": 0.9,
+    "reason": "Column header \"veg\" with sample value \"veg\" (single distinct value) indicates the veg/non-veg dietary mark."
+  }
+}

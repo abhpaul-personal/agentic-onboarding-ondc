@@ -1,0 +1,29 @@
+{
+  "key": "d010717941f442ca71fb022c7f6d484aac350b95339be4629a3b3ced22537f48",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:13:52.666Z",
+  "token_usage": {
+    "input_tokens": 1766,
+    "output_tokens": 253
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "brand",
+        "confidence": 0.5
+      },
+      {
+        "target": "manufacturer_or_packer_name",
+        "confidence": 0.3
+      },
+      {
+        "target": "IGNORE",
+        "confidence": 0.15
+      }
+    ],
+    "proposed": "brand",
+    "confidence": 0.5,
+    "reason": "The sample value \"Neelkurinji\" looks like a brand or vendor name. The column has a single distinct value and is only 36% filled, so it could also be a manufacturer name. Brand is the lower-risk reading."
+  }
+}

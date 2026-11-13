@@ -1,0 +1,37 @@
+{
+  "key": "84226364ed1e0a9b105285aefa2e82b91e56d023d48727bf8d3df8a9d764f085",
+  "step": "seller-intake",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:12:25.551Z",
+  "token_usage": {
+    "input_tokens": 3278,
+    "output_tokens": 477
+  },
+  "output": {
+    "profile": {
+      "seller_id": "SLR-A",
+      "business_name": "Tilwari Masala Ghar",
+      "owner": "Meena Tilwari",
+      "city": "Nashik",
+      "state": "Maharashtra",
+      "category": "Grocery",
+      "gstin": "27ZZZZPT0001A1ZU",
+      "pan": "ZZZPT0001A",
+      "fssai": "20000000000001",
+      "fssai_expiry": "2028-03-31",
+      "ifsc": "DEMO0000001",
+      "account": "000000000101",
+      "packer_address": "Plot 4, Demo Industrial Lane, Nashik 422000",
+      "returns": "Not returnable (food)",
+      "time_to_ship": "P1D",
+      "own_brands": [
+        "Tilwari"
+      ]
+    },
+    "notes": [
+      "GSTIN corrected from gst_certificate.png: form had 27ZZZPT0001A1ZU, certificate shows 27ZZZZPT0001A1ZU (form was missing one 'Z').",
+      "FSSAI number and expiry, IFSC, and account number match the documents; no changes made.",
+      "PAN, as given on the form, was not on any document; left as on form. Note the corrected GSTIN embeds PAN ZZZZPT0001A, which differs from the form PAN ZZZPT0001A. Please verify the PAN manually."
+    ]
+  }
+}

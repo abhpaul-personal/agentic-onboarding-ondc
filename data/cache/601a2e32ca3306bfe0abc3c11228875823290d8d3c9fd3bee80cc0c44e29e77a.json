@@ -1,0 +1,29 @@
+{
+  "key": "601a2e32ca3306bfe0abc3c11228875823290d8d3c9fd3bee80cc0c44e29e77a",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:12:29.830Z",
+  "token_usage": {
+    "input_tokens": 1822,
+    "output_tokens": 234
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "descriptor.name",
+        "confidence": 0.96
+      },
+      {
+        "target": "parent_item_id",
+        "confidence": 0.02
+      },
+      {
+        "target": "net_quantity",
+        "confidence": 0.02
+      }
+    ],
+    "proposed": "descriptor.name",
+    "confidence": 0.96,
+    "reason": "Header \"product_name\" and values like \"Turmeric Powder 200g\" and \"Red Chilli Powder 400g\" are item names, one per product variant."
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "key": "f9c08f2cc92be73e6ed194ec3b3ecf0b52c2ef3fb1ed22b6b49f38d2df417c4b",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:12:51.442Z",
+  "token_usage": {
+    "input_tokens": 1769,
+    "output_tokens": 226
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "shelf_life",
+        "confidence": 0.93
+      },
+      {
+        "target": "@ondc/org/time_to_ship",
+        "confidence": 0.03
+      },
+      {
+        "target": "IGNORE",
+        "confidence": 0.02
+      }
+    ],
+    "proposed": "shelf_life",
+    "confidence": 0.93,
+    "reason": "Header \"shelf_life_days\" and values like \"365\", \"270\", \"180\" are durations in days of product shelf life."
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "key": "358b251dbb7e5d2fbb7c9472d0c80f31dfc7115897a373912d86711488a46648",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:15:04.214Z",
+  "token_usage": {
+    "input_tokens": 1796,
+    "output_tokens": 239
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "descriptor.name",
+        "confidence": 0.96
+      },
+      {
+        "target": "brand",
+        "confidence": 0.02
+      },
+      {
+        "target": "descriptor.short_desc",
+        "confidence": 0.02
+      }
+    ],
+    "proposed": "descriptor.name",
+    "confidence": 0.96,
+    "reason": "Column \"name\" holds product names such as \"Toor Dal\" and \"Basmati Rice\", with 30 distinct values at 100% fill, so it maps to the item name."
+  }
+}

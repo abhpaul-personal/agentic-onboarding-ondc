@@ -63,7 +63,7 @@ describe("structuredCall", () => {
     ).rejects.toBeInstanceOf(SchemaValidationError);
   });
 
-  it("sends a forced tool_choice for the named tool", async () => {
+  it("steers with auto tool_choice and an explicit instruction naming the tool (forced tool_choice 400s on current models)", async () => {
     const client = fakeClient([{ confidence: 0.5 }]);
     await structuredCall({
       client,
@@ -75,7 +75,8 @@ describe("structuredCall", () => {
       toolDescription: "desc",
     });
     const call = (client.messages.create as ReturnType<typeof vi.fn>).mock.calls[0][0];
-    expect(call.tool_choice).toEqual({ type: "tool", name: "propose" });
+    expect(call.tool_choice).toEqual({ type: "auto" });
     expect(call.tools[0].name).toBe("propose");
+    expect(call.system).toContain("propose");
   });
 });

@@ -1,0 +1,174 @@
+{
+  "key": "5e9c296ca026703cae57ad3b9d72e3e1dfe428d7f238ad4bc3980f9b7456e795",
+  "step": "category",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:15:32.047Z",
+  "token_usage": {
+    "input_tokens": 1909,
+    "output_tokens": 1276
+  },
+  "output": {
+    "proposals": [
+      {
+        "item_id": "TRP-001",
+        "category_id": "Dals and Pulses",
+        "confidence": 0.98
+      },
+      {
+        "item_id": "TRP-002",
+        "category_id": "Dals and Pulses",
+        "confidence": 0.98
+      },
+      {
+        "item_id": "TRP-003",
+        "category_id": "Dals and Pulses",
+        "confidence": 0.98
+      },
+      {
+        "item_id": "TRP-004",
+        "category_id": "Rice and Rice Products",
+        "confidence": 0.98
+      },
+      {
+        "item_id": "TRP-005",
+        "category_id": "Rice and Rice Products",
+        "confidence": 0.98
+      },
+      {
+        "item_id": "TRP-006",
+        "category_id": "Atta, Flours and Sooji",
+        "confidence": 0.98
+      },
+      {
+        "item_id": "TRP-007",
+        "category_id": "Atta, Flours and Sooji",
+        "confidence": 0.95
+      },
+      {
+        "item_id": "TRP-008",
+        "category_id": "Atta, Flours and Sooji",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "TRP-009",
+        "category_id": "Oil and Ghee",
+        "confidence": 0.98
+      },
+      {
+        "item_id": "TRP-010",
+        "category_id": "Oil and Ghee",
+        "confidence": 0.98
+      },
+      {
+        "item_id": "TRP-011",
+        "category_id": "Oil and Ghee",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "TRP-012",
+        "category_id": "Cooking and Baking Needs",
+        "confidence": 0.7
+      },
+      {
+        "item_id": "TRP-013",
+        "category_id": "Cooking and Baking Needs",
+        "confidence": 0.65
+      },
+      {
+        "item_id": "TRP-014",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.6
+      },
+      {
+        "item_id": "TRP-015",
+        "category_id": "Cereals and Breakfast",
+        "confidence": 0.85
+      },
+      {
+        "item_id": "TRP-016",
+        "category_id": "Beverages",
+        "confidence": 0.95
+      },
+      {
+        "item_id": "TRP-017",
+        "category_id": "Beverages",
+        "confidence": 0.95
+      },
+      {
+        "item_id": "TRP-018",
+        "category_id": "Chocolates and Biscuits",
+        "confidence": 0.98
+      },
+      {
+        "item_id": "TRP-019",
+        "category_id": "Chocolates and Biscuits",
+        "confidence": 0.98
+      },
+      {
+        "item_id": "TRP-020",
+        "category_id": "Pasta, Soup and Noodles",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "TRP-021",
+        "category_id": "Snacks and Namkeen",
+        "confidence": 0.95
+      },
+      {
+        "item_id": "TRP-022",
+        "category_id": "Snacks and Namkeen",
+        "confidence": 0.95
+      },
+      {
+        "item_id": "TRP-023",
+        "category_id": "Dry Fruits, Nuts and Seeds",
+        "confidence": 0.85
+      },
+      {
+        "item_id": "TRP-024",
+        "category_id": "Dry Fruits, Nuts and Seeds",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "TRP-025",
+        "category_id": "Dry Fruits, Nuts and Seeds",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "TRP-026",
+        "category_id": "Sauces, Spreads and Dips",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "TRP-027",
+        "category_id": "Sauces, Spreads and Dips",
+        "confidence": 0.93
+      },
+      {
+        "item_id": "TRP-028",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "TRP-029",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "TRP-030",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.95
+      },
+      {
+        "item_id": "TRP-009",
+        "category_id": "Oil and Ghee",
+        "confidence": 0.98
+      },
+      {
+        "item_id": "TRP-021",
+        "category_id": "Snacks and Namkeen",
+        "confidence": 0.95
+      }
+    ]
+  }
+}

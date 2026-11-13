@@ -1,0 +1,29 @@
+{
+  "key": "05f30c740a2f63681c5857a0aab0067ec4c74223d415503fea9c45b8447a2229",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:13:57.510Z",
+  "token_usage": {
+    "input_tokens": 1806,
+    "output_tokens": 259
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "IGNORE",
+        "confidence": 0.6
+      },
+      {
+        "target": "material",
+        "confidence": 0.15
+      },
+      {
+        "target": "gender",
+        "confidence": 0.1
+      }
+    ],
+    "proposed": "IGNORE",
+    "confidence": 0.6,
+    "reason": "Tags such as \"chanderi, festive, women\" are mixed free-text keywords (fabric, occasion, gender) and don't cleanly fit one target attribute. Mapping to material or gender would take only part of the value, so I'm proposing IGNORE."
+  }
+}

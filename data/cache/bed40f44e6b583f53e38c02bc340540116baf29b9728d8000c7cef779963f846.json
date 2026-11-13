@@ -1,0 +1,29 @@
+{
+  "key": "bed40f44e6b583f53e38c02bc340540116baf29b9728d8000c7cef779963f846",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:14:01.781Z",
+  "token_usage": {
+    "input_tokens": 1778,
+    "output_tokens": 242
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "size",
+        "confidence": 0.9
+      },
+      {
+        "target": "parent_item_id",
+        "confidence": 0.05
+      },
+      {
+        "target": "colour",
+        "confidence": 0.02
+      }
+    ],
+    "proposed": "size",
+    "confidence": 0.9,
+    "reason": "Sample values such as \"S\", \"M\", \"XL\" and \"Free Size\" are garment sizes, so the column maps to size. The Shopify-style header \"Option1 Value\" is generic, but these values are clearly sizes."
+  }
+}

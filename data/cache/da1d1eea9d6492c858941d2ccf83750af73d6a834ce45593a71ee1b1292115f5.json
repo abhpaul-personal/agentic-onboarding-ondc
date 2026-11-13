@@ -1,0 +1,29 @@
+{
+  "key": "da1d1eea9d6492c858941d2ccf83750af73d6a834ce45593a71ee1b1292115f5",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:15:20.374Z",
+  "token_usage": {
+    "input_tokens": 1777,
+    "output_tokens": 268
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "manufacturer_or_packer_name",
+        "confidence": 0.8
+      },
+      {
+        "target": "brand",
+        "confidence": 0.08
+      },
+      {
+        "target": "IGNORE",
+        "confidence": 0.05
+      }
+    ],
+    "proposed": "manufacturer_or_packer_name",
+    "confidence": 0.8,
+    "reason": "Header \"packer\" with values like \"Trapline Traders\" names the packing entity, matching manufacturer_or_packer_name. Note that \"Third-party packer (not stated)\" is a placeholder rather than a real name, so review that row."
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "key": "f4743ebf967fd1add276236ca429ed8229f57ebe52c9d01f3bdc458e6303500a",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:15:06.236Z",
+  "token_usage": {
+    "input_tokens": 1835,
+    "output_tokens": 249
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "descriptor.short_desc",
+        "confidence": 0.85
+      },
+      {
+        "target": "descriptor.name",
+        "confidence": 0.25
+      },
+      {
+        "target": "net_quantity",
+        "confidence": 0.05
+      }
+    ],
+    "proposed": "descriptor.short_desc",
+    "confidence": 0.85,
+    "reason": "Column is a product description with values like \"Toor Dal, 1000 g pack\", which fits the short description. It also embeds pack size, but it is free text rather than a clean net quantity."
+  }
+}

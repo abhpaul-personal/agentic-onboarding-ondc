@@ -1,0 +1,189 @@
+{
+  "key": "55c2176dfce43e992ea72ab3f5f12f144fb4e50db862456ac752fcc4d96c0623",
+  "step": "extraction",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:14:45.671Z",
+  "token_usage": {
+    "input_tokens": 2044,
+    "output_tokens": 1650
+  },
+  "output": {
+    "items": [
+      {
+        "name": "Whole wheat bread",
+        "net_qty": "400g",
+        "price": 60,
+        "confidence": 0.97,
+        "source_excerpt": "Whole wheat bread 400g - ₹60"
+      },
+      {
+        "name": "Multigrain bread",
+        "net_qty": "400g",
+        "price": 75,
+        "confidence": 0.97,
+        "source_excerpt": "Multigrain bread – 400g – 75 rs"
+      },
+      {
+        "name": "Pav",
+        "net_qty": "6 pcs",
+        "price": 40,
+        "confidence": 0.97,
+        "source_excerpt": "Pav (6 pcs) 6 pcs - ₹40"
+      },
+      {
+        "name": "Garlic loaf",
+        "net_qty": "300g",
+        "price": 90,
+        "confidence": 0.97,
+        "source_excerpt": "Garlic loaf (300g) Rs 90"
+      },
+      {
+        "name": "Banana walnut cake",
+        "net_qty": "500g",
+        "price": 380,
+        "confidence": 0.97,
+        "source_excerpt": "Banana walnut cake (500g) Rs 380"
+      },
+      {
+        "name": "Chocolate brownie box",
+        "net_qty": "6 pcs",
+        "price": 360,
+        "confidence": 0.97,
+        "source_excerpt": "Chocolate brownie box – 6 pcs – 360 rs"
+      },
+      {
+        "name": "Nankhatai",
+        "net_qty": "250g",
+        "price": 160,
+        "confidence": 0.97,
+        "source_excerpt": "Nankhatai (250g) Rs 160"
+      },
+      {
+        "name": "Jeera cookies",
+        "net_qty": "250g",
+        "price": 150,
+        "confidence": 0.97,
+        "source_excerpt": "Jeera cookies – 250g – 150 rs"
+      },
+      {
+        "name": "Atta biscuits",
+        "net_qty": "250g",
+        "price": 140,
+        "confidence": 0.97,
+        "source_excerpt": "Atta biscuits 250g - ₹140"
+      },
+      {
+        "name": "Plum cake",
+        "net_qty": "500g",
+        "price": 450,
+        "confidence": 0.97,
+        "source_excerpt": "Plum cake 500g - ₹450"
+      },
+      {
+        "name": "Khari",
+        "net_qty": "200g",
+        "price": 80,
+        "confidence": 0.97,
+        "source_excerpt": "Khari 200g - ₹80"
+      },
+      {
+        "name": "Toast rusk",
+        "net_qty": "300g",
+        "price": 95,
+        "confidence": 0.97,
+        "source_excerpt": "Toast rusk 300g - ₹95"
+      },
+      {
+        "name": "Eggless vanilla cake",
+        "net_qty": "500g",
+        "price": 350,
+        "confidence": 0.97,
+        "source_excerpt": "Eggless vanilla cake (500g) Rs 350"
+      },
+      {
+        "name": "Coconut cookies",
+        "net_qty": "250g",
+        "price": 150,
+        "confidence": 0.97,
+        "source_excerpt": "Coconut cookies 250g @ 150/-"
+      },
+      {
+        "name": "Pizza base",
+        "net_qty": "2 pcs",
+        "price": 70,
+        "confidence": 0.97,
+        "source_excerpt": "Pizza base (2) 2 pcs - ₹70"
+      },
+      {
+        "name": "Burger buns",
+        "net_qty": "4 pcs",
+        "price": 60,
+        "confidence": 0.97,
+        "source_excerpt": "Burger buns (4) (4 pcs) Rs 60"
+      },
+      {
+        "name": "Dinner rolls",
+        "net_qty": "6 pcs",
+        "price": 70,
+        "confidence": 0.97,
+        "source_excerpt": "Dinner rolls (6) 6 pcs - ₹70"
+      },
+      {
+        "name": "Ragi cookies",
+        "net_qty": "250g",
+        "price": 170,
+        "confidence": 0.97,
+        "source_excerpt": "Ragi cookies – 250g – 170 rs"
+      },
+      {
+        "name": "Lemon tea cake",
+        "net_qty": "400g",
+        "price": 280,
+        "confidence": 0.97,
+        "source_excerpt": "Lemon tea cake 400g - ₹280"
+      },
+      {
+        "name": "Fruit bun",
+        "net_qty": "2 pcs",
+        "price": 50,
+        "confidence": 0.97,
+        "source_excerpt": "Fruit bun (2 pcs) Rs 50"
+      },
+      {
+        "name": "Cheese straws",
+        "net_qty": "200g",
+        "price": 130,
+        "confidence": 0.97,
+        "source_excerpt": "Cheese straws (200g) Rs 130"
+      },
+      {
+        "name": "Oats cookies",
+        "net_qty": "250g",
+        "price": 170,
+        "confidence": 0.97,
+        "source_excerpt": "Oats cookies (250g) Rs 170"
+      },
+      {
+        "name": "Sourdough loaf",
+        "net_qty": "500g",
+        "price": 220,
+        "confidence": 0.97,
+        "source_excerpt": "Sourdough loaf – 500g – 220 rs"
+      },
+      {
+        "name": "Masala bread",
+        "net_qty": "400g",
+        "price": 80,
+        "confidence": 0.97,
+        "source_excerpt": "Masala bread 400g @ 80/-"
+      },
+      {
+        "name": "Egg sponge cake",
+        "net_qty": "500g",
+        "price": 300,
+        "confidence": 0.97,
+        "source_excerpt": "Egg sponge cake 500g - ₹300"
+      }
+    ]
+  }
+}

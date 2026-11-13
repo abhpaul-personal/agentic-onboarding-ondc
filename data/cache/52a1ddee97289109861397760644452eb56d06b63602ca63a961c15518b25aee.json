@@ -1,0 +1,25 @@
+{
+  "key": "52a1ddee97289109861397760644452eb56d06b63602ca63a961c15518b25aee",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:14:04.198Z",
+  "token_usage": {
+    "input_tokens": 1764,
+    "output_tokens": 255
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "IGNORE",
+        "confidence": 0.8
+      },
+      {
+        "target": "colour",
+        "confidence": 0.1
+      }
+    ],
+    "proposed": "IGNORE",
+    "confidence": 0.8,
+    "reason": "\"Option2 Name\" holds only the constant value \"Colour\". It labels which attribute the Option2 Value column contains and has no colour data itself. Mapping it to colour would mean treating the label as a value, so I ignore it. The companion \"Option2 Value\" column is the one that should map to colour."
+  }
+}

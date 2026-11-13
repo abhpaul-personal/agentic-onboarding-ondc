@@ -1,0 +1,35 @@
+{
+  "key": "5cbd0b10ecd087e58679a110f5b0d7954de34635033c3b4ed536df00788629d0",
+  "step": "seller-intake",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:15:00.506Z",
+  "token_usage": {
+    "input_tokens": 3272,
+    "output_tokens": 505
+  },
+  "output": {
+    "profile": {
+      "seller_id": "SLR-F",
+      "business_name": "Trapline Traders",
+      "owner": "Test Operator",
+      "city": "Nagpur",
+      "state": "Maharashtra",
+      "category": "Grocery",
+      "gstin": "27ZZZPT0006F1ZF",
+      "pan": "ZZZPT0006F",
+      "fssai": "20000000000006",
+      "fssai_expiry": "2027-06-30",
+      "ifsc": "DEMO0000006",
+      "account": "000000000606",
+      "packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+      "returns": "Returnable within 2 days if damaged",
+      "time_to_ship": "P1D",
+      "own_brands": []
+    },
+    "notes": [
+      "GSTIN: the certificate reads 27ZZZZPT0006F1ZF (four Zs), but the form has 27ZZZPT0006F1ZF (three Zs). The form value is kept because the certificate value has 16 characters, and a GSTIN has 15. The certificate image may have been misread, and the PAN ZZZPT0006F embedded in the form GSTIN is consistent with the form PAN. Please verify manually.",
+      "The FSSAI number, expiry date, IFSC and account number on the form match the documents. The account number on the cheque appears as 000000000606, and the form has the same value.",
+      "Business name matches across the form and all documents."
+    ]
+  }
+}

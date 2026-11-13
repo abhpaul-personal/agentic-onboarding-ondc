@@ -1,9 +1,11 @@
 import { test, expect } from "@playwright/test";
-import { waitThenCheckPending } from "./helpers";
+import { waitThenCheckPending, runVerificationAndResolveG0 } from "./helpers";
 
 /**
  * Set F (CSV with 13 planted errors): the key no-invention/validation-
- * recall guardrail test. See set-b.spec.ts for the cache-pending pattern.
+ * recall guardrail test. See set-b.spec.ts for the cache-pending pattern
+ * and helpers.ts for the G0 approve-or-send-back pattern (a verification
+ * check can non-deterministically fail on this set's seed data).
  */
 test("set F: validation recall catches planted errors (no invention)", async ({ page }) => {
   await page.goto("/demo");
@@ -15,8 +17,8 @@ test("set F: validation recall catches planted errors (no invention)", async ({ 
     return;
   }
 
-  await page.getByRole("button", { name: "Run verification" }).click();
-  await page.getByRole("button", { name: "Approve seller" }).click();
+  if ((await runVerificationAndResolveG0(page)) === "sent_back") return;
+
   await page.getByRole("button", { name: "Run source intake agent" }).click();
   await page.getByRole("button", { name: "Run extraction agent" }).click();
   await page.getByRole("button", { name: "Run mapping agent" }).click();

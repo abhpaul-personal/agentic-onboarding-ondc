@@ -1,0 +1,21 @@
+{
+  "key": "859832b2a086216b4144221eee4fff764225946303c1cb06b181433b69aa4e2e",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:13:30.191Z",
+  "token_usage": {
+    "input_tokens": 1778,
+    "output_tokens": 214
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "IGNORE",
+        "confidence": 0.93
+      }
+    ],
+    "proposed": "IGNORE",
+    "confidence": 0.93,
+    "reason": "This is a free-text internal remarks column with values like \"new stock aaya\" and \"fast moving\". It has no product attribute meaning. \"only 2 left\" hints at stock, but it is a note and not a reliable stock count."
+  }
+}

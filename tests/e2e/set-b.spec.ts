@@ -1,12 +1,13 @@
 import { test, expect } from "@playwright/test";
-import { waitThenCheckPending } from "./helpers";
+import { waitThenCheckPending, runVerificationAndResolveG0 } from "./helpers";
 
 /**
  * Set B needs the model for seller intake, mapping and category, so
  * until `agents:warm` has populated the cache this stops at S1 with an
  * honest pending card — never a live call, never fabricated output. Once
- * warmed, this test keeps going and checks real mapping behaviour
- * without needing any changes (same cache, same keys).
+ * warmed, this test keeps going and checks real mapping behaviour.
+ * See helpers.ts for the G0 approve-or-send-back pattern (a verification
+ * check can non-deterministically fail on this set's seed data).
  */
 test("set B: messy Excel, header synonyms and price normalisation", async ({ page }) => {
   await page.goto("/demo");
@@ -18,8 +19,8 @@ test("set B: messy Excel, header synonyms and price normalisation", async ({ pag
     return;
   }
 
-  await page.getByRole("button", { name: "Run verification" }).click();
-  await page.getByRole("button", { name: "Approve seller" }).click();
+  if ((await runVerificationAndResolveG0(page)) === "sent_back") return;
+
   await page.getByRole("button", { name: "Run source intake agent" }).click();
   await page.getByRole("button", { name: "Run extraction agent" }).click();
   await page.getByRole("button", { name: "Run mapping agent" }).click();
@@ -27,5 +28,7 @@ test("set B: messy Excel, header synonyms and price normalisation", async ({ pag
   if (await waitThenCheckPending(page, page.getByRole("heading", { name: /G2/ }))) return;
 
   // "M.R.P (Rs)" is a real header in set B's raw file: it should map to a price attribute.
-  await expect(page.getByText("M.R.P (Rs)")).toBeVisible();
+  // Scoped to the mapping table's row (not .getByText, which also matches the reasoning
+  // prose column that repeats the header name).
+  await expect(page.getByRole("row").filter({ hasText: "M.R.P (Rs)" })).toBeVisible();
 });

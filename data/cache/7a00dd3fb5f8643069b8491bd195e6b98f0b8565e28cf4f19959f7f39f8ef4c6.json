@@ -1,0 +1,29 @@
+{
+  "key": "7a00dd3fb5f8643069b8491bd195e6b98f0b8565e28cf4f19959f7f39f8ef4c6",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:15:22.995Z",
+  "token_usage": {
+    "input_tokens": 1763,
+    "output_tokens": 248
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "month_year_of_manufacture_packing_import",
+        "confidence": 0.93
+      },
+      {
+        "target": "shelf_life",
+        "confidence": 0.03
+      },
+      {
+        "target": "IGNORE",
+        "confidence": 0.02
+      }
+    ],
+    "proposed": "month_year_of_manufacture_packing_import",
+    "confidence": 0.93,
+    "reason": "Header \"packed_month\" and sample value \"10/2026\" are a month/year of packing, matching month_year_of_manufacture_packing_import."
+  }
+}

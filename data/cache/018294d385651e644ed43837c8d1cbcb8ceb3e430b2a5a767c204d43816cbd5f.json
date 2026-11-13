@@ -1,0 +1,154 @@
+{
+  "key": "018294d385651e644ed43837c8d1cbcb8ceb3e430b2a5a767c204d43816cbd5f",
+  "step": "extraction",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:14:56.517Z",
+  "token_usage": {
+    "input_tokens": 2647,
+    "output_tokens": 1423
+  },
+  "output": {
+    "items": [
+      {
+        "name": "Rosogolla",
+        "net_qty": "1 kg",
+        "price": 360,
+        "confidence": 0.95,
+        "source_excerpt": "1. Rosogolla (1 kg) .......... Rs 360"
+      },
+      {
+        "name": "Sandesh",
+        "net_qty": "1 kg",
+        "price": 520,
+        "confidence": 0.95,
+        "source_excerpt": "2. Sandesh (1 kg) .......... Rs 520"
+      },
+      {
+        "name": "Mishti Doi",
+        "net_qty": "500 g",
+        "price": 120,
+        "confidence": 0.95,
+        "source_excerpt": "3. Mishti Doi (500 g) .......... Rs 120"
+      },
+      {
+        "name": "Chomchom",
+        "net_qty": "1 kg",
+        "price": 420,
+        "confidence": 0.95,
+        "source_excerpt": "4. Chomchom (1 kg) .......... Rs 420"
+      },
+      {
+        "name": "Langcha",
+        "net_qty": "1 kg",
+        "price": 400,
+        "confidence": 0.95,
+        "source_excerpt": "5. Langcha (1 kg) .......... Rs 400"
+      },
+      {
+        "name": "Pantua",
+        "net_qty": "1 kg",
+        "price": 380,
+        "confidence": 0.95,
+        "source_excerpt": "6. Pantua (1 kg) .......... Rs 380"
+      },
+      {
+        "name": "Kheer Kadam",
+        "net_qty": "1 kg",
+        "price": 560,
+        "confidence": 0.95,
+        "source_excerpt": "7. Kheer Kadam (1 kg) .......... Rs 560"
+      },
+      {
+        "name": "Rajbhog",
+        "net_qty": "1 kg",
+        "price": 440,
+        "confidence": 0.95,
+        "source_excerpt": "8. Rajbhog (1 kg) .......... Rs 440"
+      },
+      {
+        "name": "Malpua",
+        "net_qty": "1 kg",
+        "price": 360,
+        "confidence": 0.95,
+        "source_excerpt": "9. Malpua (1 kg) .......... Rs 360"
+      },
+      {
+        "name": "Nolen Gur Sandesh",
+        "net_qty": "500 g",
+        "price": 340,
+        "confidence": 0.95,
+        "source_excerpt": "10. Nolen Gur Sandesh (500 g) .......... Rs 340"
+      },
+      {
+        "name": "Sitabhog",
+        "net_qty": "500 g",
+        "price": 260,
+        "confidence": 0.95,
+        "source_excerpt": "11. Sitabhog (500 g) .......... Rs 260"
+      },
+      {
+        "name": "Mihidana",
+        "net_qty": "500 g",
+        "price": 240,
+        "confidence": 0.95,
+        "source_excerpt": "12. Mihidana (500 g) .......... Rs 240"
+      },
+      {
+        "name": "Patishapta",
+        "net_qty": "6 pcs",
+        "price": 180,
+        "confidence": 0.95,
+        "source_excerpt": "13. Patishapta (6 pcs) .......... Rs 180"
+      },
+      {
+        "name": "Kalakand",
+        "net_qty": "500 g",
+        "price": 300,
+        "confidence": 0.95,
+        "source_excerpt": "14. Kalakand (500 g) .......... Rs 300"
+      },
+      {
+        "name": "Shor Bhaja",
+        "net_qty": "500 g",
+        "price": 380,
+        "confidence": 0.95,
+        "source_excerpt": "15. Shor Bhaja (500 g) .......... Rs 380"
+      },
+      {
+        "name": "Kamalabhog",
+        "net_qty": "1 kg",
+        "price": 420,
+        "confidence": 0.95,
+        "source_excerpt": "16. Kamalabhog (1 kg) .......... Rs 420"
+      },
+      {
+        "name": "Darbesh",
+        "net_qty": "500 g",
+        "price": 220,
+        "confidence": 0.95,
+        "source_excerpt": "17. Darbesh (500 g) .......... Rs 220"
+      },
+      {
+        "name": "Narkel Naru",
+        "net_qty": "250 g",
+        "price": 140,
+        "confidence": 0.95,
+        "source_excerpt": "18. Narkel Naru (250 g) .......... Rs 140"
+      },
+      {
+        "name": "Chhanar Jilipi",
+        "net_qty": "500 g",
+        "price": 260,
+        "confidence": 0.95,
+        "source_excerpt": "19. Chhanar Jilipi (500 g) .......... Rs 260"
+      },
+      {
+        "name": "Kanchagolla",
+        "net_qty": "500 g",
+        "price": 280,
+        "confidence": 0.95,
+        "source_excerpt": "20. Kanchagolla (500 g) .......... Rs 280"
+      }
+    ]
+  }
+}

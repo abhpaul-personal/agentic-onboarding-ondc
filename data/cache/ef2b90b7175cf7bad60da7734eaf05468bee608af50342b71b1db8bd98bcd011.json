@@ -1,0 +1,314 @@
+{
+  "key": "ef2b90b7175cf7bad60da7734eaf05468bee608af50342b71b1db8bd98bcd011",
+  "step": "category",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:13:40.345Z",
+  "token_usage": {
+    "input_tokens": 2000,
+    "output_tokens": 2232
+  },
+  "output": {
+    "proposals": [
+      {
+        "item_id": "row-1",
+        "category_id": "Dals and Pulses",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "row-2",
+        "category_id": "Dals and Pulses",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "row-3",
+        "category_id": "Dals and Pulses",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "row-4",
+        "category_id": "Rice and Rice Products",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "row-5",
+        "category_id": "Rice and Rice Products",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "row-6",
+        "category_id": "Atta, Flours and Sooji",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "row-7",
+        "category_id": "Atta, Flours and Sooji",
+        "confidence": 0.93
+      },
+      {
+        "item_id": "row-8",
+        "category_id": "Atta, Flours and Sooji",
+        "confidence": 0.95
+      },
+      {
+        "item_id": "row-9",
+        "category_id": "Oil and Ghee",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "row-10",
+        "category_id": "Oil and Ghee",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "row-11",
+        "category_id": "Oil and Ghee",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "row-12",
+        "category_id": "Cooking and Baking Needs",
+        "confidence": 0.7
+      },
+      {
+        "item_id": "row-13",
+        "category_id": "Cooking and Baking Needs",
+        "confidence": 0.6
+      },
+      {
+        "item_id": "row-14",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.7
+      },
+      {
+        "item_id": "row-15",
+        "category_id": "Cereals and Breakfast",
+        "confidence": 0.8
+      },
+      {
+        "item_id": "row-16",
+        "category_id": "Beverages",
+        "confidence": 0.95
+      },
+      {
+        "item_id": "row-17",
+        "category_id": "Beverages",
+        "confidence": 0.95
+      },
+      {
+        "item_id": "row-18",
+        "category_id": "Chocolates and Biscuits",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "row-19",
+        "category_id": "Chocolates and Biscuits",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "row-20",
+        "category_id": "Pasta, Soup and Noodles",
+        "confidence": 0.95
+      },
+      {
+        "item_id": "row-21",
+        "category_id": "Snacks and Namkeen",
+        "confidence": 0.95
+      },
+      {
+        "item_id": "row-22",
+        "category_id": "Snacks and Namkeen",
+        "confidence": 0.95
+      },
+      {
+        "item_id": "row-23",
+        "category_id": "Dry Fruits, Nuts and Seeds",
+        "confidence": 0.93
+      },
+      {
+        "item_id": "row-24",
+        "category_id": "Dry Fruits, Nuts and Seeds",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "row-25",
+        "category_id": "Dry Fruits, Nuts and Seeds",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "row-26",
+        "category_id": "Sauces, Spreads and Dips",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "row-27",
+        "category_id": "Sauces, Spreads and Dips",
+        "confidence": 0.93
+      },
+      {
+        "item_id": "row-28",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "row-29",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "row-30",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.95
+      },
+      {
+        "item_id": "row-31",
+        "category_id": "Dals and Pulses",
+        "confidence": 0.96
+      },
+      {
+        "item_id": "row-32",
+        "category_id": "Dals and Pulses",
+        "confidence": 0.96
+      },
+      {
+        "item_id": "row-33",
+        "category_id": "Dals and Pulses",
+        "confidence": 0.96
+      },
+      {
+        "item_id": "row-34",
+        "category_id": "Rice and Rice Products",
+        "confidence": 0.96
+      },
+      {
+        "item_id": "row-35",
+        "category_id": "Rice and Rice Products",
+        "confidence": 0.96
+      },
+      {
+        "item_id": "row-36",
+        "category_id": "Atta, Flours and Sooji",
+        "confidence": 0.96
+      },
+      {
+        "item_id": "row-37",
+        "category_id": "Atta, Flours and Sooji",
+        "confidence": 0.92
+      },
+      {
+        "item_id": "row-38",
+        "category_id": "Atta, Flours and Sooji",
+        "confidence": 0.94
+      },
+      {
+        "item_id": "row-39",
+        "category_id": "Oil and Ghee",
+        "confidence": 0.96
+      },
+      {
+        "item_id": "row-40",
+        "category_id": "Oil and Ghee",
+        "confidence": 0.96
+      },
+      {
+        "item_id": "row-41",
+        "category_id": "Oil and Ghee",
+        "confidence": 0.96
+      },
+      {
+        "item_id": "row-42",
+        "category_id": "Cooking and Baking Needs",
+        "confidence": 0.7
+      },
+      {
+        "item_id": "row-43",
+        "category_id": "Cooking and Baking Needs",
+        "confidence": 0.6
+      },
+      {
+        "item_id": "row-44",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.7
+      },
+      {
+        "item_id": "row-45",
+        "category_id": "Cereals and Breakfast",
+        "confidence": 0.8
+      },
+      {
+        "item_id": "row-46",
+        "category_id": "Beverages",
+        "confidence": 0.94
+      },
+      {
+        "item_id": "row-47",
+        "category_id": "Beverages",
+        "confidence": 0.94
+      },
+      {
+        "item_id": "row-48",
+        "category_id": "Chocolates and Biscuits",
+        "confidence": 0.96
+      },
+      {
+        "item_id": "row-49",
+        "category_id": "Chocolates and Biscuits",
+        "confidence": 0.96
+      },
+      {
+        "item_id": "row-50",
+        "category_id": "Pasta, Soup and Noodles",
+        "confidence": 0.94
+      },
+      {
+        "item_id": "row-51",
+        "category_id": "Snacks and Namkeen",
+        "confidence": 0.94
+      },
+      {
+        "item_id": "row-52",
+        "category_id": "Snacks and Namkeen",
+        "confidence": 0.94
+      },
+      {
+        "item_id": "row-53",
+        "category_id": "Dry Fruits, Nuts and Seeds",
+        "confidence": 0.92
+      },
+      {
+        "item_id": "row-54",
+        "category_id": "Dry Fruits, Nuts and Seeds",
+        "confidence": 0.96
+      },
+      {
+        "item_id": "row-55",
+        "category_id": "Dry Fruits, Nuts and Seeds",
+        "confidence": 0.96
+      },
+      {
+        "item_id": "row-56",
+        "category_id": "Sauces, Spreads and Dips",
+        "confidence": 0.96
+      },
+      {
+        "item_id": "row-57",
+        "category_id": "Sauces, Spreads and Dips",
+        "confidence": 0.92
+      },
+      {
+        "item_id": "row-58",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.96
+      },
+      {
+        "item_id": "row-59",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.96
+      },
+      {
+        "item_id": "row-60",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.94
+      }
+    ]
+  }
+}

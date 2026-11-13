@@ -1,0 +1,25 @@
+{
+  "key": "27bacee175c44dae1aaaf0f03066cdf440ee8ed8ef5c4e00f7746203a1a9659b",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:13:14.404Z",
+  "token_usage": {
+    "input_tokens": 1807,
+    "output_tokens": 228
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "price.maximum_value",
+        "confidence": 0.96
+      },
+      {
+        "target": "price.value",
+        "confidence": 0.08
+      }
+    ],
+    "proposed": "price.maximum_value",
+    "confidence": 0.95,
+    "reason": "Header \"M.R.P (Rs)\" denotes maximum retail price; values like \"Rs. 75/-\" and \"₹110.00\" are rupee amounts (need currency-text cleanup)."
+  }
+}

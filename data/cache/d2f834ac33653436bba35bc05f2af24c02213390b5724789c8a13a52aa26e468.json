@@ -1,0 +1,36 @@
+{
+  "key": "d2f834ac33653436bba35bc05f2af24c02213390b5724789c8a13a52aa26e468",
+  "step": "seller-intake",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:14:49.417Z",
+  "token_usage": {
+    "input_tokens": 3277,
+    "output_tokens": 467
+  },
+  "output": {
+    "profile": {
+      "seller_id": "SLR-E",
+      "business_name": "Kanakchampa Sweets",
+      "owner": "Subhas Dutta",
+      "city": "Kolkata",
+      "state": "West Bengal",
+      "category": "Grocery",
+      "gstin": "19ZZZPD0005E1ZV",
+      "pan": "ZZZPD0005E",
+      "fssai": "20000000000005",
+      "fssai_expiry": "2028-01-31",
+      "ifsc": "DEMO0000005",
+      "account": "000000000505",
+      "packer_address": "14 Demo Para Lane, Kolkata 700000",
+      "returns": "Not returnable (perishable)",
+      "time_to_ship": "PT6H",
+      "own_brands": [
+        "Kanakchampa"
+      ]
+    },
+    "notes": [
+      "GSTIN discrepancy: gst_certificate.png reads 19ZZZPD0005E1ZV on the form vs 19ZZZZPD0005E1ZV on the certificate (extra Z in the certificate's reading). The certificate text appears as '19ZZZPD0005E1ZV' only if read with three Zs; I could not verify with certainty, so I kept the form value. Please verify manually.",
+      "FSSAI number, expiry, account number, IFSC, business name and state match the documents; no corrections made."
+    ]
+  }
+}

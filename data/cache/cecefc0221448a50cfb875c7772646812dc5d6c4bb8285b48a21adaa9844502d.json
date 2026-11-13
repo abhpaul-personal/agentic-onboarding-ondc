@@ -1,0 +1,29 @@
+{
+  "key": "cecefc0221448a50cfb875c7772646812dc5d6c4bb8285b48a21adaa9844502d",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:13:54.762Z",
+  "token_usage": {
+    "input_tokens": 1785,
+    "output_tokens": 254
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "category_id",
+        "confidence": 0.4
+      },
+      {
+        "target": "IGNORE",
+        "confidence": 0.3
+      },
+      {
+        "target": "descriptor.short_desc",
+        "confidence": 0.1
+      }
+    ],
+    "proposed": "category_id",
+    "confidence": 0.4,
+    "reason": "Values like \"Kurta Set\" and \"Saree\" are garment types, which loosely correspond to an ONDC category. They aren't ONDC category IDs, though, so the match is uncertain and the column is only 36% filled."
+  }
+}

@@ -31,6 +31,8 @@ import { runSellerIntakeAgent } from "@/lib/agents/seller-intake";
 import { runMappingAgent } from "@/lib/agents/mapping";
 import { runCategoryAgent } from "@/lib/agents/category";
 import { runExtractionAgent } from "@/lib/agents/extraction";
+import { buildItemsFromMappedColumns } from "@/lib/orchestrator/build-items";
+import type { MappingTargetKey } from "@/lib/schemas/mapping-target";
 
 const DATA_DIR = join(process.cwd(), "data/sets");
 
@@ -38,8 +40,6 @@ interface StructuredSetConfig {
   kind: "structured";
   set: string;
   catalogFile: string;
-  nameColumn: string;
-  descriptionColumn?: string;
   categoryIds: string[];
 }
 
@@ -59,14 +59,12 @@ const SET_CONFIGS: Record<string, SetConfig> = {
     kind: "structured",
     set: "A",
     catalogFile: "set-A/catalog.csv",
-    nameColumn: "product_name",
     categoryIds: ["Masala and Seasoning", "Sauces, Spreads and Dips"],
   },
   B: {
     kind: "structured",
     set: "B",
     catalogFile: "set-B/catalog_flat.csv",
-    nameColumn: "Item Naam",
     categoryIds: [
       "Atta, Flours and Sooji",
       "Beverages",
@@ -87,8 +85,6 @@ const SET_CONFIGS: Record<string, SetConfig> = {
     kind: "structured",
     set: "C",
     catalogFile: "set-C/products_export.csv",
-    nameColumn: "Title",
-    descriptionColumn: "Body (HTML)",
     categoryIds: ["Dupattas", "Kurtas and Kurta Sets", "Sarees", "Tops"],
   },
   D: { kind: "whatsapp_text", set: "D", sourceFile: "set-D/whatsapp_export.txt" },
@@ -97,8 +93,6 @@ const SET_CONFIGS: Record<string, SetConfig> = {
     kind: "structured",
     set: "F",
     catalogFile: "set-F/catalog.csv",
-    nameColumn: "name",
-    descriptionColumn: "description",
     categoryIds: [
       "Atta, Flours and Sooji",
       "Beverages",
@@ -151,21 +145,33 @@ async function warmMapping(config: StructuredSetConfig, store: ReturnType<typeof
   const raw = readFileSync(join(DATA_DIR, config.catalogFile), "utf-8");
   const records = parseCsvRecords(raw);
   const columns = profileColumns(records);
+  const columnTargets: Record<string, MappingTargetKey | null> = {};
   let calledModel = 0;
   for (const column of columns) {
     const result = await runMappingAgent({ store, client, model, column });
     if (!result.cached) calledModel++;
+    // Matches the demo's own "Approve mappings" button (catalog-panel.tsx):
+    // it accepts every column's proposed value as-is, with no per-field
+    // overrides (out of scope for M5), so the warm script has to build the
+    // same item list or the category step's cache key never matches what a
+    // visitor's click actually produces. A misread column (e.g. a Shopify
+    // "Handle" mapped to "id" instead of "parent_item_id") is handled
+    // downstream in buildItemsFromMappedColumns, not special-cased here.
+    columnTargets[column.column] = result.proposal.proposed;
   }
   console.log(`  mapping: ${columns.length} columns, ${calledModel} called the model`);
-  return { records, columns };
+  return { records, columns, columnTargets };
 }
 
-async function warmCategory(config: StructuredSetConfig, records: Record<string, string>[], store: ReturnType<typeof createCacheStore>, client: ReturnType<typeof getAnthropicClient>, model: string) {
-  const items = records.map((row, index) => ({
-    id: `row-${index + 1}`,
-    name: row[config.nameColumn] ?? "",
-    description: config.descriptionColumn ? row[config.descriptionColumn] : undefined,
-  }));
+/**
+ * Builds category input the same way the live demo does (buildItemsFromMappedColumns,
+ * then each item's own name/description) rather than reading a raw column directly, so
+ * a variant export's forward-filled names and the cache key this produces both match
+ * what catalogRunCategory in src/app/demo/actions.ts builds for the same mapped columns.
+ */
+async function warmCategory(config: StructuredSetConfig, records: Record<string, string>[], columnTargets: Record<string, MappingTargetKey | null>, store: ReturnType<typeof createCacheStore>, client: ReturnType<typeof getAnthropicClient>, model: string) {
+  const catalogItems = buildItemsFromMappedColumns(records, columnTargets);
+  const items = catalogItems.map((item) => ({ id: item.id, name: item.name, description: item.description }));
   const result = await runCategoryAgent({
     store,
     client,
@@ -204,8 +210,8 @@ async function warmSet(set: string, store: ReturnType<typeof createCacheStore>, 
   console.log(`Set ${set}:`);
   await warmSellerIntake(set, store, client, model);
   if (config.kind === "structured") {
-    const { records } = await warmMapping(config, store, client, model);
-    await warmCategory(config, records, store, client, model);
+    const { records, columnTargets } = await warmMapping(config, store, client, model);
+    await warmCategory(config, records, columnTargets, store, client, model);
   } else {
     await warmExtraction(config, store, client, model);
   }

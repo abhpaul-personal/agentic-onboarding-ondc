@@ -1,0 +1,29 @@
+{
+  "key": "17804ec1e17e9b158894a4924b4c65fc7e127d74d2ca292ff3814907967f9d57",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:15:25.700Z",
+  "token_usage": {
+    "input_tokens": 1770,
+    "output_tokens": 218
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "quantity.available.count",
+        "confidence": 0.95
+      },
+      {
+        "target": "net_quantity",
+        "confidence": 0.03
+      },
+      {
+        "target": "IGNORE",
+        "confidence": 0.02
+      }
+    ],
+    "proposed": "quantity.available.count",
+    "confidence": 0.95,
+    "reason": "Header \"stock\" with integer values such as \"23\" and \"7\" indicates the available inventory count per item."
+  }
+}

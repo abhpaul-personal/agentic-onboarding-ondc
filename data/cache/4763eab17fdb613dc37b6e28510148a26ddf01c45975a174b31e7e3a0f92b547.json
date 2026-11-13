@@ -1,0 +1,37 @@
+{
+  "key": "4763eab17fdb613dc37b6e28510148a26ddf01c45975a174b31e7e3a0f92b547",
+  "step": "seller-intake",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:14:37.335Z",
+  "token_usage": {
+    "input_tokens": 3279,
+    "output_tokens": 467
+  },
+  "output": {
+    "profile": {
+      "seller_id": "SLR-D",
+      "business_name": "Butterleaf Home Bakery",
+      "owner": "Farah Qureshi",
+      "city": "Indore",
+      "state": "Madhya Pradesh",
+      "category": "Grocery",
+      "gstin": "23ZZZZPQ0004D1ZW",
+      "pan": "ZZZPQ0004D",
+      "fssai": "20000000000004",
+      "fssai_expiry": "2027-12-31",
+      "ifsc": "DEMO0000004",
+      "account": "000000000404",
+      "packer_address": "House 7, Demo Colony, Indore 452000",
+      "returns": "Not returnable (perishable)",
+      "time_to_ship": "PT6H",
+      "own_brands": [
+        "Butterleaf"
+      ]
+    },
+    "notes": [
+      "GSTIN corrected from gst_certificate.png: certificate shows 23ZZZZPQ0004D1ZW, form had 23ZZZPQ0004D1ZW (one Z missing).",
+      "PAN left as on form (ZZZPQ0004D); the PAN embedded in the certificate's GSTIN (ZZZZPQ0004D) differs from the form PAN, so the PAN should be manually verified.",
+      "FSSAI number and expiry, IFSC, account number, business name and state match the documents."
+    ]
+  }
+}

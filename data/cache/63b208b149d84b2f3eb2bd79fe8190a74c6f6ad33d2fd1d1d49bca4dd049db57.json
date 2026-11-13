@@ -1,0 +1,25 @@
+{
+  "key": "63b208b149d84b2f3eb2bd79fe8190a74c6f6ad33d2fd1d1d49bca4dd049db57",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:13:50.571Z",
+  "token_usage": {
+    "input_tokens": 1903,
+    "output_tokens": 232
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "descriptor.short_desc",
+        "confidence": 0.8
+      },
+      {
+        "target": "IGNORE",
+        "confidence": 0.1
+      }
+    ],
+    "proposed": "descriptor.short_desc",
+    "confidence": 0.8,
+    "reason": "Shopify-style Body (HTML) holds product description text, e.g. \"<p>Chanderi kurta set, hand-finished in Kochi.</p>\", which fits the short description field."
+  }
+}

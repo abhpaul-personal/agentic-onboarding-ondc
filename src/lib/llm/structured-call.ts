@@ -48,6 +48,18 @@ export async function structuredCall<TOut>(
     input_schema: jsonSchema as Anthropic.Tool.InputSchema,
   };
 
+  // Forced tool_choice ("tool"/"any") returns a 400 on current models (Claude
+  // Opus 5.5, Claude Sonnet 5.5 and later): steer with "auto" plus an explicit
+  // instruction instead. (Not using `strict: true` here: it requires every
+  // JSON-Schema keyword in the tool to be in Anthropic's supported subset,
+  // and zod's bounded-array constraints emit `maxItems`/`minItems`, which
+  // aren't. The existing retry-with-validation-errors loop below already
+  // catches and corrects malformed output.)
+  const systemWithToolInstruction =
+    `${params.system}\n\n` +
+    `You must answer by calling the "${params.toolName}" tool exactly once. ` +
+    `Do not respond with plain text.`;
+
   const callOnce = async (correction?: string) => {
     const content: Anthropic.MessageParam["content"] =
       correction == null
@@ -58,18 +70,27 @@ export async function structuredCall<TOut>(
 
     const response = await params.client.messages.create({
       model: params.model,
-      max_tokens: params.maxTokens ?? 1536,
-      system: params.system,
+      // Current models run adaptive thinking by default, which spends part of
+      // max_tokens before the tool call itself; a low max_tokens here starves
+      // the tool call entirely (stop_reason "max_tokens" with no tool_use).
+      // "low" effort keeps thinking brief for these single-step extraction
+      // calls, and the token ceiling still leaves headroom for it plus the
+      // JSON tool call.
+      max_tokens: params.maxTokens ?? 4096,
+      output_config: { effort: "low" },
+      system: systemWithToolInstruction,
       messages: [{ role: "user", content }],
       tools: [tool],
-      tool_choice: { type: "tool", name: params.toolName },
+      tool_choice: { type: "auto" },
     });
 
     const toolUse = response.content.find(
       (block): block is Anthropic.ToolUseBlock => block.type === "tool_use",
     );
     if (!toolUse) {
-      throw new Error(`Model did not return a ${params.toolName} tool call.`);
+      throw new Error(
+        `Model did not return a ${params.toolName} tool call (stop_reason: ${response.stop_reason}).`,
+      );
     }
     return { parsed: params.outputSchema.safeParse(toolUse.input), usage: response.usage };
   };

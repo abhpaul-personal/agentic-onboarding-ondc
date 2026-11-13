@@ -1,0 +1,29 @@
+{
+  "key": "f618e4e4718b4aeb5dce59d71cfa1c1a68d7a4a19310fb564780dbec2bcc3a42",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:14:08.226Z",
+  "token_usage": {
+    "input_tokens": 1809,
+    "output_tokens": 246
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "id",
+        "confidence": 0.88
+      },
+      {
+        "target": "parent_item_id",
+        "confidence": 0.07
+      },
+      {
+        "target": "size",
+        "confidence": 0.03
+      }
+    ],
+    "proposed": "id",
+    "confidence": 0.88,
+    "reason": "Each value such as \"NKT-01-M\" is a unique variant-level SKU (84 distinct values, 100% filled), so it identifies the item and maps to the item ID. Variant grouping would use the shared prefix, not this column."
+  }
+}

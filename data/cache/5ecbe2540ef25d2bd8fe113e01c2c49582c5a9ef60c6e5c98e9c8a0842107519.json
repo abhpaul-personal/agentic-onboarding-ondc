@@ -1,0 +1,214 @@
+{
+  "key": "5ecbe2540ef25d2bd8fe113e01c2c49582c5a9ef60c6e5c98e9c8a0842107519",
+  "step": "category",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:12:59.385Z",
+  "token_usage": {
+    "input_tokens": 1563,
+    "output_tokens": 1588
+  },
+  "output": {
+    "proposals": [
+      {
+        "item_id": "TMG-001",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "TMG-002",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "TMG-003",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "TMG-004",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "TMG-005",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "TMG-006",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "TMG-007",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.98
+      },
+      {
+        "item_id": "TMG-008",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.98
+      },
+      {
+        "item_id": "TMG-009",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.98
+      },
+      {
+        "item_id": "TMG-010",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.98
+      },
+      {
+        "item_id": "TMG-011",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "TMG-012",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "TMG-013",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "TMG-014",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "TMG-015",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.93
+      },
+      {
+        "item_id": "TMG-016",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.93
+      },
+      {
+        "item_id": "TMG-017",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.92
+      },
+      {
+        "item_id": "TMG-018",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.92
+      },
+      {
+        "item_id": "TMG-019",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.92
+      },
+      {
+        "item_id": "TMG-020",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.92
+      },
+      {
+        "item_id": "TMG-021",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.93
+      },
+      {
+        "item_id": "TMG-022",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.93
+      },
+      {
+        "item_id": "TMG-023",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.92
+      },
+      {
+        "item_id": "TMG-024",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.92
+      },
+      {
+        "item_id": "TMG-025",
+        "category_id": "Sauces, Spreads and Dips",
+        "confidence": 0.6
+      },
+      {
+        "item_id": "TMG-026",
+        "category_id": "Sauces, Spreads and Dips",
+        "confidence": 0.6
+      },
+      {
+        "item_id": "TMG-027",
+        "category_id": "Sauces, Spreads and Dips",
+        "confidence": 0.6
+      },
+      {
+        "item_id": "TMG-028",
+        "category_id": "Sauces, Spreads and Dips",
+        "confidence": 0.6
+      },
+      {
+        "item_id": "TMG-029",
+        "category_id": "Sauces, Spreads and Dips",
+        "confidence": 0.6
+      },
+      {
+        "item_id": "TMG-030",
+        "category_id": "Sauces, Spreads and Dips",
+        "confidence": 0.6
+      },
+      {
+        "item_id": "TMG-031",
+        "category_id": "Sauces, Spreads and Dips",
+        "confidence": 0.6
+      },
+      {
+        "item_id": "TMG-032",
+        "category_id": "Sauces, Spreads and Dips",
+        "confidence": 0.6
+      },
+      {
+        "item_id": "TMG-033",
+        "category_id": "Sauces, Spreads and Dips",
+        "confidence": 0.6
+      },
+      {
+        "item_id": "TMG-034",
+        "category_id": "Sauces, Spreads and Dips",
+        "confidence": 0.6
+      },
+      {
+        "item_id": "TMG-035",
+        "category_id": "Sauces, Spreads and Dips",
+        "confidence": 0.35
+      },
+      {
+        "item_id": "TMG-036",
+        "category_id": "Sauces, Spreads and Dips",
+        "confidence": 0.35
+      },
+      {
+        "item_id": "TMG-037",
+        "category_id": "Sauces, Spreads and Dips",
+        "confidence": 0.3
+      },
+      {
+        "item_id": "TMG-038",
+        "category_id": "Sauces, Spreads and Dips",
+        "confidence": 0.3
+      },
+      {
+        "item_id": "TMG-039",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "TMG-040",
+        "category_id": "Masala and Seasoning",
+        "confidence": 0.5
+      }
+    ]
+  }
+}

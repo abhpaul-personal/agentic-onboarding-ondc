@@ -1,0 +1,25 @@
+{
+  "key": "e294d0e95a8e539bfede2f7947347b55602eb370353af08cb39e930d1ce55655",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:13:16.324Z",
+  "token_usage": {
+    "input_tokens": 1791,
+    "output_tokens": 217
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "price.value",
+        "confidence": 0.8
+      },
+      {
+        "target": "price.maximum_value",
+        "confidence": 0.25
+      }
+    ],
+    "proposed": "price.value",
+    "confidence": 0.78,
+    "reason": "\"Rate\" with currency-prefixed values like \"Rs 160\" and \"₹73.00\" most likely is the selling price per unit; could be MRP but the header does not say so."
+  }
+}

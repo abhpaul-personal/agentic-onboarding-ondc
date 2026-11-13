@@ -1,0 +1,29 @@
+{
+  "key": "441c800a366b0aac1bef47925c5e6d12e7b0bd2c93ea7b22aaaeaf21822ed9ff",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:14:06.160Z",
+  "token_usage": {
+    "input_tokens": 1797,
+    "output_tokens": 233
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "colour",
+        "confidence": 0.88
+      },
+      {
+        "target": "size",
+        "confidence": 0.03
+      },
+      {
+        "target": "IGNORE",
+        "confidence": 0.04
+      }
+    ],
+    "proposed": "colour",
+    "confidence": 0.88,
+    "reason": "Shopify-style \"Option2 Value\" holding colour names such as \"Peacock blue\", \"Haldi Yellow\", \"Mehendi\" and \"Lal\", so it maps to colour."
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "key": "3f3ddaf18fb15e114a0c9e43a47cdcc77d17080c62c94155c0697affc87da27f",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:14:17.779Z",
+  "token_usage": {
+    "input_tokens": 1886,
+    "output_tokens": 231
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "descriptor.images",
+        "confidence": 0.96
+      },
+      {
+        "target": "IGNORE",
+        "confidence": 0.02
+      }
+    ],
+    "proposed": "descriptor.images",
+    "confidence": 0.96,
+    "reason": "Values such as \"https://example.com/demo/chanderi-kurta-set-01.jpg\" are product image URLs, matching Image URL. Fill rate is low (36%), but the column holds only image links."
+  }
+}

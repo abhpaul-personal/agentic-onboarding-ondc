@@ -359,9 +359,16 @@ function SellerPanel({
             ))}
           </tbody>
         </table>
-        <Button variant="gate" disabled={!allOk || isPending} onClick={() => run(() => actions.singleApproveG0(state))}>
-          Approve seller
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="gate" disabled={!allOk || isPending} onClick={() => run(() => actions.singleApproveG0(state))}>
+            Approve seller
+          </Button>
+          {!allOk && (
+            <Button variant="default" disabled={isPending} onClick={() => run(() => actions.singleRejectG0(state))}>
+              Send back
+            </Button>
+          )}
+        </div>
       </Card>
     );
   }

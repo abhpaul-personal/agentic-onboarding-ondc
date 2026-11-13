@@ -1,0 +1,25 @@
+{
+  "key": "d23d7b3064c7503b18e8cfc7825ea8dc08ed9e06432baaeeb76ebdcb96df9edb",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:13:08.221Z",
+  "token_usage": {
+    "input_tokens": 1772,
+    "output_tokens": 213
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "IGNORE",
+        "confidence": 0.93
+      },
+      {
+        "target": "id",
+        "confidence": 0.05
+      }
+    ],
+    "proposed": "IGNORE",
+    "confidence": 0.93,
+    "reason": "\"Sr No\" with sample values \"1\", \"2\", \"3\", \"4\", \"5\" is a serial row number, not product data, so it should be ignored rather than used as an SKU."
+  }
+}

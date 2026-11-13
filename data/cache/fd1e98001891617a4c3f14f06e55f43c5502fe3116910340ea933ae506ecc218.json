@@ -1,0 +1,25 @@
+{
+  "key": "fd1e98001891617a4c3f14f06e55f43c5502fe3116910340ea933ae506ecc218",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:13:59.685Z",
+  "token_usage": {
+    "input_tokens": 1763,
+    "output_tokens": 228
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "IGNORE",
+        "confidence": 0.9
+      },
+      {
+        "target": "size",
+        "confidence": 0.08
+      }
+    ],
+    "proposed": "IGNORE",
+    "confidence": 0.9,
+    "reason": "\"Option1 Name\" holds only the constant value \"Size\", which names the variant option type. It isn't an actual size value, so it carries no product data. The sizes themselves would be in the companion \"Option1 Value\" column."
+  }
+}

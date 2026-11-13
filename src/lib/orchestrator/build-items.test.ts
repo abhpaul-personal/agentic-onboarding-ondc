@@ -99,4 +99,70 @@ describe("buildItemsFromMappedColumns", () => {
     const [item] = buildItemsFromMappedColumns([{ Name: "Toor Dal" }], { Name: "descriptor.name" as const });
     expect(item.id).toBe("row-1");
   });
+
+  it("set C's real Shopify shape: forward-fills name/brand/category across a variant group and appends each row's own size", () => {
+    // A real Shopify export only fills Title/Vendor/Type on a product's first
+    // row; later variant rows share Handle but leave them blank.
+    const rows = [
+      {
+        Handle: "chanderi-kurta-set-01",
+        Title: "Chanderi Kurta Set 01",
+        Vendor: "Neelkurinji",
+        Type: "Kurtas and Kurta Sets",
+        "Option1 Value": "S",
+        "Variant SKU": "NKT-01-S",
+      },
+      {
+        Handle: "chanderi-kurta-set-01",
+        Title: "",
+        Vendor: "",
+        Type: "",
+        "Option1 Value": "M",
+        "Variant SKU": "NKT-01-M",
+      },
+      {
+        Handle: "chanderi-kurta-set-01",
+        Title: "",
+        Vendor: "",
+        Type: "",
+        "Option1 Value": "L",
+        "Variant SKU": "NKT-01-L",
+      },
+    ];
+    const targets = {
+      Handle: "parent_item_id" as const,
+      Title: "descriptor.name" as const,
+      Vendor: "brand" as const,
+      Type: "category_id" as const,
+      "Option1 Value": "size" as const,
+      "Variant SKU": "id" as const,
+    };
+
+    const items = buildItemsFromMappedColumns(rows, targets);
+    expect(items.map((i) => i.name)).toEqual([
+      "Chanderi Kurta Set 01 - S",
+      "Chanderi Kurta Set 01 - M",
+      "Chanderi Kurta Set 01 - L",
+    ]);
+    expect(items.every((i) => i.brand === "Neelkurinji")).toBe(true);
+    expect(items.every((i) => i.category === "Kurtas and Kurta Sets")).toBe(true);
+  });
+
+  it("leaves non-variant items (no parent_item_id mapped) untouched", () => {
+    const [item] = buildItemsFromMappedColumns([{ Name: "Toor Dal" }], { Name: "descriptor.name" as const });
+    expect(item.name).toBe("Toor Dal");
+    expect(item.parentItemId).toBeUndefined();
+  });
+
+  it("falls back to the item's id rather than a blank name when no column (and no variant group) resolves one", () => {
+    // Mirrors a mapping agent misreading a Shopify "Handle" column as "id"
+    // instead of "parent_item_id": no column maps to a name, and there is
+    // no group to inherit one from, so buildItemsFromMappedColumns must
+    // never hand the category agent a blank name (it would crash on
+    // categoryInputSchema's name: z.string().min(1)).
+    const [item] = buildItemsFromMappedColumns([{ Handle: "chanderi-kurta-set-01" }], {
+      Handle: "id" as const,
+    });
+    expect(item.name).toBe("chanderi-kurta-set-01");
+  });
 });

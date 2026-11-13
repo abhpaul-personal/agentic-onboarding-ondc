@@ -1,0 +1,25 @@
+{
+  "key": "2636a7d1732fe0ff31fee21a76eb7fa3802cc273430b14ff637d95a6df6301f2",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:12:38.863Z",
+  "token_usage": {
+    "input_tokens": 1772,
+    "output_tokens": 217
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "net_quantity",
+        "confidence": 0.9
+      },
+      {
+        "target": "quantity.available.count",
+        "confidence": 0.08
+      }
+    ],
+    "proposed": "net_quantity",
+    "confidence": 0.88,
+    "reason": "Header \"net_qty\" matches net quantity; values like \"200\", \"400\", \"100\" look like pack sizes, not stock counts. Units aren't shown in the values."
+  }
+}

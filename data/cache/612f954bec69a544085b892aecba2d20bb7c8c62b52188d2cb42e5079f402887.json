@@ -1,0 +1,29 @@
+{
+  "key": "612f954bec69a544085b892aecba2d20bb7c8c62b52188d2cb42e5079f402887",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:14:15.006Z",
+  "token_usage": {
+    "input_tokens": 1795,
+    "output_tokens": 271
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "descriptor.code",
+        "confidence": 0.8
+      },
+      {
+        "target": "id",
+        "confidence": 0.12
+      },
+      {
+        "target": "IGNORE",
+        "confidence": 0.05
+      }
+    ],
+    "proposed": "descriptor.code",
+    "confidence": 0.8,
+    "reason": "The header \"Variant Barcode\" with 13-digit values like \"2000003000104\" looks like EAN-13 barcodes, so GTIN is the best fit. The 2000 prefix is used for internal store codes, so these may not be true GTINs. That is why confidence is not higher."
+  }
+}

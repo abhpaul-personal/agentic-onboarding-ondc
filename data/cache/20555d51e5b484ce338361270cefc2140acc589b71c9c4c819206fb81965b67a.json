@@ -1,0 +1,29 @@
+{
+  "key": "20555d51e5b484ce338361270cefc2140acc589b71c9c4c819206fb81965b67a",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:13:20.950Z",
+  "token_usage": {
+    "input_tokens": 1792,
+    "output_tokens": 261
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "descriptor.code",
+        "confidence": 0.88
+      },
+      {
+        "target": "id",
+        "confidence": 0.08
+      },
+      {
+        "target": "IGNORE",
+        "confidence": 0.03
+      }
+    ],
+    "proposed": "descriptor.code",
+    "confidence": 0.88,
+    "reason": "Header \"Barcode\" with 13-digit values like \"2000002000013\" matches the EAN-13 GTIN format. The 2000000... prefix is normally reserved for in-store use, so these may be internal codes. They still fit the GTIN field best."
+  }
+}

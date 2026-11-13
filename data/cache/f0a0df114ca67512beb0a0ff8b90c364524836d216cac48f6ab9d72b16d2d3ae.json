@@ -1,0 +1,25 @@
+{
+  "key": "f0a0df114ca67512beb0a0ff8b90c364524836d216cac48f6ab9d72b16d2d3ae",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:12:36.790Z",
+  "token_usage": {
+    "input_tokens": 1772,
+    "output_tokens": 207
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "price.value",
+        "confidence": 0.96
+      },
+      {
+        "target": "price.maximum_value",
+        "confidence": 0.08
+      }
+    ],
+    "proposed": "price.value",
+    "confidence": 0.95,
+    "reason": "The header \"selling_price\" and numeric sample values such as \"90\" and \"180\" match the selling price in INR (price.value). It is not the MRP."
+  }
+}

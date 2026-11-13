@@ -1,0 +1,25 @@
+{
+  "key": "f625a23e5047df6012159a0933f6d2cedf68bb59de2425055c6d6330beb68ac2",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:15:08.604Z",
+  "token_usage": {
+    "input_tokens": 1771,
+    "output_tokens": 204
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "price.maximum_value",
+        "confidence": 0.96
+      },
+      {
+        "target": "price.value",
+        "confidence": 0.08
+      }
+    ],
+    "proposed": "price.maximum_value",
+    "confidence": 0.96,
+    "reason": "Header \"mrp\" means maximum retail price, and sample values like \"165\" and \"420\" are numeric rupee amounts."
+  }
+}

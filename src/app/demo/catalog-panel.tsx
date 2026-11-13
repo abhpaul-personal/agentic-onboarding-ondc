@@ -260,7 +260,21 @@ function G2Panel({ state, run, isPending }: { state: SingleDemoState; run: (a: (
       <p className="mb-2 text-xs text-[var(--ink2)]">
         Accepting every mapping as proposed (the demo keeps per-field overrides out of scope for M5).
       </p>
-      <Button variant="gate" disabled={isPending} onClick={() => run(() => actions.catalogApproveG2(state))}>
+      <Button
+        variant="gate"
+        disabled={isPending}
+        onClick={() =>
+          run(() => {
+            // "Accepting every mapping as proposed": approveG2 needs an explicit
+            // resolution for every non-auto column, or it throws (it has no
+            // reviewer input to fall back on otherwise).
+            const resolutions = Object.fromEntries(
+              decisions.filter((d) => d.route !== "auto").map((d) => [d.column, d.proposed]),
+            );
+            return actions.catalogApproveG2(state, resolutions);
+          })
+        }
+      >
         Approve mappings
       </Button>
     </Card>

@@ -1,0 +1,25 @@
+{
+  "key": "9739d9b48809df469a8dbb4016e246eeb8d8278d38a7721f6a2151ff4ec91b03",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:12:41.131Z",
+  "token_usage": {
+    "input_tokens": 1758,
+    "output_tokens": 244
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "net_quantity",
+        "confidence": 0.35
+      },
+      {
+        "target": "IGNORE",
+        "confidence": 0.3
+      }
+    ],
+    "proposed": "net_quantity",
+    "confidence": 0.35,
+    "reason": "The column holds only the unit \"g\" (a single distinct value) with no numeric amount. It could be the unit part of net quantity, but on its own it is incomplete. It would need to be combined with a separate quantity column, so confidence is low and it should go to review."
+  }
+}

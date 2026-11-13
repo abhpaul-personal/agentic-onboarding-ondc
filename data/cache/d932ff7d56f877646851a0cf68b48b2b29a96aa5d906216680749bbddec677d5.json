@@ -1,0 +1,29 @@
+{
+  "key": "d932ff7d56f877646851a0cf68b48b2b29a96aa5d906216680749bbddec677d5",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:12:27.883Z",
+  "token_usage": {
+    "input_tokens": 1790,
+    "output_tokens": 221
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "id",
+        "confidence": 0.96
+      },
+      {
+        "target": "parent_item_id",
+        "confidence": 0.03
+      },
+      {
+        "target": "descriptor.code",
+        "confidence": 0.02
+      }
+    ],
+    "proposed": "id",
+    "confidence": 0.96,
+    "reason": "Header \"sku\" with unique, fully filled values like \"TMG-001\" and \"TMG-002\" is a seller item identifier (SKU)."
+  }
+}

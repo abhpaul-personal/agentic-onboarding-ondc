@@ -1,0 +1,25 @@
+{
+  "key": "301ff9d5305292dc2d47190d237465f4fc2f9c1cf6eb90a5b97fe57d3811aa54",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:12:32.471Z",
+  "token_usage": {
+    "input_tokens": 1762,
+    "output_tokens": 213
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "brand",
+        "confidence": 0.97
+      },
+      {
+        "target": "manufacturer_or_packer_name",
+        "confidence": 0.08
+      }
+    ],
+    "proposed": "brand",
+    "confidence": 0.97,
+    "reason": "The header is \"brand\" and the sample value \"Tilwari\" looks like a brand name. All rows have the same value, which fits a single-brand catalogue."
+  }
+}

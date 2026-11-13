@@ -1,0 +1,25 @@
+{
+  "key": "fde5a20effec925e962d3c70bc46982680086e140f2ee5dfeccf637c2d31a8bd",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:14:12.592Z",
+  "token_usage": {
+    "input_tokens": 1781,
+    "output_tokens": 220
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "price.maximum_value",
+        "confidence": 0.9
+      },
+      {
+        "target": "price.value",
+        "confidence": 0.07
+      }
+    ],
+    "proposed": "price.maximum_value",
+    "confidence": 0.9,
+    "reason": "In Shopify exports, \"Compare At Price\" is the original or list price, which matches MRP. Sample values such as \"1490\" and \"2490\" look like INR price amounts."
+  }
+}

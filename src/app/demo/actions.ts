@@ -36,6 +36,7 @@ import {
   completeSellerIntake,
   completeVerification,
   approveSellerG0,
+  rejectSellerG0,
   createSellerOnboardingRun,
 } from "@/lib/orchestrator/seller-onboarding";
 import {
@@ -156,6 +157,14 @@ export async function singleApproveG0(state: DemoState): Promise<DemoState> {
   if (!set || !set.sourceFormat || !seller.profile) throw new Error("Set has no catalog to onboard.");
   const catalog = createCatalogRun(state.setId, seller.profile, set.sourceFormat);
   return { ...state, seller, catalog };
+}
+
+/** G0 reject: a failing check means the reviewer cannot approve, so they send the seller back instead of being stuck. */
+export async function singleRejectG0(state: DemoState): Promise<DemoState> {
+  if (state.kind !== "single") throw new Error("Not a single-seller run.");
+  const failing = state.seller.checks?.filter((c) => !c.passed).map((c) => c.name) ?? [];
+  const reason = failing.length ? failing.join(", ") : "a verification check failed";
+  return { ...state, seller: rejectSellerG0(state.seller, reason) };
 }
 
 /* ---------------- stage 2, catalog ---------------- */

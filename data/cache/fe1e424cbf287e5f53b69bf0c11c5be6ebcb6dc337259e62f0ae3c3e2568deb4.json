@@ -1,0 +1,25 @@
+{
+  "key": "fe1e424cbf287e5f53b69bf0c11c5be6ebcb6dc337259e62f0ae3c3e2568deb4",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:15:17.906Z",
+  "token_usage": {
+    "input_tokens": 1765,
+    "output_tokens": 250
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "brand_owner_FSSAI_license_no",
+        "confidence": 0.95
+      },
+      {
+        "target": "IGNORE",
+        "confidence": 0.03
+      }
+    ],
+    "proposed": "brand_owner_FSSAI_license_no",
+    "confidence": 0.95,
+    "reason": "Header \"fssai_no\" with sample value \"20000000000006\" is a 14-digit FSSAI licence number format. It has a single distinct value, which is plausible when one brand owner holds the licence for all items."
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "443ad6fe17ae9fe68bf1173ad590ac25a004ad4adb0b24068fe6d07ba1d3082c",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:13:25.478Z",
+  "token_usage": {
+    "input_tokens": 1781,
+    "output_tokens": 219
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "veg_non_veg",
+        "confidence": 0.96
+      }
+    ],
+    "proposed": "veg_non_veg",
+    "confidence": 0.96,
+    "reason": "Header \"Veg/NonVeg\" and sample values like \"Veg\", \"Shakahari\", \"V\" and \"veg\" indicate a vegetarian/non-vegetarian marker, which maps to veg_non_veg."
+  }
+}

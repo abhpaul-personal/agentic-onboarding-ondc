@@ -1,0 +1,25 @@
+{
+  "key": "67cc46601efbb3234e155e65bc22bb69cc5be1afb3c1010c849a55ebb3c6990c",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:13:12.195Z",
+  "token_usage": {
+    "input_tokens": 1796,
+    "output_tokens": 208
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "brand",
+        "confidence": 0.96
+      },
+      {
+        "target": "manufacturer_or_packer_name",
+        "confidence": 0.08
+      }
+    ],
+    "proposed": "brand",
+    "confidence": 0.96,
+    "reason": "The header \"Brand\" and values like \"Annakosh\" and \"Kesarbaug Foods\" are brand names, so this maps to brand."
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "key": "1e6d2aa5952924ce53cc0e1146d63e830c495dbe6f5d8361789973198a40c87b",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:13:28.142Z",
+  "token_usage": {
+    "input_tokens": 1787,
+    "output_tokens": 263
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "month_year_of_manufacture_packing_import",
+        "confidence": 0.9
+      },
+      {
+        "target": "shelf_life",
+        "confidence": 0.04
+      },
+      {
+        "target": "IGNORE",
+        "confidence": 0.03
+      }
+    ],
+    "proposed": "month_year_of_manufacture_packing_import",
+    "confidence": 0.9,
+    "reason": "\"Mfg Dt\" is a manufacturing date header, and values like \"09-2026\" and \"Oct-26\" are month-year entries, though formats are inconsistent and will need normalizing."
+  }
+}

@@ -1,0 +1,434 @@
+{
+  "key": "eaa920f546747e4d8961e80231e3fc5e92e1b8fae37d516340e6c6f237369ba6",
+  "step": "category",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:14:33.728Z",
+  "token_usage": {
+    "input_tokens": 3457,
+    "output_tokens": 3388
+  },
+  "output": {
+    "proposals": [
+      {
+        "item_id": "NKT-01-S",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-01-M",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-01-L",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-01-XL",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-02-FreeSize",
+        "category_id": "Sarees",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-03-FreeSize",
+        "category_id": "Dupattas",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-04-S",
+        "category_id": "Tops",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-04-M",
+        "category_id": "Tops",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-04-L",
+        "category_id": "Tops",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-04-XL",
+        "category_id": "Tops",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-05-S",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-05-M",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-05-L",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-05-XL",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-06-S",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-06-M",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-06-L",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-06-XL",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-07-FreeSize",
+        "category_id": "Sarees",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-08-FreeSize",
+        "category_id": "Dupattas",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-09-S",
+        "category_id": "Tops",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-09-M",
+        "category_id": "Tops",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-09-L",
+        "category_id": "Tops",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-09-XL",
+        "category_id": "Tops",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-10-S",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-10-M",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-10-L",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-10-XL",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-11-S",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-11-M",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-11-L",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-11-XL",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-12-FreeSize",
+        "category_id": "Sarees",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-13-FreeSize",
+        "category_id": "Dupattas",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-14-S",
+        "category_id": "Tops",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-14-M",
+        "category_id": "Tops",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-14-L",
+        "category_id": "Tops",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-14-XL",
+        "category_id": "Tops",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-15-S",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-15-M",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-15-L",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-15-XL",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-16-S",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-16-M",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-16-L",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-16-XL",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-17-FreeSize",
+        "category_id": "Sarees",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-18-FreeSize",
+        "category_id": "Dupattas",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-19-S",
+        "category_id": "Tops",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-19-M",
+        "category_id": "Tops",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-19-L",
+        "category_id": "Tops",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-19-XL",
+        "category_id": "Tops",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-20-S",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-20-M",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-20-L",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-20-XL",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-21-S",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-21-M",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-21-L",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-21-XL",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-22-FreeSize",
+        "category_id": "Sarees",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-23-FreeSize",
+        "category_id": "Dupattas",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-24-S",
+        "category_id": "Tops",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-24-M",
+        "category_id": "Tops",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-24-L",
+        "category_id": "Tops",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-24-XL",
+        "category_id": "Tops",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-25-S",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-25-M",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-25-L",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-25-XL",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-26-S",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-26-M",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-26-L",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-26-XL",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-27-FreeSize",
+        "category_id": "Sarees",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-28-FreeSize",
+        "category_id": "Dupattas",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-29-S",
+        "category_id": "Tops",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-29-M",
+        "category_id": "Tops",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-29-L",
+        "category_id": "Tops",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-29-XL",
+        "category_id": "Tops",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-30-S",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "NKT-30-M",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-30-L",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "NKT-30-XL",
+        "category_id": "Kurtas and Kurta Sets",
+        "confidence": 0.5
+      }
+    ]
+  }
+}

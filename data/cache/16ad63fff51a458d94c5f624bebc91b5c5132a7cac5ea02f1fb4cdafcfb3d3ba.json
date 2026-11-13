@@ -1,0 +1,29 @@
+{
+  "key": "16ad63fff51a458d94c5f624bebc91b5c5132a7cac5ea02f1fb4cdafcfb3d3ba",
+  "step": "mapping",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-13T15:13:48.602Z",
+  "token_usage": {
+    "input_tokens": 1824,
+    "output_tokens": 262
+  },
+  "output": {
+    "candidates": [
+      {
+        "target": "descriptor.name",
+        "confidence": 0.93
+      },
+      {
+        "target": "descriptor.short_desc",
+        "confidence": 0.04
+      },
+      {
+        "target": "parent_item_id",
+        "confidence": 0.02
+      }
+    ],
+    "proposed": "descriptor.name",
+    "confidence": 0.93,
+    "reason": "Values like \"Chanderi Kurta Set 01\" and \"Linen Blend Saree 02\" are product titles, so this column maps to the item name. Fill rate is low at 36%, but the values themselves are clearly item names."
+  }
+}
