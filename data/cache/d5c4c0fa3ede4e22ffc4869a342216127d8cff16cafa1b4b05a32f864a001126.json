@@ -1,0 +1,139 @@
+{
+  "key": "d5c4c0fa3ede4e22ffc4869a342216127d8cff16cafa1b4b05a32f864a001126",
+  "step": "category",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-14T12:09:00.056Z",
+  "token_usage": {
+    "input_tokens": 1087,
+    "output_tokens": 1025
+  },
+  "output": {
+    "proposals": [
+      {
+        "item_id": "item-1",
+        "category_id": "Bakery, Cakes and Dairy",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "item-2",
+        "category_id": "Bakery, Cakes and Dairy",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "item-3",
+        "category_id": "Bakery, Cakes and Dairy",
+        "confidence": 0.95
+      },
+      {
+        "item_id": "item-4",
+        "category_id": "Bakery, Cakes and Dairy",
+        "confidence": 0.95
+      },
+      {
+        "item_id": "item-5",
+        "category_id": "Bakery, Cakes and Dairy",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "item-6",
+        "category_id": "Chocolates and Biscuits",
+        "confidence": 0.55
+      },
+      {
+        "item_id": "item-7",
+        "category_id": "Chocolates and Biscuits",
+        "confidence": 0.7
+      },
+      {
+        "item_id": "item-8",
+        "category_id": "Chocolates and Biscuits",
+        "confidence": 0.85
+      },
+      {
+        "item_id": "item-9",
+        "category_id": "Chocolates and Biscuits",
+        "confidence": 0.92
+      },
+      {
+        "item_id": "item-10",
+        "category_id": "Bakery, Cakes and Dairy",
+        "confidence": 0.95
+      },
+      {
+        "item_id": "item-11",
+        "category_id": "Chocolates and Biscuits",
+        "confidence": 0.55
+      },
+      {
+        "item_id": "item-12",
+        "category_id": "Bakery, Cakes and Dairy",
+        "confidence": 0.6
+      },
+      {
+        "item_id": "item-13",
+        "category_id": "Bakery, Cakes and Dairy",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "item-14",
+        "category_id": "Chocolates and Biscuits",
+        "confidence": 0.85
+      },
+      {
+        "item_id": "item-15",
+        "category_id": "Bakery, Cakes and Dairy",
+        "confidence": 0.92
+      },
+      {
+        "item_id": "item-16",
+        "category_id": "Bakery, Cakes and Dairy",
+        "confidence": 0.95
+      },
+      {
+        "item_id": "item-17",
+        "category_id": "Bakery, Cakes and Dairy",
+        "confidence": 0.95
+      },
+      {
+        "item_id": "item-18",
+        "category_id": "Chocolates and Biscuits",
+        "confidence": 0.85
+      },
+      {
+        "item_id": "item-19",
+        "category_id": "Bakery, Cakes and Dairy",
+        "confidence": 0.93
+      },
+      {
+        "item_id": "item-20",
+        "category_id": "Bakery, Cakes and Dairy",
+        "confidence": 0.93
+      },
+      {
+        "item_id": "item-21",
+        "category_id": "Chocolates and Biscuits",
+        "confidence": 0.5
+      },
+      {
+        "item_id": "item-22",
+        "category_id": "Chocolates and Biscuits",
+        "confidence": 0.85
+      },
+      {
+        "item_id": "item-23",
+        "category_id": "Bakery, Cakes and Dairy",
+        "confidence": 0.96
+      },
+      {
+        "item_id": "item-24",
+        "category_id": "Bakery, Cakes and Dairy",
+        "confidence": 0.93
+      },
+      {
+        "item_id": "item-25",
+        "category_id": "Bakery, Cakes and Dairy",
+        "confidence": 0.97
+      }
+    ]
+  }
+}

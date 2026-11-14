@@ -373,9 +373,102 @@ function SellerPanel({
     );
   }
 
+  if (seller.step === "correct") {
+    return <CorrectionPanel state={state} run={run} isPending={isPending} />;
+  }
+
   return (
     <Card>
       <p className="text-sm text-[var(--ink2)]">Seller approved. Starting catalog onboarding…</p>
+    </Card>
+  );
+}
+
+/** Which profile field a failing check's value comes from, so the seller corrects the right one. */
+const CHECK_FIELD: Record<string, string> = {
+  "GSTIN format and checksum": "gstin",
+  "GSTIN state code matches state": "gstin",
+  "PAN format and match inside GSTIN": "pan",
+  "FSSAI licence format": "fssai",
+  "FSSAI licence in date": "fssai_expiry",
+  "IFSC format": "ifsc",
+};
+
+function CorrectionPanel({
+  state,
+  run,
+  isPending,
+}: {
+  state: Extract<DemoState, { kind: "single" }>;
+  run: (action: () => Promise<DemoState>) => void;
+  isPending: boolean;
+}) {
+  const { seller } = state;
+  const failing = seller.checks?.filter((c) => !c.passed) ?? [];
+  const fields = [...new Set(failing.map((c) => CHECK_FIELD[c.name]).filter((f): f is string => Boolean(f)))];
+  const [values, setValues] = useState<Record<string, string>>(() =>
+    Object.fromEntries(fields.map((f) => [f, (seller.profile as Record<string, string> | undefined)?.[f] ?? ""])),
+  );
+  const showCertificate = fields.includes("gstin") || fields.includes("pan");
+
+  return (
+    <Card>
+      <StepHead n="G0" label="Seller corrects and re-submits" extra={<Chip kind="gate">Human gate</Chip>} />
+      <p className="mb-3 text-sm text-[var(--ink2)]">
+        The reviewer sent this back. The value shown below is what the seller-intake agent read, which can
+        be wrong (for example a misread character from the certificate image) — compare it against the
+        document and correct it; the original reading and its check failures stay in the audit log.
+      </p>
+      {failing.length > 0 && (
+        <table className="mb-3 w-full text-xs">
+          <thead>
+            <tr className="bg-[#fbfaf7]">
+              {["Failed check", "Value read"].map((h) => (
+                <th key={h} className="border-b border-[var(--line)] p-1.5 text-left font-semibold text-[var(--ink2)]">
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {failing.map((c) => (
+              <tr key={c.name} className="border-b border-[var(--line2)]">
+                <td className="p-1.5">{c.name}</td>
+                <td className="p-1.5 font-mono">{c.value}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      {showCertificate && (
+        <div className="mb-3">
+          <img
+            src={`/kit/set-${state.setId}/seller_pack/gst_certificate.png`}
+            alt="GST registration certificate"
+            className="max-w-sm rounded-lg border border-[var(--line)]"
+          />
+        </div>
+      )}
+      <div className="mb-3 flex flex-col gap-2">
+        {fields.map((field) => (
+          <label key={field} className="text-xs text-[var(--ink2)]">
+            {field}
+            <input
+              type="text"
+              value={values[field] ?? ""}
+              onChange={(e) => setValues((v) => ({ ...v, [field]: e.target.value }))}
+              className="mt-1 block w-full rounded-lg border border-[var(--line)] p-2 font-mono text-sm text-[var(--ink)]"
+            />
+          </label>
+        ))}
+      </div>
+      <Button
+        variant="gate"
+        disabled={isPending}
+        onClick={() => run(() => actions.singleSubmitCorrection(state, values))}
+      >
+        Re-submit for verification
+      </Button>
     </Card>
   );
 }

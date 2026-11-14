@@ -113,22 +113,29 @@ export default function CaseStudyPage() {
         <p>
           The <Link href="/scorecard" className="underline">scorecard</Link> computes real metrics from
           whatever you actually did in a run — auto-accept precision and auto-map rate against the eval
-          kit&apos;s ground truth, fallback queue rate, time to publish-ready, and (always) zero invented
-          statutory values. Running the set G cooperative&apos;s bulk flow catches both of its planted
-          seller errors (an invalid GSTIN checksum and an expired FSSAI licence) with real deterministic
-          code, not a model.
+          kit&apos;s ground truth, fallback queue rate, and time to publish-ready. Running the set G
+          cooperative&apos;s bulk flow catches both of its planted seller errors (an invalid GSTIN
+          checksum and an expired FSSAI licence) with real deterministic code, not a model. All seven
+          sample sets are warmed against the real model and replay from a committed cache on the live
+          demo, so every step (mapping, category, extraction) shows real output, not a placeholder.
         </p>
         <p>
-          The single-seller sets (A–F) need the model for mapping, category and extraction, so they
-          replay from a committed cache that has to be warmed once, locally, against the real API before
-          those steps show content — a step in progress for this project. Until then, those sets show an
-          honest &quot;not warmed yet&quot; card rather than a live call or a fabricated result.
+          The guardrail design caught a real failure, not a staged one. Warming the cache exposed that
+          the seller-intake agent&apos;s vision read of a synthetic GST certificate can misread the
+          GSTIN&apos;s run of repeated characters — on more than one sample seller, confirmed by viewing
+          the certificate images directly: they are correct, the model&apos;s transcription is not. The
+          deterministic GSTIN checksum check (real code, not the model) correctly failed the result every
+          time and blocked auto-approval at G0, exactly the deterministic-check-plus-human-gate design
+          this project is built around. The one gap it exposed was in the UI, not the guardrail: a seller
+          whose check failed had no way forward, only a disabled approve button. That is fixed now with a
+          send-back-and-correct step, so the reviewer sends the seller back, the seller compares the
+          flagged value against the certificate and corrects it, and the real checks run again before
+          returning to G0 — with the original misread kept in the audit log, never edited over.
         </p>
       </Section>
 
       <Section title="What I would do next">
         <ul className="list-disc space-y-1.5 pl-5">
-          <li>Warm the cache for all seven sample sets and publish real mapping/category/extraction output on the live demo.</li>
           <li>Finish multimodal intake (price-list photo, WhatsApp text) end to end, with G1 confirmation.</li>
           <li>Add per-tenant workspaces, gate policy and a REST API (FR-22 to FR-25), for the standalone-SaaS positioning.</li>
           <li>

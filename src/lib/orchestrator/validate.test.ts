@@ -58,6 +58,28 @@ describe("preFillFromSellerProfile", () => {
     const item: CatalogItem = { id: "ITEM-01", name: "Imported Olive Oil", fssaiLicenceNo: "19876543210987" };
     expect(preFillFromSellerProfile(item, seller).fssaiLicenceNo).toBe("19876543210987");
   });
+
+  it("never defaults to the seller when the source itself names a different packer, even with no brand column (set F's TRP-008/016/024)", () => {
+    // Set F has no brand column at all, so isSelfPacked's brand check alone
+    // can't catch this — the explicit packer name is the only signal.
+    const item: CatalogItem = {
+      id: "TRP-008",
+      name: "Rava Sooji",
+      manufacturerOrPackerName: "Third-party packer (not stated)",
+    };
+    expect(isSelfPacked(item, seller)).toBe(false);
+    const result = preFillFromSellerProfile(item, seller);
+    expect(result.fssaiLicenceNo).toBeUndefined();
+    expect(result.manufacturerOrPackerAddress).toBeUndefined();
+    // The explicit (if uninformative) packer name is left as the source gave it.
+    expect(result.manufacturerOrPackerName).toBe("Third-party packer (not stated)");
+  });
+
+  it("still treats a brand-less item as self-packed when its packer name matches the seller", () => {
+    const item: CatalogItem = { id: "TRP-001", name: "Toor Dal", manufacturerOrPackerName: "Trapline Traders" };
+    expect(isSelfPacked(item, seller)).toBe(true);
+    expect(preFillFromSellerProfile(item, seller).fssaiLicenceNo).toBe(seller.fssai);
+  });
 });
 
 describe("validateItems", () => {
@@ -218,5 +240,19 @@ describe("own_brands / self-packed (real sets)", () => {
     const issues = validateItems(items, seller);
     expect(issues.filter((i) => i.type === "packer_missing")).toHaveLength(48);
     expect(issues.filter((i) => i.type === "fssai")).toHaveLength(48);
+  });
+
+  it("set F's 3 explicit-third-party-packer rows (no brand column at all) raise packer_missing and fssai, never a seller default", () => {
+    const seller = loadSellerProfile("F");
+    const items = buildRealItems("F", "catalog.csv").map((item) => preFillFromSellerProfile(item, seller));
+    const thirdParty = items.filter((i) => i.manufacturerOrPackerName === "Third-party packer (not stated)");
+    expect(thirdParty.map((i) => i.id)).toEqual(["TRP-008", "TRP-016", "TRP-024"]);
+    expect(thirdParty.every((i) => i.fssaiLicenceNo === undefined)).toBe(true);
+
+    const issues = validateItems(items, seller);
+    for (const id of ["TRP-008", "TRP-016", "TRP-024"]) {
+      expect(issues.some((i) => i.itemId === id && i.type === "packer_missing")).toBe(true);
+      expect(issues.some((i) => i.itemId === id && i.type === "fssai")).toBe(true);
+    }
   });
 });

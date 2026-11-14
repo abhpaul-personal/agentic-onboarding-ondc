@@ -12,8 +12,23 @@ import type { CatalogItem, ValidationIssue } from "./types";
  * named as their own at intake (own_brands, case-insensitive, trimmed).
  * Anything else is someone else's brand (PRD G3, "Branded items packed
  * by someone else").
+ *
+ * A source-mapped packer name that explicitly names someone other than
+ * the seller is the same signal even with no brand column at all (e.g.
+ * set F has none): without this check, every item in such a source
+ * defaults to self-packed regardless of what its own packer column says,
+ * silently pre-filling the seller's own FSSAI licence onto an item their
+ * own data says someone else packed (found via set F's planted
+ * "missing_fssai_for_third_party_packer" errors, TRP-008/016/024, not
+ * being caught).
  */
 export function isSelfPacked(item: CatalogItem, seller: SellerProfile): boolean {
+  if (
+    item.manufacturerOrPackerName &&
+    item.manufacturerOrPackerName.trim().toLowerCase() !== seller.business_name.trim().toLowerCase()
+  ) {
+    return false;
+  }
   if (!item.brand) return true;
   const normalized = item.brand.trim().toLowerCase();
   return seller.own_brands.some((brand) => brand.trim().toLowerCase() === normalized);
@@ -95,7 +110,9 @@ export function validateItems(
         itemId: item.id,
         type: "packer_missing",
         severity: "g3",
-        message: `No packer name or address for "${item.brand}"-branded item; seller must enter them from the pack label`,
+        message: item.brand
+          ? `No packer name or address for "${item.brand}"-branded item; seller must enter them from the pack label`
+          : `No packer name or address for this third-party-packed item ("${item.manufacturerOrPackerName}"); seller must enter them from the pack label`,
       });
     }
     // A rule couldn't normalise the value (build-items.ts keeps the raw

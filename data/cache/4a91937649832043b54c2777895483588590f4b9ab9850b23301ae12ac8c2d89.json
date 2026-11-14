@@ -1,0 +1,114 @@
+{
+  "key": "4a91937649832043b54c2777895483588590f4b9ab9850b23301ae12ac8c2d89",
+  "step": "category",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-14T12:09:04.656Z",
+  "token_usage": {
+    "input_tokens": 1005,
+    "output_tokens": 719
+  },
+  "output": {
+    "proposals": [
+      {
+        "item_id": "item-1",
+        "category_id": "Indian Sweets",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "item-2",
+        "category_id": "Indian Sweets",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "item-3",
+        "category_id": "Bakery, Cakes and Dairy",
+        "confidence": 0.55
+      },
+      {
+        "item_id": "item-4",
+        "category_id": "Indian Sweets",
+        "confidence": 0.96
+      },
+      {
+        "item_id": "item-5",
+        "category_id": "Indian Sweets",
+        "confidence": 0.95
+      },
+      {
+        "item_id": "item-6",
+        "category_id": "Indian Sweets",
+        "confidence": 0.95
+      },
+      {
+        "item_id": "item-7",
+        "category_id": "Indian Sweets",
+        "confidence": 0.93
+      },
+      {
+        "item_id": "item-8",
+        "category_id": "Indian Sweets",
+        "confidence": 0.95
+      },
+      {
+        "item_id": "item-9",
+        "category_id": "Indian Sweets",
+        "confidence": 0.94
+      },
+      {
+        "item_id": "item-10",
+        "category_id": "Indian Sweets",
+        "confidence": 0.97
+      },
+      {
+        "item_id": "item-11",
+        "category_id": "Indian Sweets",
+        "confidence": 0.94
+      },
+      {
+        "item_id": "item-12",
+        "category_id": "Indian Sweets",
+        "confidence": 0.95
+      },
+      {
+        "item_id": "item-13",
+        "category_id": "Indian Sweets",
+        "confidence": 0.92
+      },
+      {
+        "item_id": "item-14",
+        "category_id": "Indian Sweets",
+        "confidence": 0.96
+      },
+      {
+        "item_id": "item-15",
+        "category_id": "Indian Sweets",
+        "confidence": 0.9
+      },
+      {
+        "item_id": "item-16",
+        "category_id": "Indian Sweets",
+        "confidence": 0.94
+      },
+      {
+        "item_id": "item-17",
+        "category_id": "Indian Sweets",
+        "confidence": 0.94
+      },
+      {
+        "item_id": "item-18",
+        "category_id": "Indian Sweets",
+        "confidence": 0.94
+      },
+      {
+        "item_id": "item-19",
+        "category_id": "Indian Sweets",
+        "confidence": 0.94
+      },
+      {
+        "item_id": "item-20",
+        "category_id": "Indian Sweets",
+        "confidence": 0.94
+      }
+    ]
+  }
+}

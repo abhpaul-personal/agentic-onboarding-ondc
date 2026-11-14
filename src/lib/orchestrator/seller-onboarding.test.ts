@@ -6,6 +6,7 @@ import {
   completeVerification,
   createSellerOnboardingRun,
   rejectSellerG0,
+  submitSellerCorrection,
 } from "./seller-onboarding";
 import type { SellerProfile } from "@/lib/schemas/seller-profile";
 
@@ -64,12 +65,44 @@ describe("seller onboarding state machine", () => {
     expect(approved.auditLog.some((e) => e.kind === "human")).toBe(true);
   });
 
-  it("rejecting G0 loops back to s1 and clears verification results", () => {
+  it("rejecting G0 goes to correct, not s1, and keeps the failing checks visible", () => {
+    // Re-running seller intake in demo mode would just replay the exact same
+    // cached (possibly wrong) output again, so a reject must not loop back
+    // to s1: it needs a step where the seller can actually fix the value.
     const state = runThroughS2(false);
-    const rejected = rejectSellerG0(state, "GSTIN does not match the state code");
-    expect(rejected.step).toBe("s1");
-    expect(rejected.checks).toBeUndefined();
+    const rejected = rejectSellerG0(state, "IFSC format invalid");
+    expect(rejected.step).toBe("correct");
+    expect(rejected.checks).toEqual(state.checks);
     expect(rejected.auditLog.at(-1)?.text).toContain("sent back to seller");
+  });
+
+  it("submitting a correction applies it, re-runs checks, and returns to g0", () => {
+    const rejected = rejectSellerG0(runThroughS2(false), "IFSC format invalid");
+    const corrected = submitSellerCorrection(
+      rejected,
+      { ifsc: "DEMO0000009" },
+      {
+        checks: [
+          { name: "GSTIN format and checksum", passed: true, value: profile.gstin },
+          { name: "IFSC format", passed: true, value: "DEMO0000009" },
+        ],
+        nameMatch: { matched: true, reason: "Simulated: name matches." },
+      },
+    );
+    expect(corrected.step).toBe("g0");
+    expect(corrected.profile?.ifsc).toBe("DEMO0000009");
+    expect(corrected.checks?.every((c) => c.passed)).toBe(true);
+    // The original (wrong) reading and its failure stay in the audit log —
+    // never edited, only superseded by later entries.
+    expect(corrected.auditLog.some((e) => e.text.includes("IFSC format: fail"))).toBe(true);
+    expect(corrected.auditLog.some((e) => e.text.includes('corrected ifsc to "DEMO0000009"'))).toBe(true);
+  });
+
+  it("refuses to submit a correction outside the correct step", () => {
+    const state = runThroughS2(true);
+    expect(() =>
+      submitSellerCorrection(state, { ifsc: "x" }, { checks: [], nameMatch: { matched: true, reason: "x" } }),
+    ).toThrow(OrchestratorStateError);
   });
 
   it("refuses to act on the wrong step", () => {

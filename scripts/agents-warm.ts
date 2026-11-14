@@ -33,6 +33,7 @@ import { runCategoryAgent } from "@/lib/agents/category";
 import { runExtractionAgent } from "@/lib/agents/extraction";
 import { buildItemsFromMappedColumns } from "@/lib/orchestrator/build-items";
 import type { MappingTargetKey } from "@/lib/schemas/mapping-target";
+import { getSampleSet } from "@/lib/demo/sample-sets";
 
 const DATA_DIR = join(process.cwd(), "data/sets");
 
@@ -40,7 +41,6 @@ interface StructuredSetConfig {
   kind: "structured";
   set: string;
   catalogFile: string;
-  categoryIds: string[];
 }
 
 interface UnstructuredSetConfig {
@@ -51,64 +51,17 @@ interface UnstructuredSetConfig {
 
 type SetConfig = StructuredSetConfig | UnstructuredSetConfig;
 
-// Category ids are the distinct category_id values from each set's own
-// golden catalog (data/sets/*/ground_truth/golden_catalog.json) — the
-// local target list, not a client's product data.
+// Each set's allowed category list lives once, in SampleSetMeta
+// (src/lib/demo/sample-sets.ts), read below via getSampleSet — not
+// duplicated here, since the live demo's catalogRunCategory must build
+// the exact same category step input or its cache key never matches.
 const SET_CONFIGS: Record<string, SetConfig> = {
-  A: {
-    kind: "structured",
-    set: "A",
-    catalogFile: "set-A/catalog.csv",
-    categoryIds: ["Masala and Seasoning", "Sauces, Spreads and Dips"],
-  },
-  B: {
-    kind: "structured",
-    set: "B",
-    catalogFile: "set-B/catalog_flat.csv",
-    categoryIds: [
-      "Atta, Flours and Sooji",
-      "Beverages",
-      "Cereals and Breakfast",
-      "Chocolates and Biscuits",
-      "Cooking and Baking Needs",
-      "Dals and Pulses",
-      "Dry Fruits, Nuts and Seeds",
-      "Masala and Seasoning",
-      "Oil and Ghee",
-      "Pasta, Soup and Noodles",
-      "Rice and Rice Products",
-      "Sauces, Spreads and Dips",
-      "Snacks and Namkeen",
-    ],
-  },
-  C: {
-    kind: "structured",
-    set: "C",
-    catalogFile: "set-C/products_export.csv",
-    categoryIds: ["Dupattas", "Kurtas and Kurta Sets", "Sarees", "Tops"],
-  },
+  A: { kind: "structured", set: "A", catalogFile: "set-A/catalog.csv" },
+  B: { kind: "structured", set: "B", catalogFile: "set-B/catalog_flat.csv" },
+  C: { kind: "structured", set: "C", catalogFile: "set-C/products_export.csv" },
   D: { kind: "whatsapp_text", set: "D", sourceFile: "set-D/whatsapp_export.txt" },
   E: { kind: "price_list_photo", set: "E", sourceFile: "set-E/price_list_photo.png" },
-  F: {
-    kind: "structured",
-    set: "F",
-    catalogFile: "set-F/catalog.csv",
-    categoryIds: [
-      "Atta, Flours and Sooji",
-      "Beverages",
-      "Cereals and Breakfast",
-      "Chocolates and Biscuits",
-      "Cooking and Baking Needs",
-      "Dals and Pulses",
-      "Dry Fruits, Nuts and Seeds",
-      "Masala and Seasoning",
-      "Oil and Ghee",
-      "Pasta, Soup and Noodles",
-      "Rice and Rice Products",
-      "Sauces, Spreads and Dips",
-      "Snacks and Namkeen",
-    ],
-  },
+  F: { kind: "structured", set: "F", catalogFile: "set-F/catalog.csv" },
   // G is bulk seller onboarding only (Stage 1), no catalog: nothing to warm here.
 };
 
@@ -164,22 +117,36 @@ async function warmMapping(config: StructuredSetConfig, store: ReturnType<typeof
 }
 
 /**
- * Builds category input the same way the live demo does (buildItemsFromMappedColumns,
- * then each item's own name/description) rather than reading a raw column directly, so
- * a variant export's forward-filled names and the cache key this produces both match
- * what catalogRunCategory in src/app/demo/actions.ts builds for the same mapped columns.
+ * Runs the category step on an already-built item list and logs the
+ * result. Shared by the structured and unstructured paths below so both
+ * build their item list the same way the corresponding live-demo action
+ * does, then call the category agent identically.
  */
-async function warmCategory(config: StructuredSetConfig, records: Record<string, string>[], columnTargets: Record<string, MappingTargetKey | null>, store: ReturnType<typeof createCacheStore>, client: ReturnType<typeof getAnthropicClient>, model: string) {
-  const catalogItems = buildItemsFromMappedColumns(records, columnTargets);
-  const items = catalogItems.map((item) => ({ id: item.id, name: item.name, description: item.description }));
+async function warmCategoryStep(set: string, items: { id: string; name: string; description?: string }[], store: ReturnType<typeof createCacheStore>, client: ReturnType<typeof getAnthropicClient>, model: string) {
+  const allowedCategoryIds = getSampleSet(set)?.allowedCategoryIds;
+  if (!allowedCategoryIds) throw new Error(`Set ${set} has no allowedCategoryIds configured in sample-sets.ts.`);
   const result = await runCategoryAgent({
     store,
     client,
     model,
-    input: { items, allowed_categories: config.categoryIds },
+    input: { items, allowed_categories: [...allowedCategoryIds] },
   });
   console.log(`  category: ${items.length} items, ${result.cached ? "cached" : "called model"}`);
   return result;
+}
+
+/**
+ * Builds category input the same way the live demo does
+ * (buildItemsFromMappedColumns, then each item's own name/description)
+ * rather than reading a raw column directly, so a variant export's
+ * forward-filled names and the cache key this produces both match what
+ * catalogRunCategory in src/app/demo/actions.ts builds for the same
+ * mapped columns.
+ */
+async function warmCategory(set: string, records: Record<string, string>[], columnTargets: Record<string, MappingTargetKey | null>, store: ReturnType<typeof createCacheStore>, client: ReturnType<typeof getAnthropicClient>, model: string) {
+  const catalogItems = buildItemsFromMappedColumns(records, columnTargets);
+  const items = catalogItems.map((item) => ({ id: item.id, name: item.name, description: item.description }));
+  return warmCategoryStep(set, items, store, client, model);
 }
 
 async function warmExtraction(config: UnstructuredSetConfig, store: ReturnType<typeof createCacheStore>, client: ReturnType<typeof getAnthropicClient>, model: string) {
@@ -211,9 +178,14 @@ async function warmSet(set: string, store: ReturnType<typeof createCacheStore>, 
   await warmSellerIntake(set, store, client, model);
   if (config.kind === "structured") {
     const { records, columnTargets } = await warmMapping(config, store, client, model);
-    await warmCategory(config, records, columnTargets, store, client, model);
+    await warmCategory(set, records, columnTargets, store, client, model);
   } else {
-    await warmExtraction(config, store, client, model);
+    const extraction = await warmExtraction(config, store, client, model);
+    // Matches catalogRunExtraction's item-building for unstructured
+    // sources (src/app/demo/actions.ts): id "item-N", no description
+    // (not in the extraction output schema).
+    const items = extraction.output.items.map((item, index) => ({ id: `item-${index + 1}`, name: item.name }));
+    await warmCategoryStep(set, items, store, client, model);
   }
 }
 

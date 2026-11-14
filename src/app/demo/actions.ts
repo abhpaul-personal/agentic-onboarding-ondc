@@ -37,6 +37,7 @@ import {
   completeVerification,
   approveSellerG0,
   rejectSellerG0,
+  submitSellerCorrection,
   createSellerOnboardingRun,
 } from "@/lib/orchestrator/seller-onboarding";
 import {
@@ -170,6 +171,19 @@ export async function singleRejectG0(state: DemoState): Promise<DemoState> {
   return { ...state, seller: rejectSellerG0(state.seller, reason) };
 }
 
+/** Seller corrects a flagged field (e.g. a mis-transcribed GSTIN); real checks run again on the corrected profile. */
+export async function singleSubmitCorrection(
+  state: DemoState,
+  corrections: Record<string, string>,
+): Promise<DemoState> {
+  if (state.kind !== "single") throw new Error("Not a single-seller run.");
+  if (!state.seller.profile) throw new Error("No profile to correct.");
+  const correctedProfile = { ...state.seller.profile, ...corrections };
+  const checks = verifySellerChecks(correctedProfile);
+  const nameMatch = runNameMatch({ profile: correctedProfile });
+  return { ...state, seller: submitSellerCorrection(state.seller, corrections, { checks, nameMatch }) };
+}
+
 /* ---------------- stage 2, catalog ---------------- */
 
 type SingleDemoStateWithCatalog = Extract<DemoState, { kind: "single" }> & { catalog: CatalogRunState };
@@ -263,11 +277,15 @@ export async function catalogRunCategory(state: DemoState, liveModePassphrase?: 
   assertCatalog(state);
   const catalog = state.catalog;
   const set = getSampleSet(state.setId)!;
-  const allowedCategories = [...new Set(catalog.items.map((i) => i.category).filter((c): c is string => Boolean(c)))];
+  // A fixed, per-set list (this set's own golden-catalog category_id
+  // values — see SampleSetMeta.allowedCategoryIds), not derived from
+  // whatever the raw source happens to contain: agents:warm uses the same
+  // fixed list, so the two must agree or the category step's cache key
+  // never matches what a visitor's click produces.
   const items = catalog.items.map((item) => ({ id: item.id, name: item.name, description: item.description }));
   const input = {
     items,
-    allowed_categories: allowedCategories.length ? allowedCategories : [set.category ?? "Uncategorised"],
+    allowed_categories: set.allowedCategoryIds ? [...set.allowedCategoryIds] : [set.category ?? "Uncategorised"],
   };
 
   const liveClient = await liveClientOrThrow(liveModePassphrase);

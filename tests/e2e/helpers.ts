@@ -30,8 +30,11 @@ export async function runVerificationAndResolveG0(page: Page): Promise<"approved
 
   const approveButton = page.getByRole("button", { name: "Approve seller" });
   if (await approveButton.isDisabled()) {
+    // Not "s1": re-running seller intake in demo mode would just replay the
+    // exact same cached (and still wrong) output, so reject goes to a
+    // correction step instead (seller-onboarding.ts's rejectSellerG0).
     await page.getByRole("button", { name: "Send back" }).click();
-    await expect(page.getByRole("heading", { name: /S1/ })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /G0.*corrects/ })).toBeVisible();
     return "sent_back";
   }
   await approveButton.click();

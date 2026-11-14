@@ -10,7 +10,7 @@ import type { GateRecord } from "./types";
  * functions over a plain state object, so pausing is just "don't call the
  * next transition yet" and resuming is "load the state and call it".
  */
-export const SELLER_ONBOARDING_STEPS = ["s1", "s2", "g0", "approved"] as const;
+export const SELLER_ONBOARDING_STEPS = ["s1", "s2", "g0", "correct", "approved"] as const;
 export type SellerOnboardingStep = (typeof SELLER_ONBOARDING_STEPS)[number];
 
 export interface SellerCheckResult {
@@ -93,12 +93,42 @@ export function approveSellerG0(state: SellerOnboardingState): SellerOnboardingS
   return next;
 }
 
-/** G0 reject: sends the seller back for corrections. Loops back to intake, not terminal. */
+/**
+ * G0 reject: sends the seller back for corrections. Not terminal — goes to
+ * "correct", not back to "s1". Re-running seller intake in demo mode would
+ * just replay the exact same cached (and possibly wrong) output again, so
+ * the seller corrects the flagged field directly instead. Keeps the
+ * failing checks on state so the correction step can show what was wrong.
+ */
 export function rejectSellerG0(state: SellerOnboardingState, reason: string): SellerOnboardingState {
   assertStep(state, "g0");
-  let next = appendAudit(state, "human", `G0: sent back to seller for corrections: ${reason}`);
-  next = touch(next, "s1");
-  next.checks = undefined;
-  next.nameMatch = undefined;
+  const next = appendAudit(state, "human", `G0: sent back to seller for corrections: ${reason}`);
+  return touch(next, "correct");
+}
+
+/**
+ * The seller corrects one or more profile fields a failing check flagged
+ * (e.g. a GSTIN the seller-intake agent misread from the certificate
+ * image), the real checks run again on the corrected profile, and the run
+ * returns to G0. The original misread and its check failures stay in the
+ * audit log above this entry — never edited, only superseded.
+ */
+export function submitSellerCorrection(
+  state: SellerOnboardingState,
+  corrections: Readonly<Record<string, string>>,
+  result: { checks: SellerCheckResult[]; nameMatch: NameMatchOutput },
+): SellerOnboardingState {
+  assertStep(state, "correct");
+  if (!state.profile) {
+    throw new OrchestratorStateError(`No profile to correct for run ${state.runId}.`);
+  }
+  const profile = { ...state.profile, ...corrections };
+  let next = touch({ ...state, profile, checks: result.checks, nameMatch: result.nameMatch }, "g0");
+  for (const [field, value] of Object.entries(corrections)) {
+    next = appendAudit(next, "human", `Seller corrected ${field} to "${value}"`);
+  }
+  for (const check of result.checks) {
+    next = appendAudit(next, "check", `${check.name}: ${check.passed ? "pass" : "fail"} (${check.value})`);
+  }
   return next;
 }
