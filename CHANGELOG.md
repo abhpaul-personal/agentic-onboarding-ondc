@@ -4,6 +4,31 @@ Built milestone by milestone, PRD-first. See
 `reference/claude-code-prompt-agentic-onboarding.md` for the milestone plan and
 [docs/PRD.md](docs/PRD.md) for the full spec.
 
+## GSTIN misread no longer dead-ends G0
+
+The seller-intake agent's vision read of a synthetic GST certificate was
+misreading the certificate's run of "Z" placeholder characters on every
+sample set, not just one, because the v1 prompt's own example told it to
+"correct" the form's GSTIN from the certificate. A new v2 prompt states the
+15-character GSTIN rule, warns that repeated letters are easy to misread,
+and tells the model to keep a well-formed form GSTIN over a malformed
+certificate reading, naming both values in its notes. Real model runs
+confirm every sample seller now passes every G0 check on attempt 1 with the
+form's valid GSTIN.
+
+Set C stays the one deliberate case: its first attempt is pinned to the v1
+prompt via a `plantedIntakeMisread` flag, so the committed, already-real
+misread entry keeps replaying unchanged (the attempt-1 cache key gains no
+new fields, so it is byte-identical to before). Sending it back now replays
+a second real model call: attempt 2 uses the v2 prompt plus the failed
+attempt as feedback, both folded into the cache key alongside the prompt
+version, so a retry can never collide with or invalidate attempt 1. If no
+retry has been warmed for a given set, Send back falls back to the existing
+correction panel instead of dead-ending. `npm run agents:warm` now refuses
+to finish if any set would still be stuck: every set but the planted one
+must pass G0 on attempt 1, and the planted set must fail attempt 1 and pass
+attempt 2.
+
 ## Agent cache warmed against the real model
 
 `npm run agents:warm` run for the first time against the real model for every

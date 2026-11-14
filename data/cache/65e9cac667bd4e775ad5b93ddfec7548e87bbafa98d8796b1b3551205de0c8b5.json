@@ -1,11 +1,11 @@
 {
-  "key": "84226364ed1e0a9b105285aefa2e82b91e56d023d48727bf8d3df8a9d764f085",
+  "key": "65e9cac667bd4e775ad5b93ddfec7548e87bbafa98d8796b1b3551205de0c8b5",
   "step": "seller-intake",
   "model_id": "claude-sonnet-5-5",
-  "created_at": "2026-11-13T15:12:25.551Z",
+  "created_at": "2026-11-14T13:50:54.225Z",
   "token_usage": {
-    "input_tokens": 3278,
-    "output_tokens": 477
+    "input_tokens": 3541,
+    "output_tokens": 450
   },
   "output": {
     "profile": {
@@ -15,7 +15,7 @@
       "city": "Nashik",
       "state": "Maharashtra",
       "category": "Grocery",
-      "gstin": "27ZZZZPT0001A1ZU",
+      "gstin": "27ZZZPT0001A1ZU",
       "pan": "ZZZPT0001A",
       "fssai": "20000000000001",
       "fssai_expiry": "2028-03-31",
@@ -29,9 +29,8 @@
       ]
     },
     "notes": [
-      "GSTIN corrected from gst_certificate.png: form had 27ZZZPT0001A1ZU, certificate shows 27ZZZZPT0001A1ZU (form was missing one 'Z').",
-      "FSSAI number and expiry, IFSC, and account number match the documents; no changes made.",
-      "PAN, as given on the form, was not on any document; left as on form. Note the corrected GSTIN embeds PAN ZZZZPT0001A, which differs from the form PAN ZZZPT0001A. Please verify the PAN manually."
+      "GSTIN: my reading of the certificate was 27ZZZZPT0001A1ZU (16 characters, not a well-formed GSTIN), which differs from the form's 27ZZZPT0001A1ZU (15 characters, well-formed). Treated my reading as a misreading of the ZZZ run and kept the form value 27ZZZPT0001A1ZU.",
+      "FSSAI number and expiry, IFSC and account number match the form; no changes made."
     ]
   }
 }

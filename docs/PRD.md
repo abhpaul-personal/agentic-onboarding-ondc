@@ -1,10 +1,10 @@
-# PRD: Agentic Onboarding for ONDC Sellers
+# PRD: Agentic AI Onboarding for ONDC Sellers
 
 Nov 11, 2026 · @Abhijit Paul
 
 ## Overview
 
-Agentic Onboarding for ONDC Sellers is an agentic onboarding flow that
+Agentic AI Onboarding for ONDC Sellers is an agentic onboarding flow that
 first onboards small sellers onto a seller app, then turns each seller's
 messy product list into an ONDC-ready retail catalog. Agents do the
 extraction, mapping and checking, and a human approves every step that

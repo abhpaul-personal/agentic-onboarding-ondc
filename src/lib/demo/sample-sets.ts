@@ -41,6 +41,17 @@ export interface SampleSetMeta {
    * between what a visitor's click produces and what was warmed.
    */
   allowedCategoryIds: readonly string[] | null;
+  /**
+   * True for the one set whose first seller-intake attempt is the demo's
+   * deliberate GSTIN misread: the model read the certificate's run of "Z"
+   * characters wrong, the real checksum failed it at G0, and Send back
+   * replays a second attempt that gets it right. That first attempt is a
+   * real run of the original (v1) intake prompt, kept on purpose; every
+   * other set's first attempt, and this set's retry, use the current prompt,
+   * which tells the model to keep a valid form GSTIN over a misread
+   * certificate. See intake-attempts.ts. Exactly one set may set this.
+   */
+  plantedIntakeMisread?: boolean;
 }
 
 export const SAMPLE_SETS: readonly SampleSetMeta[] = [
@@ -74,11 +85,12 @@ export const SAMPLE_SETS: readonly SampleSetMeta[] = [
     where: "Handloom boutique, Kochi",
     format: "Shopify-style export",
     size: "30 products, 84 variants",
-    tests: "Variant handling, size and colour",
+    tests: "Variant handling, size and colour, plus a GSTIN misread caught at G0",
     category: "Fashion",
     sourceFormat: "csv",
     bulk: false,
     allowedCategoryIds: ["Dupattas", "Kurtas and Kurta Sets", "Sarees", "Tops"],
+    plantedIntakeMisread: true,
   },
   {
     id: "D",

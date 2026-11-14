@@ -17,7 +17,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Agentic Onboarding for ONDC Sellers",
+  title: "Agentic AI Onboarding for ONDC Sellers",
   description:
     "Case-study demo: an agentic onboarding flow that extracts, maps and checks a seller's catalog, with a human gate on every value that is legal or financial. Personal project, not affiliated with ONDC.",
 };

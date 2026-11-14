@@ -6,7 +6,23 @@ const documentImageSchema = z.object({
   media_type: z.enum(["image/jpeg", "image/png", "image/gif", "image/webp"]),
 });
 
-/** S1 seller intake agent: fills the profile from the form and the specimen document images. */
+/**
+ * What the reviewer's Send back at G0 hands to the next attempt: the GSTIN the
+ * previous attempt produced and the names of the checks it failed.
+ */
+export const sellerIntakePriorAttemptSchema = z.object({
+  gstin: z.string(),
+  failed_checks: z.array(z.string()),
+});
+export type SellerIntakePriorAttempt = z.infer<typeof sellerIntakePriorAttemptSchema>;
+
+/**
+ * S1 seller intake agent: fills the profile from the form and the specimen document images.
+ *
+ * `attempt` and `prior_attempt` are only present on a retry after Send back at
+ * G0 (attempt 2 and up). They are left out of a first attempt entirely, so a
+ * first attempt's cache key is the same as it was before retries existed.
+ */
 export const sellerIntakeInputSchema = z.object({
   registration_form: registrationFormSchema,
   documents: z.object({
@@ -14,6 +30,8 @@ export const sellerIntakeInputSchema = z.object({
     fssai_licence: documentImageSchema.optional(), // Grocery only
     cancelled_cheque: documentImageSchema,
   }),
+  attempt: z.number().int().min(2).optional(),
+  prior_attempt: sellerIntakePriorAttemptSchema.optional(),
 });
 export type SellerIntakeInput = z.infer<typeof sellerIntakeInputSchema>;
 

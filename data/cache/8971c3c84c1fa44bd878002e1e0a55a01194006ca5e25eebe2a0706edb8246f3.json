@@ -1,11 +1,11 @@
 {
-  "key": "d2f834ac33653436bba35bc05f2af24c02213390b5724789c8a13a52aa26e468",
+  "key": "8971c3c84c1fa44bd878002e1e0a55a01194006ca5e25eebe2a0706edb8246f3",
   "step": "seller-intake",
   "model_id": "claude-sonnet-5-5",
-  "created_at": "2026-11-13T15:14:49.417Z",
+  "created_at": "2026-11-14T13:51:11.942Z",
   "token_usage": {
-    "input_tokens": 3277,
-    "output_tokens": 467
+    "input_tokens": 3540,
+    "output_tokens": 692
   },
   "output": {
     "profile": {
@@ -29,8 +29,8 @@
       ]
     },
     "notes": [
-      "GSTIN discrepancy: gst_certificate.png reads 19ZZZPD0005E1ZV on the form vs 19ZZZZPD0005E1ZV on the certificate (extra Z in the certificate's reading). The certificate text appears as '19ZZZPD0005E1ZV' only if read with three Zs; I could not verify with certainty, so I kept the form value. Please verify manually.",
-      "FSSAI number, expiry, account number, IFSC, business name and state match the documents; no corrections made."
+      "GSTIN: my reading of the certificate was 19ZZZZPD0005E1ZV (16 characters, not well-formed), which differs from the form's 19ZZZPD0005E1ZV (15 characters, well-formed). I treated my reading as a misreading of the ZZZ run and kept the form's GSTIN.",
+      "FSSAI number and expiry, bank account and IFSC on the documents match the form. No other discrepancies."
     ]
   }
 }

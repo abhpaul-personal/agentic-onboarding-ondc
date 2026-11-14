@@ -299,6 +299,8 @@ function SellerPanel({
   const liveModePassphrase = useLiveModePassphrase();
 
   if (seller.step === "s1") {
+    const attempt = seller.intakeAttempt ?? 1;
+    const prior = seller.priorAttempt;
     return (
       <Card>
         <StepHead n="S1" label="Seller intake agent" extra={<Chip kind="sim">Model, cached</Chip>} />
@@ -306,12 +308,20 @@ function SellerPanel({
           Reads the registration form and the GST certificate, FSSAI licence and cancelled cheque images,
           and cross-fills the seller profile.
         </p>
+        {attempt > 1 && prior && (
+          <p className="mb-3 rounded-lg border border-[var(--line)] bg-[#fbfaf7] p-2.5 text-sm text-[var(--ink2)]">
+            Attempt {attempt}. The reviewer sent the previous attempt back. It read the GSTIN as{" "}
+            <span className="font-mono">{prior.gstin}</span> and failed{" "}
+            {prior.failed_checks.length ? prior.failed_checks.join(", ") : "a check"}. The agent is told this,
+            then reads the documents again.
+          </p>
+        )}
         <Button
           variant="primary"
           disabled={isPending}
           onClick={() => run(() => actions.singleRunIntake(state, liveModePassphrase ?? undefined))}
         >
-          Run seller intake agent
+          Run seller intake agent{attempt > 1 ? ` (attempt ${attempt})` : ""}
         </Button>
       </Card>
     );

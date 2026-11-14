@@ -20,7 +20,7 @@ test("kit page lists all seven sets with working download links", async ({ page,
 
 test("case study page links the PRD, demo and kit", async ({ page }) => {
   await page.goto("/case-study");
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("Agentic Onboarding");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Agentic AI Onboarding for ONDC Sellers");
   await expect(page.getByRole("link", { name: "Full PRD" })).toHaveAttribute("href", /docs\/PRD\.md/);
 });
 

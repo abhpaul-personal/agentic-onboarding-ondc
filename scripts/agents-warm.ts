@@ -8,6 +8,13 @@
  *   npm run agents:warm                 # dry run: set B only (review before --all)
  *   npm run agents:warm -- --set=D      # a specific set
  *   npm run agents:warm -- --all        # every set (A-F; G has no catalog to warm)
+ *   npm run agents:warm -- --all --intake-only   # only the seller-intake step (and set C's retry)
+ *
+ * The seller-intake step refuses to leave a dead end in the cache: after
+ * warming, every set except the one flagged plantedIntakeMisread must pass
+ * every G0 check on its first attempt, and that set must fail on attempt 1
+ * and pass on attempt 2. If not, this exits non-zero instead of letting a
+ * seller the reviewer can never approve be committed and replayed.
  *
  * Needs ANTHROPIC_API_KEY. Costs real money per the PRD's "under $0.50 for
  * a first run of a 50-item catalog" target; running it twice in a row
@@ -26,8 +33,9 @@ import { createCacheStore } from "@/lib/cache";
 import { getAnthropicClient, defaultModelId } from "@/lib/llm/client";
 import { parseCsvRecords } from "@/lib/parse/csv";
 import { profileColumns } from "@/lib/parse/profile-columns";
-import { registrationFormSchema } from "@/lib/schemas/seller-profile";
 import { runSellerIntakeAgent } from "@/lib/agents/seller-intake";
+import { verifySellerChecks } from "@/lib/agents/verification";
+import { buildIntakeInput, intakePromptVersionFor, priorAttemptFrom } from "@/lib/demo/intake-attempts";
 import { runMappingAgent } from "@/lib/agents/mapping";
 import { runCategoryAgent } from "@/lib/agents/category";
 import { runExtractionAgent } from "@/lib/agents/extraction";
@@ -74,24 +82,65 @@ function readImageBase64(relativePath: string) {
   return { data: readFileSync(absolute).toString("base64"), media_type: imageMediaType(absolute) };
 }
 
+function failedChecks(profile: Parameters<typeof verifySellerChecks>[0]) {
+  return verifySellerChecks(profile).filter((c) => !c.passed);
+}
+
+/**
+ * Warms seller intake the way the demo replays it (same input builder, same
+ * prompt version per attempt), then checks the result is not a dead end:
+ * the planted-misread set (C) must fail G0 on attempt 1 and pass on attempt
+ * 2; every other set must pass on attempt 1. Throws otherwise.
+ */
 async function warmSellerIntake(set: string, store: ReturnType<typeof createCacheStore>, client: ReturnType<typeof getAnthropicClient>, model: string) {
-  const formPath = join(DATA_DIR, `set-${set}/seller_pack/registration_form.json`);
-  const form = registrationFormSchema.parse(JSON.parse(readFileSync(formPath, "utf-8")));
-  const result = await runSellerIntakeAgent({
+  const planted = getSampleSet(set)?.plantedIntakeMisread === true;
+
+  const first = await runSellerIntakeAgent({
     store,
     client,
     model,
-    input: {
-      registration_form: form,
-      documents: {
-        gst_certificate: readImageBase64(`set-${set}/seller_pack/gst_certificate.png`),
-        fssai_licence: form.category === "Grocery" ? readImageBase64(`set-${set}/seller_pack/fssai_licence.png`) : undefined,
-        cancelled_cheque: readImageBase64(`set-${set}/seller_pack/cancelled_cheque.png`),
-      },
-    },
+    input: buildIntakeInput(set),
+    promptVersion: intakePromptVersionFor(set, 1),
   });
-  console.log(`  seller-intake: ${result.cached ? "cached" : "called model"}`);
-  return result;
+  const firstFailures = failedChecks(first.output.profile);
+  console.log(
+    `  seller-intake attempt 1 (prompt v${intakePromptVersionFor(set, 1)}): ${first.cached ? "cached" : "called model"}` +
+      `, GSTIN ${first.output.profile.gstin}, ${firstFailures.length ? "fails " + firstFailures.map((c) => c.name).join(", ") : "passes every G0 check"}`,
+  );
+
+  if (!planted) {
+    if (firstFailures.length) {
+      throw new Error(
+        `Set ${set}: seller intake fails G0 on attempt 1 (${firstFailures.map((c) => c.name).join(", ")}). ` +
+          `Only the set flagged plantedIntakeMisread may do that; refusing to leave a dead end in the cache.`,
+      );
+    }
+    return first;
+  }
+
+  if (!firstFailures.length) {
+    throw new Error(
+      `Set ${set} is flagged plantedIntakeMisread but its attempt 1 passes every G0 check, so the planted case is gone.`,
+    );
+  }
+  const second = await runSellerIntakeAgent({
+    store,
+    client,
+    model,
+    input: buildIntakeInput(set, { attempt: 2, prior: priorAttemptFrom(first.output.profile) }),
+    promptVersion: intakePromptVersionFor(set, 2),
+  });
+  const secondFailures = failedChecks(second.output.profile);
+  console.log(
+    `  seller-intake attempt 2 (prompt v${intakePromptVersionFor(set, 2)}): ${second.cached ? "cached" : "called model"}` +
+      `, GSTIN ${second.output.profile.gstin}, ${secondFailures.length ? "fails " + secondFailures.map((c) => c.name).join(", ") : "passes every G0 check"}`,
+  );
+  if (secondFailures.length) {
+    throw new Error(
+      `Set ${set}: the retry still fails G0 (${secondFailures.map((c) => c.name).join(", ")}), so Send back would not unblock the reviewer.`,
+    );
+  }
+  return second;
 }
 
 async function warmMapping(config: StructuredSetConfig, store: ReturnType<typeof createCacheStore>, client: ReturnType<typeof getAnthropicClient>, model: string) {
@@ -168,7 +217,7 @@ async function warmExtraction(config: UnstructuredSetConfig, store: ReturnType<t
   return result;
 }
 
-async function warmSet(set: string, store: ReturnType<typeof createCacheStore>, client: ReturnType<typeof getAnthropicClient>, model: string) {
+async function warmSet(set: string, store: ReturnType<typeof createCacheStore>, client: ReturnType<typeof getAnthropicClient>, model: string, intakeOnly: boolean) {
   const config = SET_CONFIGS[set];
   if (!config) {
     console.log(`Set ${set}: nothing to warm (no catalog, or not configured).`);
@@ -176,6 +225,7 @@ async function warmSet(set: string, store: ReturnType<typeof createCacheStore>, 
   }
   console.log(`Set ${set}:`);
   await warmSellerIntake(set, store, client, model);
+  if (intakeOnly) return;
   if (config.kind === "structured") {
     const { records, columnTargets } = await warmMapping(config, store, client, model);
     await warmCategory(set, records, columnTargets, store, client, model);
@@ -192,6 +242,7 @@ async function warmSet(set: string, store: ReturnType<typeof createCacheStore>, 
 async function main() {
   const args = process.argv.slice(2);
   const all = args.includes("--all");
+  const intakeOnly = args.includes("--intake-only");
   const setArg = args.find((a) => a.startsWith("--set="))?.split("=")[1];
   const sets = all ? ["A", "B", "C", "D", "E", "F"] : [setArg ?? "B"];
 
@@ -206,7 +257,7 @@ async function main() {
   console.log(`Model: ${model}\n`);
 
   for (const set of sets) {
-    await warmSet(set, store, client, model);
+    await warmSet(set, store, client, model, intakeOnly);
   }
 }
 

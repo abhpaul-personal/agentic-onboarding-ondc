@@ -1,4 +1,4 @@
-# Agentic Onboarding for ONDC Sellers
+# Agentic AI Onboarding for ONDC Sellers
 
 Personal case-study project. Not affiliated with ONDC or any network participant.
 All sellers and identifiers are fictional test data.

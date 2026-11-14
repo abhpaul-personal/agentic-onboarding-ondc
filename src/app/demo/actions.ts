@@ -10,9 +10,9 @@ import {
   verifyPassphrase,
   checkAndIncrementRateLimit,
 } from "@/lib/demo/live-mode";
+import { buildIntakeInput, intakePromptVersionFor, priorAttemptFrom } from "@/lib/demo/intake-attempts";
 import {
   loadRawRows,
-  loadSellerIntakeInput,
   loadWhatsappText,
   loadPriceListPhoto,
   loadBulkSellerRows,
@@ -37,6 +37,7 @@ import {
   completeVerification,
   approveSellerG0,
   rejectSellerG0,
+  sendBackForRetry,
   submitSellerCorrection,
   createSellerOnboardingRun,
 } from "@/lib/orchestrator/seller-onboarding";
@@ -133,15 +134,21 @@ export async function bulkApproveG0(
 
 export async function singleRunIntake(state: DemoState, liveModePassphrase?: string): Promise<DemoState> {
   if (state.kind !== "single") throw new Error("Not a single-seller run.");
-  const input = loadSellerIntakeInput(state.setId);
+  // Attempt 1 is the plain input. After Send back, attempt 2+ carries the
+  // previous reading, so its cache entry is a different one from the attempt
+  // that failed (see sendBackForRetry).
+  const attempt = state.seller.intakeAttempt ?? 1;
+  const prior = state.seller.priorAttempt;
+  const input = buildIntakeInput(state.setId, attempt > 1 && prior ? { attempt, prior } : undefined);
+  const promptVersion = intakePromptVersionFor(state.setId, attempt);
 
   const liveClient = await liveClientOrThrow(liveModePassphrase);
   if (liveClient) {
-    const result = await runSellerIntakeAgent({ store, client: liveClient, model, input });
+    const result = await runSellerIntakeAgent({ store, client: liveClient, model, input, promptVersion });
     return { ...state, seller: completeSellerIntake(state.seller, result.output), pending: undefined };
   }
 
-  const output = await peekSellerIntakeCache(replayStore, model, input);
+  const output = await peekSellerIntakeCache(replayStore, model, input, promptVersion);
   if (!output) return { ...state, pending: { step: "s1", note: NOT_WARMED("seller-intake") } };
   return { ...state, seller: completeSellerIntake(state.seller, output), pending: undefined };
 }
@@ -163,11 +170,31 @@ export async function singleApproveG0(state: DemoState): Promise<DemoState> {
   return { ...state, seller, catalog };
 }
 
-/** G0 reject: a failing check means the reviewer cannot approve, so they send the seller back instead of being stuck. */
+/**
+ * G0 reject: a failing check means the reviewer cannot approve, so they send
+ * the seller back instead of being stuck. If the next intake attempt has been
+ * warmed, the run goes back to S1 to replay it (a second real model run that
+ * is told what the first got wrong). Otherwise it falls back to the seller
+ * correcting the flagged value by hand, which needs no model output.
+ */
 export async function singleRejectG0(state: DemoState): Promise<DemoState> {
   if (state.kind !== "single") throw new Error("Not a single-seller run.");
   const failing = state.seller.checks?.filter((c) => !c.passed).map((c) => c.name) ?? [];
   const reason = failing.length ? failing.join(", ") : "a verification check failed";
+
+  const profile = state.seller.profile;
+  if (profile) {
+    const attempt = (state.seller.intakeAttempt ?? 1) + 1;
+    const prior = priorAttemptFrom(profile);
+    const retryInput = buildIntakeInput(state.setId, { attempt, prior });
+    const warmed = await peekSellerIntakeCache(
+      replayStore,
+      model,
+      retryInput,
+      intakePromptVersionFor(state.setId, attempt),
+    );
+    if (warmed) return { ...state, seller: sendBackForRetry(state.seller, reason, { attempt, prior }) };
+  }
   return { ...state, seller: rejectSellerG0(state.seller, reason) };
 }
 

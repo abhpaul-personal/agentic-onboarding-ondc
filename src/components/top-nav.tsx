@@ -18,7 +18,7 @@ export function TopNav() {
     <header className="sticky top-0 z-20 border-b border-[var(--line)] bg-[var(--bg)]/95 backdrop-blur">
       <div className="mx-auto flex w-full max-w-[1320px] flex-wrap items-center gap-5 px-5 py-3">
         <div className="flex flex-col">
-          <b className="text-[16px] tracking-tight">Agentic Onboarding for ONDC Sellers</b>
+          <b className="text-[16px] tracking-tight">Agentic AI Onboarding for ONDC Sellers</b>
           <span className="text-xs text-[var(--ink2)]">
             Case study · personal project · not affiliated with ONDC
           </span>

@@ -1,0 +1,35 @@
+{
+  "key": "6c75571798ec6b04d040b6aa6a22c42905d38a57609af309718cd830eccb1fb0",
+  "step": "seller-intake",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-14T13:51:15.928Z",
+  "token_usage": {
+    "input_tokens": 3535,
+    "output_tokens": 473
+  },
+  "output": {
+    "profile": {
+      "seller_id": "SLR-F",
+      "business_name": "Trapline Traders",
+      "owner": "Test Operator",
+      "city": "Nagpur",
+      "state": "Maharashtra",
+      "category": "Grocery",
+      "gstin": "27ZZZPT0006F1ZF",
+      "pan": "ZZZPT0006F",
+      "fssai": "20000000000006",
+      "fssai_expiry": "2027-06-30",
+      "ifsc": "DEMO0000006",
+      "account": "000000000606",
+      "packer_address": "Unit 9, Demo Warehouse Zone, Nagpur 440000",
+      "returns": "Returnable within 2 days if damaged",
+      "time_to_ship": "P1D",
+      "own_brands": []
+    },
+    "notes": [
+      "GSTIN: my reading of the certificate was 27ZZZZPT0006F1ZF (16 characters, not a well-formed GSTIN). The form's 27ZZZPT0006F1ZF is a well-formed 15-character GSTIN. I treated my reading as a misreading and kept the form's value.",
+      "Business name: the documents show 'Trapline Traders'. The form says 'Trapline Traders' too, so I kept the form value.",
+      "FSSAI number and expiry, bank account number and IFSC all match the documents. I made no corrections."
+    ]
+  }
+}

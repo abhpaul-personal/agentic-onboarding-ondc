@@ -6,6 +6,7 @@ import {
   completeVerification,
   createSellerOnboardingRun,
   rejectSellerG0,
+  sendBackForRetry,
   submitSellerCorrection,
 } from "./seller-onboarding";
 import type { SellerProfile } from "@/lib/schemas/seller-profile";
@@ -96,6 +97,57 @@ describe("seller onboarding state machine", () => {
     // never edited, only superseded by later entries.
     expect(corrected.auditLog.some((e) => e.text.includes("IFSC format: fail"))).toBe(true);
     expect(corrected.auditLog.some((e) => e.text.includes('corrected ifsc to "DEMO0000009"'))).toBe(true);
+  });
+
+  describe("sending back for another intake attempt", () => {
+    const prior = { gstin: profile.gstin, failed_checks: ["IFSC format"] };
+
+    it("goes back to s1 on the next attempt, carrying the previous reading", () => {
+      const state = runThroughS2(false);
+      const sent = sendBackForRetry(state, "IFSC format invalid", { attempt: 2, prior });
+      expect(sent.step).toBe("s1");
+      expect(sent.intakeAttempt).toBe(2);
+      expect(sent.priorAttempt).toEqual(prior);
+      // The failed checks belong to the attempt that was sent back, not the next one.
+      expect(sent.checks).toBeUndefined();
+      expect(sent.auditLog.at(-1)?.text).toContain("attempt 2");
+      // What the first attempt did stays in the log above, never edited.
+      expect(sent.auditLog.some((e) => e.text.includes("IFSC format: fail"))).toBe(true);
+    });
+
+    it("labels the retry's S1 line with its attempt and logs the agent's notes in full", () => {
+      const sent = sendBackForRetry(runThroughS2(false), "IFSC format invalid", { attempt: 2, prior });
+      const next = completeSellerIntake(sent, { profile, notes: ["Kept the form's value, certificate misread."] });
+      expect(next.step).toBe("s2");
+      const log = next.auditLog.map((e) => e.text);
+      expect(log.some((t) => t.startsWith("S1 (attempt 2) drafted the seller profile"))).toBe(true);
+      expect(log).toContain("S1 note: Kept the form's value, certificate misread.");
+    });
+
+    it("does not mention attempts on a first intake", () => {
+      const state = completeSellerIntake(createSellerOnboardingRun("run-1"), { profile, notes: ["a note"] });
+      const log = state.auditLog.map((e) => e.text).join("\n");
+      expect(log).toContain("S1 drafted the seller profile");
+      expect(log).not.toContain("attempt");
+      expect(log).not.toContain("S1 note:");
+    });
+
+    it("lets the reviewer approve once the retry passes every check", () => {
+      let state = sendBackForRetry(runThroughS2(false), "IFSC format invalid", { attempt: 2, prior });
+      state = completeSellerIntake(state, { profile, notes: [] });
+      state = completeVerification(state, {
+        checks: [{ name: "IFSC format", passed: true, value: profile.ifsc }],
+        nameMatch: { matched: true, reason: "Simulated: name matches." },
+      });
+      expect(state.step).toBe("g0");
+      expect(approveSellerG0(state).step).toBe("approved");
+    });
+
+    it("refuses to send back outside g0", () => {
+      expect(() =>
+        sendBackForRetry(createSellerOnboardingRun("run-1"), "x", { attempt: 2, prior }),
+      ).toThrow(OrchestratorStateError);
+    });
   });
 
   it("refuses to submit a correction outside the correct step", () => {

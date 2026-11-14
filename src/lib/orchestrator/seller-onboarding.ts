@@ -1,3 +1,4 @@
+import type { SellerIntakePriorAttempt } from "@/lib/schemas/agents/seller-intake";
 import type { NameMatchOutput } from "@/lib/schemas/agents/verification";
 import type { SellerProfile } from "@/lib/schemas/seller-profile";
 import { appendAudit, type AuditLogEntry } from "./audit";
@@ -29,6 +30,10 @@ export interface SellerOnboardingState {
   checks?: SellerCheckResult[];
   nameMatch?: NameMatchOutput;
   gate?: GateRecord;
+  /** Which seller-intake attempt the run is on. Absent means the first; Send back at G0 makes it 2, then 3. */
+  intakeAttempt?: number;
+  /** What the previous attempt produced and failed, handed to the next attempt. Set by Send back. */
+  priorAttempt?: SellerIntakePriorAttempt;
   auditLog: AuditLogEntry[];
 }
 
@@ -55,13 +60,19 @@ export function completeSellerIntake(
   output: { profile: SellerProfile; notes: string[] },
 ): SellerOnboardingState {
   assertStep(state, "s1");
+  const attempt = state.intakeAttempt ?? 1;
   let next = touch({ ...state, profile: output.profile, intakeNotes: output.notes }, "s2");
   next = appendAudit(
     next,
     "agent",
-    `S1 drafted the seller profile for ${output.profile.business_name}` +
+    `S1${attempt > 1 ? ` (attempt ${attempt})` : ""} drafted the seller profile for ${output.profile.business_name}` +
       (output.notes.length ? ` (${output.notes.length} field${output.notes.length > 1 ? "s" : ""} from documents)` : ""),
   );
+  if (attempt > 1) {
+    // A retry's notes are the point of the retry (what changed from the attempt
+    // that was sent back), so they go in the log in full.
+    for (const note of output.notes) next = appendAudit(next, "agent", `S1 note: ${note}`);
+  }
   return next;
 }
 
@@ -94,16 +105,42 @@ export function approveSellerG0(state: SellerOnboardingState): SellerOnboardingS
 }
 
 /**
- * G0 reject: sends the seller back for corrections. Not terminal — goes to
- * "correct", not back to "s1". Re-running seller intake in demo mode would
- * just replay the exact same cached (and possibly wrong) output again, so
- * the seller corrects the flagged field directly instead. Keeps the
- * failing checks on state so the correction step can show what was wrong.
+ * G0 reject, route 1 of 2: sends the seller back for corrections. Not
+ * terminal — goes to "correct". Used when no retry attempt has been warmed
+ * for this seller: re-running seller intake would replay the exact same
+ * cached (and possibly wrong) output, so the seller corrects the flagged
+ * field directly instead. Keeps the failing checks on state so the
+ * correction step can show what was wrong. When a retry attempt exists,
+ * sendBackForRetry is used instead.
  */
 export function rejectSellerG0(state: SellerOnboardingState, reason: string): SellerOnboardingState {
   assertStep(state, "g0");
   const next = appendAudit(state, "human", `G0: sent back to seller for corrections: ${reason}`);
   return touch(next, "correct");
+}
+
+/**
+ * G0 reject, route 2 of 2: sends the run back to seller intake for another
+ * attempt. Each attempt is its own cache entry (the attempt number and the
+ * previous reading are part of the agent's input), so unlike a plain re-run
+ * this replays a different, real model output than the one that failed. The
+ * failed attempt's audit entries stay above; the next attempt appends below.
+ */
+export function sendBackForRetry(
+  state: SellerOnboardingState,
+  reason: string,
+  next: { attempt: number; prior: SellerIntakePriorAttempt },
+): SellerOnboardingState {
+  assertStep(state, "g0");
+  const log = appendAudit(
+    state,
+    "human",
+    `G0: sent back to seller intake for attempt ${next.attempt}: ${reason}`,
+  );
+  return touch(
+    { ...log, intakeAttempt: next.attempt, priorAttempt: next.prior, checks: undefined, nameMatch: undefined },
+    "s1",
+  );
 }
 
 /**

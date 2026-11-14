@@ -1,0 +1,39 @@
+{
+  "key": "1825b996a6d29fab25f3b75bfbfd8d6a3e203b67a50044aa4b1b4956bc163086",
+  "step": "seller-intake",
+  "model_id": "claude-sonnet-5-5",
+  "created_at": "2026-11-14T13:51:02.427Z",
+  "token_usage": {
+    "input_tokens": 3009,
+    "output_tokens": 582
+  },
+  "output": {
+    "profile": {
+      "seller_id": "SLR-C",
+      "business_name": "Neelkurinji Threads",
+      "owner": "Anitha Varghese",
+      "city": "Kochi",
+      "state": "Kerala",
+      "category": "Fashion",
+      "gstin": "32ZZZPV0003C1ZV",
+      "pan": "ZZZPV0003C",
+      "fssai": "",
+      "fssai_expiry": "",
+      "ifsc": "DEMO0000003",
+      "account": "000000000303",
+      "packer_address": "2nd Floor, Demo Weavers Lane, Kochi 682000",
+      "returns": "Returnable within 7 days",
+      "time_to_ship": "P2D",
+      "own_brands": [
+        "Neelkurinji"
+      ]
+    },
+    "notes": [
+      "Changed from previous attempt: the previous GSTIN '32ZZZZPV0003C1ZV' was 16 characters (four Zs) and failed format, checksum and PAN-match checks. Corrected to the form's GSTIN '32ZZZPV0003C1ZV' (15 characters).",
+      "My reading of the certificate GSTIN was '32ZZZZPV0003C1ZV' (16 characters), not well-formed and different from the form's well-formed 15-character GSTIN '32ZZZPV0003C1ZV'. I treated it as a misreading of the ZZZ run and kept the form's value.",
+      "PAN 'ZZZPV0003C' matches characters 3-12 of the GSTIN.",
+      "Cancelled cheque account number 000000000303 and IFSC DEMO0000003 match the form; no changes.",
+      "FSSAI not applicable (Fashion seller); left blank."
+    ]
+  }
+}

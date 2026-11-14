@@ -1,4 +1,4 @@
-# Evaluation kit v1.2: Agentic Onboarding for ONDC Sellers
+# Evaluation kit v1.2: Agentic AI Onboarding for ONDC Sellers
 
 Personal case-study project. Not affiliated with ONDC or any network participant.
 Every business, person, GSTIN, PAN, FSSAI number, bank account and barcode in this kit is fictional test data.

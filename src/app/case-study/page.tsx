@@ -19,7 +19,7 @@ export default function CaseStudyPage() {
     <article className="space-y-10">
       <header>
         <h1 className="mb-2 text-[30px] font-semibold tracking-tight">
-          Agentic Onboarding for ONDC Sellers
+          Agentic AI Onboarding for ONDC Sellers
         </h1>
         <p className="max-w-[72ch] text-[var(--ink2)]">
           A personal case-study project: an agentic onboarding flow that turns a small seller&apos;s
