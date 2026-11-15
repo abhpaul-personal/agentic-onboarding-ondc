@@ -222,9 +222,21 @@ export function auditInventedStatutoryValues(catalog: CatalogRunState): Invented
         return buildItemsFromMappedColumns(catalog.rawRows!, columnTargets).items;
       })()
     : null;
+  // Looked up by id, not position: the fallback queue and G3 can both drop
+  // items (duplicates, an mrp_below_selling_price removal), so catalog.items
+  // no longer lines up index-for-index with the raw rows once anything
+  // earlier in the file has been removed. A still-duplicated id in rebuilt
+  // (before that row's own resolution) keeps its first occurrence.
+  const rebuiltById = rebuilt ? new Map(rebuilt.map((r) => [r.id, r] as const)) : null;
 
   const g3EnteredText = catalog.auditLog
     .filter((e) => e.kind === "human" && e.text.startsWith("G3: seller entered packer details"))
+    .map((e) => e.text)
+    .join(" | ");
+  // Traced to the seller's own mrp_below_selling_price correction at G3
+  // (resolveMrpAtG3 in catalog-run.ts) rather than the raw source row.
+  const g3MrpResolvedText = catalog.auditLog
+    .filter((e) => e.kind === "human" && e.text.startsWith("G3: seller resolved MRP/price issue for"))
     .map((e) => e.text)
     .join(" | ");
 
@@ -232,8 +244,8 @@ export function auditInventedStatutoryValues(catalog: CatalogRunState): Invented
   let notMeasured = false;
   const findings: InventedValueFinding[] = [];
 
-  catalog.items.forEach((item, index) => {
-    const fresh = rebuilt?.[index];
+  catalog.items.forEach((item) => {
+    const fresh = rebuiltById?.get(item.id);
     for (const field of STATUTORY_FIELDS) {
       const value = item[field] as string | number | undefined;
       if (value == null) continue;
@@ -259,6 +271,7 @@ export function auditInventedStatutoryValues(catalog: CatalogRunState): Invented
       ) {
         continue;
       }
+      if (field === "mrp" && g3MrpResolvedText.includes(`for ${item.id} `)) continue;
 
       findings.push({ itemId: item.id, field, value });
     }

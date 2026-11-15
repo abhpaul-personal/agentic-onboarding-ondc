@@ -24,6 +24,7 @@ import {
   enterPackerDetailsForBrandAtG3,
   finishFallbackQueue,
   resolveFallbackQueueItem,
+  resolveMrpAtG3,
   signOffG3,
 } from "./catalog-run";
 import { validateItems } from "./validate";
@@ -207,6 +208,67 @@ describe("catalog run: structured source (set B style)", () => {
     expect(state.gates.map((g) => g.gate)).toContain("FQ");
 
     // The planted MRP-below-price issue (severity "g3") is still open: sign-off must fail until resolved.
+    expect(() => signOffG3(state)).toThrow(OrchestratorStateError);
+  });
+
+  it("resolves an mrp_below_selling_price issue at G3 by correcting the price, the MRP, or removing the item", () => {
+    let state = createCatalogRun("run-mrp", grocerySeller, "csv");
+    state = completeSourceIntake(state, "CSV, header found on row 1");
+    state = completeExtraction(state, {
+      rawRows: [{ sku: "A" }, { sku: "B" }, { sku: "C" }],
+      hadParseErrors: false,
+    });
+    state = completeMapping(state, [
+      { column: "sku", candidates: [], proposed: "id", confidence: 0.95, risk: "low", reason: "x" },
+    ]);
+    state = approveG2(state);
+    state = completeCategory(state, []);
+
+    const brokenItems = state.items.map((item, i) => ({
+      ...item,
+      mrp: 100,
+      price: i === 0 ? 150 : i === 1 ? 120 : 110,
+      packedMonth: "01/2026",
+    }));
+    state = { ...state, items: brokenItems };
+    state = completeValidation(state, validateItems(brokenItems, grocerySeller));
+    expect(state.step).toBe("g3"); // no queue-severity issues here, so the queue step was skipped
+    expect(state.issues.filter((i) => i.type === "mrp")).toHaveLength(3);
+
+    // Correct the selling price.
+    state = resolveMrpAtG3(state, "A", { kind: "set_price", value: 95 });
+    expect(state.items.find((i) => i.id === "A")?.price).toBe(95);
+    expect(state.issues.some((i) => i.itemId === "A" && i.type === "mrp")).toBe(false);
+
+    // Correct the MRP.
+    state = resolveMrpAtG3(state, "B", { kind: "set_mrp", value: 130 });
+    expect(state.items.find((i) => i.id === "B")?.mrp).toBe(130);
+    expect(state.issues.some((i) => i.itemId === "B" && i.type === "mrp")).toBe(false);
+
+    // Remove the item.
+    state = resolveMrpAtG3(state, "C", "drop");
+    expect(state.items.some((i) => i.id === "C")).toBe(false);
+    expect(state.issues.some((i) => i.itemId === "C")).toBe(false);
+
+    state = signOffG3(state);
+    expect(state.step).toBe("build");
+  });
+
+  it("leaves the mrp issue open when the seller's own correction still fails the check", () => {
+    let state = createCatalogRun("run-mrp-bad", grocerySeller, "csv");
+    state = completeSourceIntake(state, "CSV, header found on row 1");
+    state = completeExtraction(state, { rawRows: [{ sku: "A" }], hadParseErrors: false });
+    state = completeMapping(state, [
+      { column: "sku", candidates: [], proposed: "id", confidence: 0.95, risk: "low", reason: "x" },
+    ]);
+    state = approveG2(state);
+    state = completeCategory(state, []);
+    const brokenItems = state.items.map((item) => ({ ...item, mrp: 100, price: 150 }));
+    state = { ...state, items: brokenItems };
+    state = completeValidation(state, validateItems(brokenItems, grocerySeller));
+
+    state = resolveMrpAtG3(state, "A", { kind: "set_mrp", value: 120 }); // still below the 150 price
+    expect(state.issues.some((i) => i.itemId === "A" && i.type === "mrp")).toBe(true);
     expect(() => signOffG3(state)).toThrow(OrchestratorStateError);
   });
 

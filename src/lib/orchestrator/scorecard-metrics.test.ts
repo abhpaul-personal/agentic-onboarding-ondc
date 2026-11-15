@@ -157,6 +157,27 @@ describe("auditInventedStatutoryValues", () => {
     expect(result.findings.filter((f) => f.itemId === "TRP-008")).toEqual([]);
   });
 
+  it("still matches by id, not position, once an earlier item has been dropped (fallback queue/G3 removals)", () => {
+    // Set F's own duplicate-drop and mrp "remove item" paths both remove an
+    // item from catalog.items without removing its row from rawRows, so a
+    // positional match against rebuilt rows would silently compare every
+    // later item against the wrong raw row.
+    const state = fakeCatalogState({});
+    const items = state.items.filter((i) => i.id !== state.items[0].id);
+    const result = auditInventedStatutoryValues({ ...state, items });
+    expect(result.findings).toEqual([]);
+  });
+
+  it("does not flag an mrp value the seller corrected at G3 (audited by item id)", () => {
+    const state = fakeCatalogState({});
+    const items = state.items.map((i) => (i.id === "TRP-005" ? { ...i, mrp: 500 } : i));
+    const auditLog = [
+      { at: new Date().toISOString(), kind: "human" as const, text: "G3: seller resolved MRP/price issue for TRP-005 (MRP corrected to 500)" },
+    ];
+    const result = auditInventedStatutoryValues({ ...state, items, auditLog });
+    expect(result.findings.filter((f) => f.itemId === "TRP-005")).toEqual([]);
+  });
+
   it("reports notMeasured, not a false 0, when there is no raw source to re-check against (unstructured sources)", () => {
     // A realistic D/E-style state: extraction output, never column-mapped,
     // so there is no rawRows to rebuild against. Packer fields still trace
