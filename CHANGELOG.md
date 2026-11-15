@@ -29,6 +29,12 @@ to finish if any set would still be stuck: every set but the planted one
 must pass G0 on attempt 1, and the planted set must fail attempt 1 and pass
 attempt 2.
 
+Correction to the M7 note further down about Lighthouse. Accessibility, best
+practices and SEO are 100 on all five pages. Desktop performance is 100 on
+the home, demo and case study pages. Performance on the kit and scorecard
+pages varies between runs because of blocking time. The suite currently has
+243 unit tests and 19 end-to-end tests.
+
 ## Agent cache warmed against the real model
 
 `npm run agents:warm` run for the first time against the real model for every
