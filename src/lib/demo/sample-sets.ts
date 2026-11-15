@@ -85,7 +85,7 @@ export const SAMPLE_SETS: readonly SampleSetMeta[] = [
     where: "Handloom boutique, Kochi",
     format: "Shopify-style export",
     size: "30 products, 84 variants",
-    tests: "Variant handling, size and colour, plus a GSTIN misread caught at G0",
+    tests: "Variant handling, size and colour, plus a deliberately replayed GSTIN misread (an earlier prompt version) caught at G0",
     category: "Fashion",
     sourceFormat: "csv",
     bulk: false,

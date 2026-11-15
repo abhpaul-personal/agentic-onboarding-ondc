@@ -120,17 +120,23 @@ export default function CaseStudyPage() {
           demo, so every step (mapping, category, extraction) shows real output, not a placeholder.
         </p>
         <p>
-          The guardrail design caught a real failure, not a staged one. Warming the cache exposed that
-          the seller-intake agent&apos;s vision read of a synthetic GST certificate can misread the
-          GSTIN&apos;s run of repeated characters — on more than one sample seller, confirmed by viewing
-          the certificate images directly: they are correct, the model&apos;s transcription is not. The
-          deterministic GSTIN checksum check (real code, not the model) correctly failed the result every
-          time and blocked auto-approval at G0, exactly the deterministic-check-plus-human-gate design
-          this project is built around. The one gap it exposed was in the UI, not the guardrail: a seller
-          whose check failed had no way forward, only a disabled approve button. That is fixed now with a
-          send-back-and-correct step, so the reviewer sends the seller back, the seller compares the
-          flagged value against the certificate and corrects it, and the real checks run again before
-          returning to G0 — with the original misread kept in the audit log, never edited over.
+          The guardrail design caught a real failure, not a staged one. Warming the cache against the
+          real model exposed that the seller-intake agent&apos;s vision read of a synthetic GST
+          certificate can misread the GSTIN&apos;s run of repeated characters — on more than one sample
+          seller, confirmed by viewing the certificate images directly: they are correct, the
+          model&apos;s transcription was not. The deterministic GSTIN checksum check (real code, not the
+          model) correctly failed the result every time and blocked auto-approval at G0, exactly the
+          deterministic-check-plus-human-gate design this project is built around. The prompt was then
+          fixed to tell the model to keep a valid-form GSTIN over a misread transcription, so the
+          failure stopped reproducing on a fresh run — which meant the live demo could no longer show
+          the failure-and-recovery path. Set C&apos;s first attempt now deliberately replays that
+          original (v1) prompt&apos;s cached output on purpose, kept so the demo can still show it; its
+          retry, and every other set&apos;s first attempt, run the current (v2) prompt. The one gap the
+          original failure exposed was in the UI, not the guardrail: a seller whose check failed had no
+          way forward, only a disabled approve button. That is fixed now with a send-back-and-correct
+          step, so the reviewer sends the seller back, the seller compares the flagged value against the
+          certificate and corrects it, and the real checks run again before returning to G0 — with the
+          original misread kept in the audit log, never edited over.
         </p>
       </Section>
 

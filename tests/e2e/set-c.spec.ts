@@ -9,6 +9,10 @@ import { expectNotPending, runIntakeFailSendBackRetryAndApproveG0 } from "./help
  */
 test("set C: GSTIN misread caught, Send back retry, then variant handling", async ({ page }) => {
   await page.goto("/demo");
+  // The picker card must tell a visitor this failure is a deliberate replay
+  // of an earlier prompt version, not a live model call that might misread
+  // any seller's GSTIN.
+  await expect(page.getByText(/deliberately replayed GSTIN misread \(an earlier prompt version\)/)).toBeVisible();
   await page.getByText("Neelkurinji Threads").click();
   await runIntakeFailSendBackRetryAndApproveG0(page);
 

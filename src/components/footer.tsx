@@ -3,8 +3,9 @@ export function Footer() {
     <footer className="border-t border-[var(--line)] bg-[var(--bg)]">
       <div className="mx-auto flex w-full max-w-[1320px] flex-wrap items-center justify-between gap-3 px-5 py-4 text-xs text-[var(--ink3)]">
         <p className="max-w-[60ch]">
-          Personal case-study project. Not affiliated with ONDC or any network participant. All sellers
-          and identifiers are fictional test data.
+          Personal case-study project. Not affiliated with ONDC or any network participant. All sellers,
+          people, GSTINs, PANs, FSSAI numbers, bank details and barcodes are fictional test data. ONDC
+          attribute keys are modelled on the public retail v1.2 specs and simplified for the demo.
         </p>
         <nav className="flex gap-3">
           <a

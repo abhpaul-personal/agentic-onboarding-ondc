@@ -32,6 +32,14 @@ export default function Home() {
             >
               Read the case study
             </Link>
+            <a
+              href="https://github.com/abhpaul-personal/agentic-onboarding-ondc/blob/master/docs/PRD.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-lg border border-[var(--line)] bg-white px-3.5 py-2 font-semibold text-[var(--ink)] no-underline hover:border-[var(--ink3)]"
+            >
+              Full PRD
+            </a>
           </div>
         </div>
         <Card>
@@ -69,7 +77,8 @@ export default function Home() {
             </div>
           </div>
           <p className="mt-2.5 text-xs text-[var(--ink3)]">
-            Sources count sellers differently, so read this as direction, not an exact funnel.
+            1 lakh = 100,000. Sources count sellers differently, so read this as direction, not an
+            exact funnel.
           </p>
         </Card>
       </section>
@@ -78,7 +87,8 @@ export default function Home() {
         <h2 className="mb-1 text-lg font-semibold">How the flow works</h2>
         <p className="mb-3 text-sm text-[var(--ink2)]">
           Stage 1 runs once per seller. Stage 2 runs for every catalog that seller adds. Nothing is
-          published by default.
+          published by default. An SNP is the seller app a seller joins ONDC through; its reviewer
+          approves the seller at G0.
         </p>
 
         <div className="mb-1 text-[11px] font-bold tracking-wider text-[var(--ink3)] uppercase">
@@ -150,19 +160,14 @@ export default function Home() {
         <h2 className="mb-1 text-lg font-semibold">Smart mapping, in one rule</h2>
         <p className="text-sm">
           Every proposed field mapping carries a confidence score and a one-line reason that quotes the
-          seller&apos;s own values. Low-risk fields at 0.90 or above are auto-accepted. Prices, net
-          quantity, FSSAI, packer and veg marks always go to a human. Anything below 0.60 goes to the
-          fallback queue. The agent never invents a statutory value: it can only extract it, pre-fill it
+          seller&apos;s own values. Low-risk fields at 0.90 or above are auto-accepted; a confidence
+          from 0.60 to 0.89 goes to a human at G2; below 0.60 goes to the fallback queue. Prices, net
+          quantity, FSSAI, packer and veg marks always go to a human regardless of confidence. The agent
+          never invents a statutory value: it can only extract it, pre-fill it
           from the approved seller profile, or ask. A branded item is never defaulted to the seller —
           the seller copies the brand owner&apos;s packer details from the pack label once per brand.
         </p>
       </Card>
-
-      <p className="text-xs text-[var(--ink3)]">
-        All sellers, people, GSTINs, PANs, FSSAI numbers, bank details and barcodes are fictional test
-        data. ONDC attribute keys are modelled on the public retail v1.2 specs and simplified for the
-        demo.
-      </p>
     </div>
   );
 }

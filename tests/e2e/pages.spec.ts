@@ -7,6 +7,14 @@ test("landing page shows the problem statement and nav", async ({ page }) => {
   await expect(page.getByRole("link", { name: "Read the case study" })).toBeVisible();
 });
 
+test("landing page explains SNP and lakh, states the 0.60-0.89 rule, and links the PRD", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("link", { name: "Full PRD" })).toHaveAttribute("href", /docs\/PRD\.md/);
+  await expect(page.getByText(/An SNP is the seller app/)).toBeVisible();
+  await expect(page.getByText(/1 lakh = 100,000/)).toBeVisible();
+  await expect(page.getByText(/a confidence from 0\.60 to 0\.89 goes to a human at G2/)).toBeVisible();
+});
+
 test("kit page lists all seven sets with working download links", async ({ page, request }) => {
   await page.goto("/kit");
   for (const id of ["A", "B", "C", "D", "E", "F", "G"]) {
@@ -24,15 +32,21 @@ test("case study page links the PRD, demo and kit", async ({ page }) => {
   await expect(page.getByRole("link", { name: "Full PRD" })).toHaveAttribute("href", /docs\/PRD\.md/);
 });
 
+test("case study page labels set C's GSTIN misread as a deliberate replay of an earlier prompt", async ({ page }) => {
+  await page.goto("/case-study");
+  await expect(page.getByText(/first attempt now deliberately replays that original \(v1\) prompt/)).toBeVisible();
+});
+
 test("scorecard page without a run shows the placeholder", async ({ page }) => {
   await page.goto("/scorecard");
   await expect(page.getByText(/Finish a run in "Run the demo"/)).toBeVisible();
   await expect(page.getByRole("main").getByRole("link", { name: "Run the demo" })).toBeVisible();
 });
 
-test("footer appears on every page with the required disclaimer", async ({ page }) => {
+test("footer appears on every page with the required disclaimer, worded the same everywhere", async ({ page }) => {
   for (const path of ["/", "/demo", "/scorecard", "/kit", "/case-study"]) {
     await page.goto(path);
     await expect(page.getByText(/Personal case-study project\. Not affiliated with ONDC/)).toBeVisible();
+    await expect(page.getByText(/ONDC attribute keys are modelled on the public retail v1\.2 specs/)).toBeVisible();
   }
 });
