@@ -112,6 +112,14 @@ This repo is being built milestone by milestone, PRD-first. See
 - [x] M7: hardening and live mode
 - [x] M8: launch
 
+## Known limitations
+
+- A unitless net quantity value (e.g. "500") is only inferred as grams once the column has been
+  approved as `net_quantity` at G2. A unitless value in a cell that is otherwise empty is left
+  unset rather than flagged, so a source with a blank `net_quantity`/pack-size cell for some rows
+  and bare numbers for others won't route the blank rows to the fallback queue. None of the sample
+  sets exercise this case today.
+
 ## Running locally
 
 ```bash

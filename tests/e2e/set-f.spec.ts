@@ -102,9 +102,78 @@ test("set F: resolving the fallback queue in bulk routes to G3 with exactly the 
   for (let i = 0; i < 3; i++) {
     await page.getByRole("button", { name: "Enter from label" }).first().click();
   }
-  // The 3 mrp_below_selling_price issues need a real source-data correction
-  // the demo doesn't offer, so sign-off stays disabled: that is the honest
-  // outcome, not a bug to route around.
   await expect(page.getByText("3 statutory issue(s) still open.")).toBeVisible();
   await expect(page.getByRole("button", { name: "Sign off statutory fields" })).toBeDisabled();
+
+  // The 3 remaining mrp_below_selling_price issues each get resolved with the
+  // prefilled "correct the selling price" default (MRP minus 5).
+  for (let i = 0; i < 3; i++) {
+    await page.getByRole("button", { name: "Use this price" }).first().click();
+  }
+  await expect(page.getByText("All statutory fields resolved.")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Sign off statutory fields" })).toBeEnabled();
+});
+
+/**
+ * Previously a dead end: set F's 3 mrp_below_selling_price issues had no
+ * resolution path anywhere in the app, so G3 sign-off (and therefore build,
+ * G4 and publish) could never complete for this set through the UI.
+ */
+test("set F: resolving MRP issues at G3 completes the run through build, G4 and publish", async ({ page }) => {
+  await runSetFToQueue(page);
+
+  await page.getByRole("button", { name: "Resolve all 4" }).click();
+  await page.getByRole("button", { name: "Resolve all 2" }).click();
+  await page
+    .locator("div", { has: page.getByText("TRP-017") })
+    .getByRole("button", { name: "Resolve" })
+    .first()
+    .click();
+  await page.getByRole("button", { name: "Finish fallback queue" }).click();
+
+  await expect(page.getByRole("heading", { name: /G3/ })).toBeVisible();
+  for (let i = 0; i < 3; i++) {
+    await page.getByRole("button", { name: "Enter from label" }).first().click();
+  }
+
+  // Resolve each mrp issue with a different one of the three paths: correct
+  // the selling price, correct the MRP, and remove the item.
+  const mrpSection = page
+    .locator("div")
+    .filter({ has: page.getByRole("heading", { name: "Selling price above MRP", level: 4 }) })
+    .last();
+  const mrpRows = mrpSection.locator("> div");
+  await expect(mrpRows).toHaveCount(3);
+
+  await mrpRows.nth(0).getByRole("button", { name: "Use this price" }).click();
+  await expect(mrpRows).toHaveCount(2);
+
+  const mrpInput = mrpRows.nth(0).getByLabel("Correct MRP");
+  await mrpInput.fill("500");
+  await mrpRows.nth(0).getByRole("button", { name: "Use this MRP" }).click();
+  await expect(mrpRows).toHaveCount(1);
+
+  await mrpRows.nth(0).getByRole("button", { name: "Remove item" }).click();
+  await expect(mrpRows).toHaveCount(0);
+
+  await expect(page.getByText("All statutory fields resolved.")).toBeVisible();
+  await page.getByRole("button", { name: "Sign off statutory fields" }).click();
+
+  await expect(page.getByRole("heading", { name: /Catalog builder/ })).toBeVisible();
+  // Two drop'd duplicate rows (TRP-009 and TRP-021 each appeared twice) plus
+  // the one item removed for its MRP issue leaves the rest of set F's rows.
+  const itemsText = await page.getByText(/Builds the ONDC catalog JSON for \d+ items/).textContent();
+  const itemCount = Number(itemsText?.match(/for (\d+) items/)?.[1]);
+  expect(itemCount).toBeGreaterThan(0);
+  await page.getByRole("button", { name: "Build catalog" }).click();
+
+  await expect(page.getByRole("heading", { name: /G4/ })).toBeVisible();
+  await page.getByRole("button", { name: /Reviewer: publish pilot phase/ }).click();
+  await page.getByRole("button", { name: /Seller: approve the full catalog/ }).click();
+
+  await expect(page.getByRole("heading", { name: /Publish and monitor/ })).toBeVisible();
+  await page.getByRole("button", { name: "Publish full catalog" }).click();
+
+  await expect(page.getByText("is live on the mock seller app")).toBeVisible();
+  await expect(page.getByText(`${itemCount} items published`)).toBeVisible();
 });

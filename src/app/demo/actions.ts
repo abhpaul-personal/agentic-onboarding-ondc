@@ -55,6 +55,7 @@ import {
   enterPackerDetailsAtG3,
   enterPackerDetailsForBrandAtG3,
   signOffG3,
+  resolveMrpAtG3,
   completeBuild,
   approveG4Pilot,
   approveG4Full,
@@ -62,6 +63,7 @@ import {
   createCatalogRun,
   type CatalogRunState,
   type FallbackResolution,
+  type MrpResolution,
 } from "@/lib/orchestrator/catalog-run";
 import { validateItems } from "@/lib/orchestrator/validate";
 import type { ValidationIssue } from "@/lib/orchestrator/types";
@@ -378,6 +380,16 @@ export async function catalogEnterPackerForBrand(
   assertCatalog(state);
   const catalog = state.catalog;
   return { ...state, catalog: enterPackerDetailsForBrandAtG3(catalog, brand, details) };
+}
+
+export async function catalogResolveMrpAtG3(
+  state: DemoState,
+  itemId: string,
+  resolution: MrpResolution,
+): Promise<DemoState> {
+  assertCatalog(state);
+  const catalog = state.catalog;
+  return { ...state, catalog: resolveMrpAtG3(catalog, itemId, resolution) };
 }
 
 export async function catalogSignOffG3(state: DemoState): Promise<DemoState> {

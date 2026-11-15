@@ -370,8 +370,11 @@ function G3Panel({ state, run, isPending }: { state: SingleDemoState; run: (a: (
   const { catalog } = state;
   const [enteredBrands, setEnteredBrands] = useState<Set<string>>(new Set());
   const [enteredItems, setEnteredItems] = useState<Set<string>>(new Set());
+  const [priceInputs, setPriceInputs] = useState<Record<string, string>>({});
+  const [mrpInputs, setMrpInputs] = useState<Record<string, string>>({});
   if (!catalog) return null;
   const g3Issues = catalog.issues.filter((i) => i.severity === "g3");
+  const mrpIssues = g3Issues.filter((i) => i.type === "mrp");
   const packerBrands = [...new Set(catalog.items.filter((i) => !i.manufacturerOrPackerName && i.brand).map((i) => i.brand!))];
   // A source with no brand column at all (e.g. set F) still names a
   // third-party packer explicitly; without a per-item path here, an item
@@ -404,7 +407,23 @@ function G3Panel({ state, run, isPending }: { state: SingleDemoState; run: (a: (
     );
   };
 
-  const remaining = g3Issues.filter((i) => i.type !== "packer_missing" && i.type !== "fssai");
+  const remaining = g3Issues.filter((i) => i.type !== "packer_missing" && i.type !== "fssai" && i.type !== "mrp");
+
+  const correctPrice = (itemId: string, mrp: number) => {
+    const raw = priceInputs[itemId];
+    const value = raw != null && raw !== "" ? Number(raw) : mrp - 5;
+    run(() => actions.catalogResolveMrpAtG3(state, itemId, { kind: "set_price", value }));
+  };
+
+  const correctMrp = (itemId: string, price: number) => {
+    const raw = mrpInputs[itemId];
+    const value = raw != null && raw !== "" ? Number(raw) : price;
+    run(() => actions.catalogResolveMrpAtG3(state, itemId, { kind: "set_mrp", value }));
+  };
+
+  const removeItem = (itemId: string) => {
+    run(() => actions.catalogResolveMrpAtG3(state, itemId, "drop"));
+  };
 
   return (
     <Card>
@@ -448,6 +467,55 @@ function G3Panel({ state, run, isPending }: { state: SingleDemoState; run: (a: (
               </Button>
             </div>
           ))}
+        </div>
+      )}
+
+      {mrpIssues.length > 0 && (
+        <div className="mb-3 space-y-2">
+          <h4 className="text-sm font-semibold">Selling price above MRP</h4>
+          {mrpIssues.map((issue) => {
+            const item = catalog.items.find((i) => i.id === issue.itemId);
+            if (!item || item.mrp == null || item.price == null) return null;
+            const defaultPrice = item.mrp - 5;
+            return (
+              <div key={issue.itemId} className="rounded-lg border border-[var(--line)] p-2.5 text-sm">
+                <p className="mb-2">
+                  <b className="font-mono">{item.id}</b> — MRP {item.mrp}, selling price {item.price}
+                </p>
+                <div className="flex flex-wrap items-end gap-2">
+                  <label className="text-xs text-[var(--ink2)]">
+                    Correct selling price
+                    <input
+                      type="number"
+                      placeholder={String(defaultPrice)}
+                      value={priceInputs[item.id] ?? ""}
+                      onChange={(e) => setPriceInputs((v) => ({ ...v, [item.id]: e.target.value }))}
+                      className="mt-1 block w-28 rounded-lg border border-[var(--line)] p-1.5 font-mono text-sm text-[var(--ink)]"
+                    />
+                  </label>
+                  <Button small disabled={isPending} onClick={() => correctPrice(item.id, item.mrp!)}>
+                    Use this price
+                  </Button>
+                  <label className="text-xs text-[var(--ink2)]">
+                    Correct MRP
+                    <input
+                      type="number"
+                      placeholder={String(item.price)}
+                      value={mrpInputs[item.id] ?? ""}
+                      onChange={(e) => setMrpInputs((v) => ({ ...v, [item.id]: e.target.value }))}
+                      className="mt-1 block w-28 rounded-lg border border-[var(--line)] p-1.5 font-mono text-sm text-[var(--ink)]"
+                    />
+                  </label>
+                  <Button small disabled={isPending} onClick={() => correctMrp(item.id, item.price!)}>
+                    Use this MRP
+                  </Button>
+                  <Button small disabled={isPending} onClick={() => removeItem(item.id)}>
+                    Remove item
+                  </Button>
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
 

@@ -6,6 +6,7 @@ import { appendAudit, type AuditLogEntry } from "./audit";
 import { OrchestratorStateError } from "./errors";
 import { buildItemsFromMappedColumns } from "./build-items";
 import { preFillFromSellerProfile } from "./validate";
+import { mrpAtOrAboveSellingPrice } from "@/lib/checks/mrp";
 import type { CatalogItem, GateRecord, MappingDecisionRecord, SourceFormat, ValidationIssue } from "./types";
 
 /**
@@ -436,6 +437,56 @@ export function enterPackerDetailsForBrandAtG3(
     "human",
     `G3: seller entered packer details for ${affectedIds.size} "${brand}" item(s) from the pack label`,
   );
+}
+
+/** G3: resolves an item's mrp_below_selling_price issue. */
+export type MrpResolution = { kind: "set_price"; value: number } | { kind: "set_mrp"; value: number } | "drop";
+
+/**
+ * G3: the seller resolves an mrp_below_selling_price issue by correcting
+ * the selling price, correcting the MRP, or removing the item from the
+ * catalog. The corrected values are the seller's own, entered at this
+ * gate, never invented by an agent (see preFillFromSellerProfile in
+ * validate.ts for the equivalent rule on statutory fields). The MRP check
+ * is re-run on the new values rather than assumed to pass, so a seller who
+ * enters an inconsistent pair of values sees the issue stay open.
+ */
+export function resolveMrpAtG3(state: CatalogRunState, itemId: string, resolution: MrpResolution): CatalogRunState {
+  assertStep(state, "g3");
+  if (resolution === "drop") {
+    const items = state.items.filter((item) => item.id !== itemId);
+    const issues = state.issues.filter((issue) => !(issue.itemId === itemId && issue.type === "mrp"));
+    return appendAudit(
+      { ...state, items, issues },
+      "human",
+      `G3: seller removed ${itemId} from the catalog (selling price above MRP)`,
+    );
+  }
+
+  const items = state.items.map((item) =>
+    item.id === itemId
+      ? resolution.kind === "set_price"
+        ? { ...item, price: resolution.value }
+        : { ...item, mrp: resolution.value }
+      : item,
+  );
+  const item = items.find((i) => i.id === itemId);
+  if (!item) {
+    throw new OrchestratorStateError(`No item ${itemId} in run ${state.runId}.`);
+  }
+  const stillFails = item.mrp != null && item.price != null && !mrpAtOrAboveSellingPrice(item.mrp, item.price);
+  const issues = stillFails
+    ? state.issues
+    : state.issues.filter((issue) => !(issue.itemId === itemId && issue.type === "mrp"));
+  const label = resolution.kind === "set_price" ? `selling price corrected to ${resolution.value}` : `MRP corrected to ${resolution.value}`;
+  const next = appendAudit(
+    { ...state, items, issues },
+    "human",
+    stillFails
+      ? `G3: seller's correction for ${itemId} (${label}) still has selling price above MRP; issue stays open`
+      : `G3: seller resolved MRP/price issue for ${itemId} (${label})`,
+  );
+  return next;
 }
 
 /** G3: the seller signs off every statutory field (PRD: always required). */
