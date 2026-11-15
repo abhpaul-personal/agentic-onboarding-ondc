@@ -50,6 +50,15 @@ export interface CatalogRunState {
   items: CatalogItem[];
   columnMappings: Record<string, MappingDecisionRecord>;
   issues: ValidationIssue[];
+  /**
+   * Immutable snapshot of every issue validateItems() raised, taken once at
+   * completeValidation and never mutated afterward — unlike `issues`, which
+   * is filtered down as the fallback queue and G3 resolve each one. The
+   * scorecard's "planted errors caught" count reads this, not a fresh
+   * validateItems() run against the already-resolved catalog, which would
+   * report 0 caught once every issue has been cleared.
+   */
+  validationIssues: ValidationIssue[];
   pilotApproved: boolean;
   catalogItems?: unknown[]; // OndcItem[], kept loosely typed here to avoid a cross-layer import cycle
   published: boolean;
@@ -78,6 +87,7 @@ export function createCatalogRun(
     items: [],
     columnMappings: {},
     issues: [],
+    validationIssues: [],
     pilotApproved: false,
     published: false,
     gates: [],
@@ -109,6 +119,15 @@ function skip(state: CatalogRunState, step: CatalogRunStep): CatalogRunState {
   return state.skippedSteps.includes(step)
     ? state
     : { ...state, skippedSteps: [...state.skippedSteps, step] };
+}
+
+/**
+ * Traces the item count at each step that can change it, so a run where
+ * items go missing (e.g. a resolution that drops more rows than it should)
+ * shows up in the audit log instead of only in a final published count.
+ */
+function logItemCount(state: CatalogRunState, step: string, count: number): CatalogRunState {
+  return appendAudit(state, "sys", `Item count — ${step}: ${count}`);
 }
 
 /** 1. Source intake: detects and confirms the format. Deterministic, no model call. */
@@ -149,6 +168,12 @@ export function completeExtraction(state: CatalogRunState, result: ExtractionRes
   if (!needsG1) {
     next = skip(next, "g1");
     next = appendAudit(next, "sys", "G1 skipped: structured source parsed with no errors");
+  }
+  // Unstructured sources have real items the moment extraction runs; a
+  // structured source's items don't exist until approveG2 builds them from
+  // rawRows, so that function logs the "extraction" item count instead.
+  if (!structured) {
+    next = logItemCount(next, "extraction", next.items.length);
   }
   return advance(next);
 }
@@ -254,6 +279,7 @@ export function approveG2(
       `G2: inferred grams for ${count} unitless net quantity value(s) in "${column}" from the reviewer-approved mapping`,
     );
   }
+  next = logItemCount(next, "extraction", items.length);
   next.gates = [...next.gates, { gate: "G2", outcome: `${editCount} mapping edits`, at: new Date().toISOString() }];
   return advance(next);
 }
@@ -278,7 +304,8 @@ export function completeValidation(state: CatalogRunState, issues: readonly Vali
   assertStep(state, "validate");
   const queueIssues = issues.filter((i) => i.severity === "queue");
   const g3Issues = issues.filter((i) => i.severity === "g3");
-  let next: CatalogRunState = { ...state, issues: [...issues] };
+  let next: CatalogRunState = { ...state, issues: [...issues], validationIssues: [...issues] };
+  next = logItemCount(next, "validation", state.items.length);
   for (const issue of issues) {
     next = appendAudit(next, "check", issue.message);
   }
@@ -295,6 +322,7 @@ export function completeValidation(state: CatalogRunState, issues: readonly Vali
 /** Fallback queue: resolves a validation issue of severity "queue" (duplicate, bad GTIN, unsupported claim). */
 export type FallbackResolution =
   | "drop"
+  | "dedupe"
   | "clear_gtin"
   | "remove_claim"
   | { kind: "set_net_qty"; value: string }
@@ -306,6 +334,18 @@ function applyFallbackResolution(
   resolution: FallbackResolution,
 ): CatalogItem[] {
   if (resolution === "drop") return items.filter((i) => !targetIds.has(i.id));
+  if (resolution === "dedupe") {
+    // A duplicate SKU is a real item that appeared twice in the source, not
+    // two items: keep the first occurrence of each target id and drop only
+    // the extra copies, rather than "drop" removing the item entirely.
+    const seen = new Set<string>();
+    return items.filter((item) => {
+      if (!targetIds.has(item.id)) return true;
+      if (seen.has(item.id)) return false;
+      seen.add(item.id);
+      return true;
+    });
+  }
   if (resolution === "clear_gtin") return items.map((i) => (targetIds.has(i.id) ? { ...i, gtin: undefined } : i));
   if (resolution === "remove_claim") return items.map((i) => (targetIds.has(i.id) ? { ...i, description: undefined } : i));
   if (resolution.kind === "set_net_qty") return items.map((i) => (targetIds.has(i.id) ? { ...i, netQty: resolution.value } : i));
@@ -361,7 +401,8 @@ export function finishFallbackQueue(state: CatalogRunState): CatalogRunState {
       `${remaining.length} fallback queue item(s) still unresolved for run ${state.runId}.`,
     );
   }
-  const next = appendAudit(state, "human", "Fallback queue: all items resolved");
+  let next = appendAudit(state, "human", "Fallback queue: all items resolved");
+  next = logItemCount(next, "dedupe", next.items.length);
   next.gates = [...next.gates, { gate: "FQ", outcome: `${state.items.length} items resolved`, at: new Date().toISOString() }];
   return advance(next);
 }
@@ -498,7 +539,8 @@ export function signOffG3(state: CatalogRunState): CatalogRunState {
       `${remaining.length} statutory issue(s) still open for run ${state.runId}; resolve them before G3 sign-off.`,
     );
   }
-  const next = appendAudit(state, "human", "G3: seller signed off all statutory fields");
+  let next = appendAudit(state, "human", "G3: seller signed off all statutory fields");
+  next = logItemCount(next, "G3", next.items.length);
   next.gates = [...next.gates, { gate: "G3", outcome: "Statutory fields signed off", at: new Date().toISOString() }];
   return advance(next);
 }
@@ -506,11 +548,12 @@ export function signOffG3(state: CatalogRunState): CatalogRunState {
 /** 6. Catalog builder: the orchestrator receives the finished ONDC items (built by lib/orchestrator/build-catalog.ts). */
 export function completeBuild(state: CatalogRunState, catalogItems: readonly unknown[]): CatalogRunState {
   assertStep(state, "build");
-  const next = appendAudit(
+  let next: CatalogRunState = appendAudit(
     { ...state, catalogItems: [...catalogItems] },
     "agent",
     `Catalog builder: ${catalogItems.length} items, pilot phase of ${Math.min(10, catalogItems.length)}`,
   );
+  next = logItemCount(next, "build", catalogItems.length);
   return advance(next);
 }
 
@@ -520,7 +563,8 @@ export function approveG4Pilot(state: CatalogRunState): CatalogRunState {
   if (state.pilotApproved) {
     throw new OrchestratorStateError(`Run ${state.runId}'s pilot phase is already approved.`);
   }
-  return appendAudit({ ...state, pilotApproved: true }, "human", "G4: reviewer approved the pilot phase");
+  const next = appendAudit({ ...state, pilotApproved: true }, "human", "G4: reviewer approved the pilot phase");
+  return logItemCount(next, "pilot", state.catalogItems?.length ?? 0);
 }
 
 /** G4, phase 2: the seller approves the full catalog, only after the pilot phase passed. */
@@ -544,10 +588,11 @@ export function approveG4Full(state: CatalogRunState): CatalogRunState {
 export function completePublish(state: CatalogRunState): CatalogRunState {
   assertStep(state, "publish");
   const remaining = (state.catalogItems?.length ?? 0) - 10;
-  const next = appendAudit(
+  let next = appendAudit(
     { ...state, published: true },
     "agent",
     `Published ${Math.max(remaining, 0)} remaining items; monitoring started`,
   );
+  next = logItemCount(next, "publish", state.catalogItems?.length ?? 0);
   return advance(next);
 }

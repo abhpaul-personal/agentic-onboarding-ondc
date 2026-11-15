@@ -118,9 +118,21 @@ test("set F: resolving the fallback queue in bulk routes to G3 with exactly the 
  * Previously a dead end: set F's 3 mrp_below_selling_price issues had no
  * resolution path anywhere in the app, so G3 sign-off (and therefore build,
  * G4 and publish) could never complete for this set through the UI.
+ *
+ * Also the item-count guardrail: set F has 32 rows with 2 literal duplicate
+ * rows (TRP-009 and TRP-021 each appear twice), so there are 30 unique
+ * items once the duplicates are resolved — resolving a "duplicate" issue
+ * must only drop the extra copy, not the item itself. Every step from
+ * there on should carry that count forward exactly, minus one per item the
+ * seller removes at G3, with published always equal to what was built.
  */
-test("set F: resolving MRP issues at G3 completes the run through build, G4 and publish", async ({ page }) => {
+test("set F: resolving MRP issues at G3 completes the run through build, G4 and publish, with the item count traced at every step", async ({
+  page,
+}) => {
   await runSetFToQueue(page);
+
+  await expect(page.getByText("Item count — extraction: 32")).toBeVisible();
+  await expect(page.getByText("Item count — validation: 32")).toBeVisible();
 
   await page.getByRole("button", { name: "Resolve all 4" }).click();
   await page.getByRole("button", { name: "Resolve all 2" }).click();
@@ -131,7 +143,11 @@ test("set F: resolving MRP issues at G3 completes the run through build, G4 and 
     .click();
   await page.getByRole("button", { name: "Finish fallback queue" }).click();
 
+  // 32 rows minus the 2 extra duplicate copies (TRP-009 and TRP-021 each
+  // kept once), never minus all 4 duplicated rows.
   await expect(page.getByRole("heading", { name: /G3/ })).toBeVisible();
+  await expect(page.getByText("Item count — dedupe: 30")).toBeVisible();
+
   for (let i = 0; i < 3; i++) {
     await page.getByRole("button", { name: "Enter from label" }).first().click();
   }
@@ -153,27 +169,58 @@ test("set F: resolving MRP issues at G3 completes the run through build, G4 and 
   await mrpRows.nth(0).getByRole("button", { name: "Use this MRP" }).click();
   await expect(mrpRows).toHaveCount(1);
 
-  await mrpRows.nth(0).getByRole("button", { name: "Remove item" }).click();
+  await mrpRows.nth(0).getByRole("button", { name: "Remove item" }).click(); // the one item the seller removes
   await expect(mrpRows).toHaveCount(0);
 
   await expect(page.getByText("All statutory fields resolved.")).toBeVisible();
   await page.getByRole("button", { name: "Sign off statutory fields" }).click();
 
+  // 30 deduped items minus the 1 the seller removed at G3.
   await expect(page.getByRole("heading", { name: /Catalog builder/ })).toBeVisible();
-  // Two drop'd duplicate rows (TRP-009 and TRP-021 each appeared twice) plus
-  // the one item removed for its MRP issue leaves the rest of set F's rows.
-  const itemsText = await page.getByText(/Builds the ONDC catalog JSON for \d+ items/).textContent();
-  const itemCount = Number(itemsText?.match(/for (\d+) items/)?.[1]);
-  expect(itemCount).toBeGreaterThan(0);
+  await expect(page.getByText("Item count — G3: 29")).toBeVisible();
+  await expect(page.getByText("Builds the ONDC catalog JSON for 29 items")).toBeVisible();
   await page.getByRole("button", { name: "Build catalog" }).click();
+  await expect(page.getByText("Item count — build: 29")).toBeVisible();
 
   await expect(page.getByRole("heading", { name: /G4/ })).toBeVisible();
   await page.getByRole("button", { name: /Reviewer: publish pilot phase/ }).click();
-  await page.getByRole("button", { name: /Seller: approve the full catalog/ }).click();
+  await expect(page.getByText("Item count — pilot: 29")).toBeVisible();
+  await page.getByRole("button", { name: /Seller: approve the full catalog \(29 items\)/ }).click();
 
   await expect(page.getByRole("heading", { name: /Publish and monitor/ })).toBeVisible();
   await page.getByRole("button", { name: "Publish full catalog" }).click();
+  await expect(page.getByText("Item count — publish: 29")).toBeVisible();
 
+  // Published always equals what was built: no step after build may change the count.
   await expect(page.getByText("is live on the mock seller app")).toBeVisible();
-  await expect(page.getByText(`${itemCount} items published`)).toBeVisible();
+  await expect(page.getByText("29 items published")).toBeVisible();
+
+  // The scorecard's "planted errors caught" must still read 13 of 13 after
+  // a full run through G3, G4 and publish — not 0, which is what a fresh
+  // validateItems() re-run against the now-resolved (and partly removed)
+  // catalog would wrongly report.
+  await page.getByRole("button", { name: "Open the scorecard" }).click();
+  await expect(page).toHaveURL(/\/scorecard\?run=/);
+  await expect(page.getByText("13 of 13 planted errors caught")).toBeVisible();
+  const inventedCard = page.getByText("Invented statutory values").locator("..");
+  await expect(inventedCard.locator("b")).toHaveText("0");
+});
+
+test("set F: resolving duplicates keeps one copy of each (30 of 32 rows), not zero", async ({ page }) => {
+  await runSetFToQueue(page);
+
+  await page.getByRole("button", { name: "Resolve all 2" }).click();
+  // The 2 duplicate ids (TRP-009, TRP-021) are resolved, but the 4 GTIN and
+  // 1 claim issues are untouched: the queue is not finished yet.
+  await expect(page.getByText(/5 item\(s\) still open/)).toBeVisible();
+  await expect(page.getByText("Item count — dedupe:")).toHaveCount(0); // not finished yet, no dedupe log
+
+  await page.getByRole("button", { name: "Resolve all 4" }).click();
+  await page
+    .locator("div", { has: page.getByText("TRP-017") })
+    .getByRole("button", { name: "Resolve" })
+    .first()
+    .click();
+  await page.getByRole("button", { name: "Finish fallback queue" }).click();
+  await expect(page.getByText("Item count — dedupe: 30")).toBeVisible();
 });

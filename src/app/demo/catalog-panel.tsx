@@ -283,7 +283,7 @@ function G2Panel({ state, run, isPending }: { state: SingleDemoState; run: (a: (
 
 function resolutionForType(type: string) {
   return type === "duplicate"
-    ? ("drop" as const)
+    ? ("dedupe" as const)
     : type === "gtin"
       ? ("clear_gtin" as const)
       : type === "claim"

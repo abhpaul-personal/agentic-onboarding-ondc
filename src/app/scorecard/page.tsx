@@ -110,7 +110,7 @@ export default async function ScorecardPage({
   const secs = elapsedSec % 60;
 
   const remainingIssues = validateItems(catalog.items, catalog.sellerProfile);
-  const plantedErrors = auditPlantedErrorsCatalog(state.setId, catalog.items, catalog.sellerProfile);
+  const plantedErrors = auditPlantedErrorsCatalog(state.setId, catalog.validationIssues);
   const invented = auditInventedStatutoryValues(catalog);
 
   return (

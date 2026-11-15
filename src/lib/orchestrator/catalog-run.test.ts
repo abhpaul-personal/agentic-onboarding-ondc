@@ -24,6 +24,7 @@ import {
   enterPackerDetailsForBrandAtG3,
   finishFallbackQueue,
   resolveFallbackQueueItem,
+  resolveFallbackQueueItemsByType,
   resolveMrpAtG3,
   signOffG3,
 } from "./catalog-run";
@@ -270,6 +271,93 @@ describe("catalog run: structured source (set B style)", () => {
     state = resolveMrpAtG3(state, "A", { kind: "set_mrp", value: 120 }); // still below the 150 price
     expect(state.issues.some((i) => i.itemId === "A" && i.type === "mrp")).toBe(true);
     expect(() => signOffG3(state)).toThrow(OrchestratorStateError);
+  });
+
+  /**
+   * Traces item counts across every step that can change them (extraction,
+   * dedupe, validation, G3, build, pilot, publish), the way set F's 32 rows
+   * with 2 literal duplicate rows should behave: a duplicate SKU is one
+   * real item that appeared twice in the source, so resolving it should
+   * remove only the extra copy, not the item itself. A synthetic 6-row
+   * source with one duplicated SKU stands in for set F's shape so the math
+   * (6 rows -> 5 unique items) is easy to check by hand.
+   */
+  function runToG3WithSixRowsOneDuplicate(runId: string) {
+    let state = createCatalogRun(runId, grocerySeller, "csv");
+    state = completeSourceIntake(state, "CSV, header found on row 1");
+    state = completeExtraction(state, {
+      rawRows: [{ sku: "A" }, { sku: "B" }, { sku: "C" }, { sku: "C" }, { sku: "D" }, { sku: "E" }],
+      hadParseErrors: false,
+    });
+    state = completeMapping(state, [
+      { column: "sku", candidates: [], proposed: "id", confidence: 0.95, risk: "low", reason: "x" },
+    ]);
+    state = approveG2(state);
+    expect(state.items).toHaveLength(6);
+    expect(state.auditLog.map((e) => e.text)).toContain("Item count — extraction: 6");
+
+    state = completeCategory(state, []);
+    // Give every item an MRP and packing month so the grocery mfg_missing/
+    // mrp_missing checks never fire here: this test is about item count,
+    // not statutory gaps.
+    const withMonth = state.items.map((item) => ({ ...item, mrp: 100, packedMonth: "01/2026" }));
+    state = { ...state, items: withMonth };
+    return state;
+  }
+
+  it("keeps 5 of 6 rows (one duplicate dropped) through validation, dedupe, G3, build, pilot and publish when nothing else is removed", () => {
+    let state = runToG3WithSixRowsOneDuplicate("run-count-clean");
+    state = completeValidation(state, validateItems(state.items, grocerySeller));
+    expect(state.auditLog.map((e) => e.text)).toContain("Item count — validation: 6");
+    expect(state.step).toBe("queue");
+
+    state = resolveFallbackQueueItemsByType(state, "duplicate", "dedupe");
+    expect(state.items).toHaveLength(5); // the extra "C" row is gone, not both copies
+    state = finishFallbackQueue(state);
+    expect(state.auditLog.map((e) => e.text)).toContain("Item count — dedupe: 5");
+    expect(state.step).toBe("g3");
+
+    state = signOffG3(state);
+    expect(state.auditLog.map((e) => e.text)).toContain("Item count — G3: 5");
+    expect(state.step).toBe("build");
+
+    state = completeBuild(state, state.items);
+    expect(state.catalogItems).toHaveLength(5);
+    expect(state.auditLog.map((e) => e.text)).toContain("Item count — build: 5");
+
+    state = approveG4Pilot(state);
+    expect(state.auditLog.map((e) => e.text)).toContain("Item count — pilot: 5");
+    state = approveG4Full(state);
+    state = completePublish(state);
+    expect(state.auditLog.map((e) => e.text)).toContain("Item count — publish: 5");
+  });
+
+  it("carries a seller's G3 removal through to a matching build, pilot and publish count (4 of 6)", () => {
+    let state = runToG3WithSixRowsOneDuplicate("run-count-removed");
+    const broken = state.items.map((item) => (item.id === "E" ? { ...item, price: 150 } : item)); // mrp is 100
+    state = { ...state, items: broken };
+    state = completeValidation(state, validateItems(broken, grocerySeller));
+
+    state = resolveFallbackQueueItemsByType(state, "duplicate", "dedupe");
+    state = finishFallbackQueue(state);
+    expect(state.items).toHaveLength(5);
+
+    state = resolveMrpAtG3(state, "E", "drop");
+    state = signOffG3(state);
+    expect(state.items).toHaveLength(4);
+    expect(state.auditLog.map((e) => e.text)).toContain("Item count — G3: 4");
+
+    state = completeBuild(state, state.items);
+    expect(state.catalogItems).toHaveLength(4);
+    expect(state.auditLog.map((e) => e.text)).toContain("Item count — build: 4");
+
+    state = approveG4Pilot(state);
+    expect(state.auditLog.map((e) => e.text)).toContain("Item count — pilot: 4");
+    state = approveG4Full(state);
+    state = completePublish(state);
+    expect(state.auditLog.map((e) => e.text)).toContain("Item count — publish: 4");
+    // Published always equals what was built: no step after build may change the count.
+    expect(state.catalogItems).toHaveLength(4);
   });
 
   it("routes an unparseable net quantity to the fallback queue and lets the reviewer correct it", () => {

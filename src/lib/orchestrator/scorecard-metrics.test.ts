@@ -8,7 +8,7 @@ import {
   auditExtractionProvenance,
 } from "./scorecard-metrics";
 import { buildItemsFromMappedColumns } from "./build-items";
-import { preFillFromSellerProfile } from "./validate";
+import { preFillFromSellerProfile, validateItems } from "./validate";
 import { parseCsvRecords } from "@/lib/parse/csv";
 import { registrationFormSchema, type SellerProfile } from "@/lib/schemas/seller-profile";
 import type { MappingTargetKey } from "@/lib/schemas/mapping-target";
@@ -52,6 +52,7 @@ function fakeCatalogState(overrides: Partial<CatalogRunState>): CatalogRunState 
     items,
     columnMappings,
     issues: [],
+    validationIssues: [],
     pilotApproved: false,
     published: false,
     gates: [],
@@ -63,7 +64,8 @@ function fakeCatalogState(overrides: Partial<CatalogRunState>): CatalogRunState 
 describe("auditPlantedErrorsCatalog (set F)", () => {
   it("catches all 13 planted errors against the real, fixed set F pipeline", () => {
     const { items, seller } = buildSetFItems();
-    const result = auditPlantedErrorsCatalog("F", items, seller);
+    const issues = validateItems(items, seller);
+    const result = auditPlantedErrorsCatalog("F", issues);
     expect(result).not.toBeNull();
     expect(result!.total).toBe(13);
     expect(result!.caughtSkus).toHaveLength(13);
@@ -78,16 +80,31 @@ describe("auditPlantedErrorsCatalog (set F)", () => {
     const broken = items.map((i) =>
       i.id === "TRP-008" ? { ...i, fssaiLicenceNo: seller.fssai, manufacturerOrPackerAddress: seller.packer_address } : i,
     );
-    const result = auditPlantedErrorsCatalog("F", broken, seller);
+    const issues = validateItems(broken, seller);
+    const result = auditPlantedErrorsCatalog("F", issues);
     expect(result!.caughtSkus).toHaveLength(12);
     expect(result!.missed).toEqual([
       { sku: "TRP-008", error: "missing_fssai_for_third_party_packer", caught_at: "validation", gate: "G3" },
     ]);
   });
 
+  it("still reports an issue as caught once the item it lived on has been resolved or removed", () => {
+    // The whole point of taking a validation-time snapshot: the scorecard
+    // must keep reporting a caught error even after the fallback queue or
+    // G3 has resolved (and possibly removed) the item it was raised on.
+    const { items, seller } = buildSetFItems();
+    const issues = validateItems(items, seller);
+    const resolved = issues.filter((i) => i.itemId !== "TRP-003"); // as if the queue had cleared TRP-003's GTIN issue
+    const result = auditPlantedErrorsCatalog("F", issues);
+    const resultFromResolved = auditPlantedErrorsCatalog("F", resolved);
+    expect(result!.caughtSkus).toContain("TRP-003");
+    expect(resultFromResolved!.caughtSkus).not.toContain("TRP-003"); // proves this reads the issues passed in, not a live re-validation
+  });
+
   it("returns null for a set with no planted_errors.json", () => {
     const { items, seller } = buildSetFItems();
-    expect(auditPlantedErrorsCatalog("A", items, seller)).toBeNull();
+    const issues = validateItems(items, seller);
+    expect(auditPlantedErrorsCatalog("A", issues)).toBeNull();
   });
 });
 
@@ -203,6 +220,7 @@ describe("auditInventedStatutoryValues", () => {
       ],
       columnMappings: {},
       issues: [],
+      validationIssues: [],
       pilotApproved: false,
       published: false,
       gates: [],

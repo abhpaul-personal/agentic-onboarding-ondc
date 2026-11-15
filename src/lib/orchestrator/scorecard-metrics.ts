@@ -1,6 +1,5 @@
 import { readFileSync } from "fs";
 import { join } from "path";
-import { validateItems } from "./validate";
 import { buildItemsFromMappedColumns } from "./build-items";
 import type { CatalogItem, ValidationIssue } from "./types";
 import type { CatalogRunState } from "./catalog-run";
@@ -57,12 +56,19 @@ function loadPlantedErrorsForSet(setId: string): PlantedErrorEntry[] | null {
  * own ground_truth/planted_errors.json, matched by item id and error
  * type. Returns null when the set has no planted-errors file (most sets
  * — only an eval set built with deliberate traps has one).
+ *
+ * Takes the issues validation actually raised, not the catalog items to
+ * re-validate: by the time a run reaches the scorecard, the fallback queue
+ * and G3 have already resolved (and in some cases removed) the very items
+ * a planted error lived on, so re-running validateItems() on the resolved
+ * catalog would report every caught error as "missed" once it no longer
+ * reproduces. Callers pass the immutable validationIssues snapshot taken
+ * once at completeValidation (see catalog-run.ts).
  */
-export function auditPlantedErrorsCatalog(setId: string, items: readonly CatalogItem[], seller: SellerProfile): PlantedErrorResult | null {
+export function auditPlantedErrorsCatalog(setId: string, issues: readonly ValidationIssue[]): PlantedErrorResult | null {
   const plantedErrors = loadPlantedErrorsForSet(setId);
   if (!plantedErrors) return null;
 
-  const issues = validateItems(items, seller);
   const caughtSkus: string[] = [];
   const missed: PlantedErrorEntry[] = [];
   const unmapped: PlantedErrorEntry[] = [];
