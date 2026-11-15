@@ -12,6 +12,11 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   reporter: [["list"]],
+  // Fails the whole run if any e2e test causes a live call to the Anthropic
+  // API (see tests/e2e/no-network-guard.cjs, loaded into the server process
+  // below). globalSetup clears any sentinel left by a previous run.
+  globalSetup: "./tests/e2e/global-setup.ts",
+  globalTeardown: "./tests/e2e/global-teardown.ts",
   use: {
     baseURL: "http://localhost:3000",
     trace: "retain-on-failure",
@@ -22,5 +27,6 @@ export default defineConfig({
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
+    env: { NODE_OPTIONS: "--require ./tests/e2e/no-network-guard.cjs" },
   },
 });

@@ -46,6 +46,9 @@ export async function runIntakeFailSendBackRetryAndApproveG0(page: Page) {
   await page.getByRole("button", { name: "Send back" }).click();
   await expect(page.getByRole("heading", { name: /S1.*Seller intake agent/ })).toBeVisible();
   await expect(page.getByText(/Attempt 2\./)).toBeVisible();
+  // Attempt 2 must still show the "cached" badge, same as attempt 1: it
+  // replays a second committed cache entry, never a live model call.
+  await expect(page.getByText("Model, cached")).toBeVisible();
 
   await page.getByRole("button", { name: /Run seller intake agent \(attempt 2\)/ }).click();
   await page.getByRole("button", { name: "Run verification" }).click();
