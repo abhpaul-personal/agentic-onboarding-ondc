@@ -32,7 +32,7 @@ describe("buildItemsFromMappedColumns", () => {
       Remarks: "IGNORE" as const,
     };
 
-    const [item] = buildItemsFromMappedColumns(rows, targets);
+    const [item] = buildItemsFromMappedColumns(rows, targets).items;
     expect(item.name).toBe("Toor Dal");
     expect(item.brand).toBe("Annakosh");
     expect(item.mrp).toBe(165);
@@ -53,7 +53,7 @@ describe("buildItemsFromMappedColumns", () => {
       { Wajan: "1 kg" },
       { Wajan: "250GM" },
     ];
-    const netQtys = buildItemsFromMappedColumns(rows, { Wajan: "net_quantity" as const }).map((i) => i.netQty);
+    const netQtys = buildItemsFromMappedColumns(rows, { Wajan: "net_quantity" as const }).items.map((i) => i.netQty);
     expect(netQtys).toEqual(["500 g", "500 g", "aadha kilo", "500 g", "1000 g", "250 g"]);
   });
 
@@ -66,7 +66,7 @@ describe("buildItemsFromMappedColumns", () => {
     ];
     const months = buildItemsFromMappedColumns(rows, {
       "Mfg Dt": "month_year_of_manufacture_packing_import" as const,
-    }).map((i) => i.packedMonth);
+    }).items.map((i) => i.packedMonth);
     expect(months).toEqual(["10/2026", "10/2026", "09/2026", "09/2026"]);
   });
 
@@ -78,7 +78,7 @@ describe("buildItemsFromMappedColumns", () => {
       { A: "₹110.00" }, // "₹110.00"
       { A: "Rs. 1,250/-" }, // thousands separator
     ];
-    const prices = buildItemsFromMappedColumns(rows, { A: "price.value" as const }).map((i) => i.price);
+    const prices = buildItemsFromMappedColumns(rows, { A: "price.value" as const }).items.map((i) => i.price);
     expect(prices).toEqual([120, 165, 75, 110, 1250]);
   });
 
@@ -86,17 +86,17 @@ describe("buildItemsFromMappedColumns", () => {
     const [item] = buildItemsFromMappedColumns(
       [{ Mark: "Non-Veg" }],
       { Mark: "veg_non_veg" as const },
-    );
+    ).items;
     expect(item.vegNonVeg).toBe("non_veg");
   });
 
   it("leaves a field unset when the mapped value is blank", () => {
-    const [item] = buildItemsFromMappedColumns([{ Brand: "" }], { Brand: "brand" as const });
+    const [item] = buildItemsFromMappedColumns([{ Brand: "" }], { Brand: "brand" as const }).items;
     expect(item.brand).toBeUndefined();
   });
 
   it("falls back to a generated id when no column maps to id", () => {
-    const [item] = buildItemsFromMappedColumns([{ Name: "Toor Dal" }], { Name: "descriptor.name" as const });
+    const [item] = buildItemsFromMappedColumns([{ Name: "Toor Dal" }], { Name: "descriptor.name" as const }).items;
     expect(item.id).toBe("row-1");
   });
 
@@ -138,7 +138,7 @@ describe("buildItemsFromMappedColumns", () => {
       "Variant SKU": "id" as const,
     };
 
-    const items = buildItemsFromMappedColumns(rows, targets);
+    const items = buildItemsFromMappedColumns(rows, targets).items;
     expect(items.map((i) => i.name)).toEqual([
       "Chanderi Kurta Set 01 - S",
       "Chanderi Kurta Set 01 - M",
@@ -149,9 +149,23 @@ describe("buildItemsFromMappedColumns", () => {
   });
 
   it("leaves non-variant items (no parent_item_id mapped) untouched", () => {
-    const [item] = buildItemsFromMappedColumns([{ Name: "Toor Dal" }], { Name: "descriptor.name" as const });
+    const [item] = buildItemsFromMappedColumns([{ Name: "Toor Dal" }], { Name: "descriptor.name" as const }).items;
     expect(item.name).toBe("Toor Dal");
     expect(item.parentItemId).toBeUndefined();
+  });
+
+  it("treats a bare unitless number as grams once the column is mapped to net_quantity (set F's pack_size)", () => {
+    const rows = [{ pack_size: "500" }, { pack_size: "1000" }, { pack_size: "aadha kilo" }, { pack_size: "" }];
+    const result = buildItemsFromMappedColumns(rows, { pack_size: "net_quantity" as const });
+    expect(result.items.map((i) => i.netQty)).toEqual(["500 g", "1000 g", "aadha kilo", undefined]);
+    // Only the two bare numbers counted as unit-inferred, not the word form or the blank.
+    expect(result.unitInferredByColumn).toEqual({ pack_size: 2 });
+  });
+
+  it("reports no unit-inferred values when the net_quantity column already has units", () => {
+    const rows = [{ Wajan: "500gm" }, { Wajan: "1 kg" }];
+    const result = buildItemsFromMappedColumns(rows, { Wajan: "net_quantity" as const });
+    expect(result.unitInferredByColumn).toEqual({});
   });
 
   it("falls back to the item's id rather than a blank name when no column (and no variant group) resolves one", () => {
@@ -162,7 +176,7 @@ describe("buildItemsFromMappedColumns", () => {
     // categoryInputSchema's name: z.string().min(1)).
     const [item] = buildItemsFromMappedColumns([{ Handle: "chanderi-kurta-set-01" }], {
       Handle: "id" as const,
-    });
+    }).items;
     expect(item.name).toBe("chanderi-kurta-set-01");
   });
 });

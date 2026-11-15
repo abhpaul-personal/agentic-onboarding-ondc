@@ -157,5 +157,15 @@ export function validateItems(
     }
   }
 
-  return issues;
+  // A source with a literal duplicate row (same SKU appearing twice, e.g.
+  // set F's TRP-009 and TRP-021) produces two catalog items sharing an id,
+  // so the loop above raises the same finding for that id twice. There is
+  // only one real problem per (item, issue type), so keep the first.
+  const seen = new Set<string>();
+  return issues.filter((issue) => {
+    const key = `${issue.itemId}:${issue.type}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }

@@ -9,15 +9,26 @@ import type { CatalogItem } from "./types";
  * the mapping agent and G2 only decide *which* column goes where, this
  * step just reads the value out.
  */
+export interface BuildItemsResult {
+  items: CatalogItem[];
+  /** How many unitless net_quantity values (e.g. "500") were normalised to grams because the reviewer approved that column's mapping at G2, by column. */
+  unitInferredByColumn: Record<string, number>;
+}
+
 export function buildItemsFromMappedColumns(
   rows: readonly Record<string, string>[],
   columnTargets: Readonly<Record<string, MappingTargetKey | null>>,
-): CatalogItem[] {
+): BuildItemsResult {
+  const unitInferredByColumn: Record<string, number> = {};
   const items = rows.map((row, index) => {
     const item: CatalogItem = { id: `row-${index + 1}`, name: "" };
     for (const [column, target] of Object.entries(columnTargets)) {
       if (target == null || target === "IGNORE") continue;
-      applyField(item, target, row[column] ?? "");
+      const raw = row[column] ?? "";
+      applyField(item, target, raw);
+      if (target === "net_quantity" && /^\d+(\.\d+)?$/.test(raw.trim())) {
+        unitInferredByColumn[column] = (unitInferredByColumn[column] ?? 0) + 1;
+      }
     }
     return item;
   });
@@ -27,7 +38,8 @@ export function buildItemsFromMappedColumns(
   // group to inherit from, same as other unparseable fields in this file —
   // kept rather than blanked, so downstream steps see it and a human can
   // still fix it, instead of the catalog step crashing outright.
-  return applyVariantGroupInheritance(items).map((item) => (item.name ? item : { ...item, name: item.id }));
+  const named = applyVariantGroupInheritance(items).map((item) => (item.name ? item : { ...item, name: item.id }));
+  return { items: named, unitInferredByColumn };
 }
 
 /**
@@ -103,7 +115,10 @@ function applyField(item: CatalogItem, target: MappingTargetKey, value: string):
       // Rule-based unit normalisation ("500gm", "0.5 kg" -> "500 g"). A word
       // form like "aadha kilo" needs the LLM (PRD): kept as the raw value,
       // never blanked, so validateItems can flag it for G2/the fallback queue.
-      const grams = parseNetQuantityGrams(trimmed);
+      // A bare number ("500") is assumed grams: this function only ever runs
+      // after a reviewer has approved the column as net_quantity at G2 (see
+      // approveG2 in catalog-run.ts), so it is no longer ambiguous by then.
+      const grams = parseNetQuantityGrams(trimmed, { assumeGramsIfUnitless: true });
       item.netQty = grams != null ? formatNetQuantityGrams(grams) : trimmed;
       break;
     }

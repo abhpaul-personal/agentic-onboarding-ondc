@@ -50,6 +50,7 @@ import {
   completeCategory,
   completeValidation,
   resolveFallbackQueueItem,
+  resolveFallbackQueueItemsByType,
   finishFallbackQueue,
   enterPackerDetailsAtG3,
   enterPackerDetailsForBrandAtG3,
@@ -63,6 +64,7 @@ import {
   type FallbackResolution,
 } from "@/lib/orchestrator/catalog-run";
 import { validateItems } from "@/lib/orchestrator/validate";
+import type { ValidationIssue } from "@/lib/orchestrator/types";
 import { buildOndcItem } from "@/lib/orchestrator/build-catalog";
 
 const store = createCacheStore();
@@ -334,11 +336,22 @@ export async function catalogRunValidation(state: DemoState): Promise<DemoState>
 export async function catalogResolveQueueItem(
   state: DemoState,
   itemId: string,
+  type: ValidationIssue["type"],
   resolution: FallbackResolution,
 ): Promise<DemoState> {
   assertCatalog(state);
   const catalog = state.catalog;
-  return { ...state, catalog: resolveFallbackQueueItem(catalog, itemId, resolution) };
+  return { ...state, catalog: resolveFallbackQueueItem(catalog, itemId, type, resolution) };
+}
+
+export async function catalogResolveQueueItemsByType(
+  state: DemoState,
+  type: ValidationIssue["type"],
+  resolution: FallbackResolution,
+): Promise<DemoState> {
+  assertCatalog(state);
+  const catalog = state.catalog;
+  return { ...state, catalog: resolveFallbackQueueItemsByType(catalog, type, resolution) };
 }
 
 export async function catalogFinishQueue(state: DemoState): Promise<DemoState> {

@@ -201,7 +201,7 @@ describe("catalog run: structured source (set B style)", () => {
 
     expect(() => signOffG3({ ...state, step: "g3" })).toThrow(OrchestratorStateError);
 
-    state = resolveFallbackQueueItem(state, "TRP-003", "clear_gtin");
+    state = resolveFallbackQueueItem(state, "TRP-003", "gtin", "clear_gtin");
     state = finishFallbackQueue(state);
     expect(state.step).toBe("g3");
     expect(state.gates.map((g) => g.gate)).toContain("FQ");
@@ -231,7 +231,7 @@ describe("catalog run: structured source (set B style)", () => {
     state = completeValidation(state, issues);
     expect(state.step).toBe("queue");
 
-    state = resolveFallbackQueueItem(state, "RKS-099", { kind: "set_net_qty", value: "500 g" });
+    state = resolveFallbackQueueItem(state, "RKS-099", "net_qty_unparsed", { kind: "set_net_qty", value: "500 g" });
     expect(state.items[0].netQty).toBe("500 g");
     expect(state.issues.some((i) => i.type === "net_qty_unparsed")).toBe(false);
   });
@@ -290,7 +290,7 @@ describe("catalog run: structured source (set B style)", () => {
     state = completeValidation(state, issues);
     expect(state.step).toBe("queue");
     for (const issue of netQtyIssues) {
-      state = resolveFallbackQueueItem(state, issue.itemId, { kind: "set_net_qty", value: "500 g" });
+      state = resolveFallbackQueueItem(state, issue.itemId, "net_qty_unparsed", { kind: "set_net_qty", value: "500 g" });
     }
     state = finishFallbackQueue(state);
     expect(state.step).toBe("g3");

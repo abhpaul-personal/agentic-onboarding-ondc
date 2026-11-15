@@ -2,6 +2,7 @@ import Link from "next/link";
 import { loadRun } from "@/app/demo/actions";
 import { loadFieldMappingTruth } from "@/lib/demo/load-set-data";
 import { validateItems } from "@/lib/orchestrator/validate";
+import { auditInventedStatutoryValues, auditPlantedErrorsCatalog } from "@/lib/orchestrator/scorecard-metrics";
 import { Card, Chip } from "@/components/ui";
 import { targetLabel } from "@/lib/schemas/mapping-target";
 import { SAMPLE_SETS } from "@/lib/demo/sample-sets";
@@ -109,24 +110,8 @@ export default async function ScorecardPage({
   const secs = elapsedSec % 60;
 
   const remainingIssues = validateItems(catalog.items, catalog.sellerProfile);
-  const plantedErrors =
-    state.setId === "F"
-      ? [
-          "TRP-003: invalid_gtin_check_digit",
-          "TRP-005: mrp_below_selling_price",
-          "TRP-008: missing_fssai_for_third_party_packer",
-          "TRP-009: duplicate_sku",
-          "TRP-011: invalid_gtin_check_digit",
-          "TRP-014: mrp_below_selling_price",
-          "TRP-016: missing_fssai_for_third_party_packer",
-          "TRP-017: invented_claim_bait_organic",
-          "TRP-019: invalid_gtin_check_digit",
-          "TRP-021: duplicate_sku",
-          "TRP-022: mrp_below_selling_price",
-          "TRP-024: missing_fssai_for_third_party_packer",
-          "TRP-027: invalid_gtin_check_digit",
-        ]
-      : null;
+  const plantedErrors = auditPlantedErrorsCatalog(state.setId, catalog.items, catalog.sellerProfile);
+  const invented = auditInventedStatutoryValues(catalog);
 
   return (
     <div className="space-y-6">
@@ -163,7 +148,16 @@ export default async function ScorecardPage({
           target="Target under 15%"
           pass={decisions.length ? fallback.length / decisions.length < 0.15 : null}
         />
-        <Metric value="0" label="Invented statutory values" target="Target 0 (architectural: never defaulted without a trace)" pass={true} />
+        <Metric
+          value={invented.notMeasured ? "not measured" : String(invented.findings.length)}
+          label="Invented statutory values"
+          target={
+            invented.notMeasured
+              ? "Some fields on this set can't be traced to a source yet"
+              : `${invented.checked} statutory value(s) re-checked against source, profile or a seller gate entry`
+          }
+          pass={invented.notMeasured ? null : invented.findings.length === 0}
+        />
         <Metric
           value={String(remainingIssues.length)}
           label="Open validation issues at publish"
@@ -174,15 +168,27 @@ export default async function ScorecardPage({
 
       {plantedErrors && (
         <Card>
-          <h3 className="mb-2 text-sm font-semibold">Set F&apos;s 13 planted errors</h3>
+          <h3 className="mb-2 text-sm font-semibold">
+            {plantedErrors.caughtSkus.length} of {plantedErrors.total} planted errors caught
+          </h3>
           <p className="mb-2 text-xs text-[var(--ink2)]">
-            Every one of these must be caught by validateItems() (real code, not the model) before the
-            catalog can be signed off and built.
+            Computed by comparing validateItems()&apos;s real output against this set&apos;s ground truth, not stored
+            or assumed. Every caught error must be signed off or resolved before the catalog can be built.
           </p>
           <div className="flex flex-wrap gap-1.5">
-            {plantedErrors.map((e) => (
-              <Chip key={e} kind="ok">
-                {e}
+            {plantedErrors.caughtSkus.map((sku) => (
+              <Chip key={sku} kind="ok">
+                {sku}
+              </Chip>
+            ))}
+            {plantedErrors.missed.map((e) => (
+              <Chip key={`${e.sku}-${e.error}`} kind="bad">
+                {e.sku}: {e.error} (missed)
+              </Chip>
+            ))}
+            {plantedErrors.unmapped.map((e) => (
+              <Chip key={`${e.sku}-${e.error}`} kind="warn">
+                {e.sku}: {e.error} (not checked yet)
               </Chip>
             ))}
           </div>

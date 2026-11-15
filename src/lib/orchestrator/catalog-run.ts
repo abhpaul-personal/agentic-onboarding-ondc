@@ -235,15 +235,24 @@ export function approveG2(
   for (const [column, decision] of Object.entries(columnMappings)) {
     columnTargets[column] = decision.final as MappingTargetKey | null;
   }
-  const builtItems = state.rawRows ? buildItemsFromMappedColumns(state.rawRows, columnTargets) : state.items;
+  const built = state.rawRows
+    ? buildItemsFromMappedColumns(state.rawRows, columnTargets)
+    : { items: state.items, unitInferredByColumn: {} };
   // FR-15: pre-fill statutory fields from the approved seller profile before category/validation see the items.
-  const items = builtItems.map((item) => preFillFromSellerProfile(item, state.sellerProfile));
+  const items = built.items.map((item) => preFillFromSellerProfile(item, state.sellerProfile));
 
-  const next = appendAudit(
+  let next = appendAudit(
     { ...state, columnMappings, items },
     "human",
     `G2: approved ${Object.values(columnMappings).filter((m) => m.route !== "auto").length} reviewed mappings${editCount ? `, ${editCount} edits` : ""}`,
   );
+  for (const [column, count] of Object.entries(built.unitInferredByColumn)) {
+    next = appendAudit(
+      next,
+      "sys",
+      `G2: inferred grams for ${count} unitless net quantity value(s) in "${column}" from the reviewer-approved mapping`,
+    );
+  }
   next.gates = [...next.gates, { gate: "G2", outcome: `${editCount} mapping edits`, at: new Date().toISOString() }];
   return advance(next);
 }
@@ -290,27 +299,56 @@ export type FallbackResolution =
   | { kind: "set_net_qty"; value: string }
   | { kind: "set_packed_month"; value: string };
 
+function applyFallbackResolution(
+  items: readonly CatalogItem[],
+  targetIds: ReadonlySet<string>,
+  resolution: FallbackResolution,
+): CatalogItem[] {
+  if (resolution === "drop") return items.filter((i) => !targetIds.has(i.id));
+  if (resolution === "clear_gtin") return items.map((i) => (targetIds.has(i.id) ? { ...i, gtin: undefined } : i));
+  if (resolution === "remove_claim") return items.map((i) => (targetIds.has(i.id) ? { ...i, description: undefined } : i));
+  if (resolution.kind === "set_net_qty") return items.map((i) => (targetIds.has(i.id) ? { ...i, netQty: resolution.value } : i));
+  return items.map((i) => (targetIds.has(i.id) ? { ...i, packedMonth: resolution.value } : i));
+}
+
+/**
+ * Resolves one item's queue issue. Scoped by type as well as item id: an
+ * item can carry more than one queue issue (e.g. a duplicate SKU that is
+ * also an unsupported claim), and resolving one must not silently drop the
+ * other.
+ */
 export function resolveFallbackQueueItem(
   state: CatalogRunState,
   itemId: string,
+  type: ValidationIssue["type"],
   resolution: FallbackResolution,
 ): CatalogRunState {
   assertStep(state, "queue");
-  let items = state.items;
-  if (resolution === "drop") {
-    items = items.filter((i) => i.id !== itemId);
-  } else if (resolution === "clear_gtin") {
-    items = items.map((i) => (i.id === itemId ? { ...i, gtin: undefined } : i));
-  } else if (resolution === "remove_claim") {
-    items = items.map((i) => (i.id === itemId ? { ...i, description: undefined } : i));
-  } else if (typeof resolution === "object" && resolution.kind === "set_net_qty") {
-    items = items.map((i) => (i.id === itemId ? { ...i, netQty: resolution.value } : i));
-  } else if (typeof resolution === "object" && resolution.kind === "set_packed_month") {
-    items = items.map((i) => (i.id === itemId ? { ...i, packedMonth: resolution.value } : i));
-  }
-  const issues = state.issues.filter((i) => !(i.itemId === itemId && i.severity === "queue"));
+  const items = applyFallbackResolution(state.items, new Set([itemId]), resolution);
+  const issues = state.issues.filter((i) => !(i.itemId === itemId && i.type === type && i.severity === "queue"));
   const label = typeof resolution === "string" ? resolution : resolution.kind;
   return appendAudit({ ...state, items, issues }, "human", `Fallback queue: ${itemId} resolved (${label})`);
+}
+
+/** Resolves every queue issue of a given type at once, with the same resolution for all of them. */
+export function resolveFallbackQueueItemsByType(
+  state: CatalogRunState,
+  type: ValidationIssue["type"],
+  resolution: FallbackResolution,
+): CatalogRunState {
+  assertStep(state, "queue");
+  const targetIds = new Set(
+    state.issues.filter((i) => i.severity === "queue" && i.type === type).map((i) => i.itemId),
+  );
+  if (targetIds.size === 0) return state;
+  const items = applyFallbackResolution(state.items, targetIds, resolution);
+  const issues = state.issues.filter((i) => !(i.severity === "queue" && i.type === type));
+  const label = typeof resolution === "string" ? resolution : resolution.kind;
+  return appendAudit(
+    { ...state, items, issues },
+    "human",
+    `Fallback queue: ${targetIds.size} "${type}" issue(s) resolved in bulk (${label})`,
+  );
 }
 
 /** Finishes the fallback queue step once every queued issue is resolved. */

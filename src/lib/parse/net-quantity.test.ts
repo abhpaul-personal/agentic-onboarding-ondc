@@ -30,6 +30,21 @@ describe("parseNetQuantityGrams", () => {
     expect(parseNetQuantityGrams("")).toBeNull();
     expect(parseNetQuantityGrams("lots")).toBeNull();
   });
+
+  it('returns null for a bare unitless number ("500") by default', () => {
+    expect(parseNetQuantityGrams("500")).toBeNull();
+  });
+
+  it('with assumeGramsIfUnitless, treats a bare number ("500") as grams', () => {
+    expect(parseNetQuantityGrams("500", { assumeGramsIfUnitless: true })).toBe(500);
+    expect(parseNetQuantityGrams("1000", { assumeGramsIfUnitless: true })).toBe(1000);
+  });
+
+  it("with assumeGramsIfUnitless, still returns null for anything that isn't a bare number", () => {
+    expect(parseNetQuantityGrams("aadha kilo", { assumeGramsIfUnitless: true })).toBeNull();
+    expect(parseNetQuantityGrams("500 pcs", { assumeGramsIfUnitless: true })).toBeNull();
+    expect(parseNetQuantityGrams("", { assumeGramsIfUnitless: true })).toBeNull();
+  });
 });
 
 describe("formatNetQuantityGrams", () => {

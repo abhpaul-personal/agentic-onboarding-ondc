@@ -28,7 +28,7 @@ function buildSetFItems(): { items: CatalogItem[]; seller: SellerProfile; rawRow
   const fieldMap = JSON.parse(
     readFileSync(join(process.cwd(), "data/sets/set-F/ground_truth/field_mapping.json"), "utf-8"),
   ) as Record<string, MappingTargetKey>;
-  const items = buildItemsFromMappedColumns(rawRows, fieldMap).map((i) => preFillFromSellerProfile(i, seller));
+  const items = buildItemsFromMappedColumns(rawRows, fieldMap).items.map((i) => preFillFromSellerProfile(i, seller));
   return { items, seller, rawRows, columnTargets: fieldMap };
 }
 

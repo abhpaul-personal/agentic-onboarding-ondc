@@ -219,7 +219,7 @@ export function auditInventedStatutoryValues(catalog: CatalogRunState): Invented
         for (const [column, decision] of Object.entries(catalog.columnMappings)) {
           columnTargets[column] = decision.final as MappingTargetKey | null;
         }
-        return buildItemsFromMappedColumns(catalog.rawRows!, columnTargets);
+        return buildItemsFromMappedColumns(catalog.rawRows!, columnTargets).items;
       })()
     : null;
 

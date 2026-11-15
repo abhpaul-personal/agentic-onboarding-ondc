@@ -193,7 +193,7 @@ async function warmCategoryStep(set: string, items: { id: string; name: string; 
  * mapped columns.
  */
 async function warmCategory(set: string, records: Record<string, string>[], columnTargets: Record<string, MappingTargetKey | null>, store: ReturnType<typeof createCacheStore>, client: ReturnType<typeof getAnthropicClient>, model: string) {
-  const catalogItems = buildItemsFromMappedColumns(records, columnTargets);
+  const catalogItems = buildItemsFromMappedColumns(records, columnTargets).items;
   const items = catalogItems.map((item) => ({ id: item.id, name: item.name, description: item.description }));
   return warmCategoryStep(set, items, store, client, model);
 }

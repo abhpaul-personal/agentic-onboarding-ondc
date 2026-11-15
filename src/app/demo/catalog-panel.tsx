@@ -281,30 +281,59 @@ function G2Panel({ state, run, isPending }: { state: SingleDemoState; run: (a: (
   );
 }
 
+function resolutionForType(type: string) {
+  return type === "duplicate"
+    ? ("drop" as const)
+    : type === "gtin"
+      ? ("clear_gtin" as const)
+      : type === "claim"
+        ? ("remove_claim" as const)
+        : type === "net_qty_unparsed"
+          ? ({ kind: "set_net_qty" as const, value: "500 g" })
+          : ({ kind: "set_packed_month" as const, value: "10/2026" });
+}
+
 function QueuePanel({ state, run, isPending }: { state: SingleDemoState; run: (a: () => Promise<DemoState>) => void; isPending: boolean }) {
   const { catalog } = state;
   const [resolved, setResolved] = useState<Set<string>>(new Set());
   if (!catalog) return null;
   const queueIssues = catalog.issues.filter((i) => i.severity === "queue");
+  const byType = new Map<(typeof queueIssues)[number]["type"], typeof queueIssues>();
+  for (const issue of queueIssues) {
+    byType.set(issue.type, [...(byType.get(issue.type) ?? []), issue]);
+  }
 
-  const resolve = (itemId: string, type: string) => {
-    const resolution =
-      type === "duplicate"
-        ? ("drop" as const)
-        : type === "gtin"
-          ? ("clear_gtin" as const)
-          : type === "claim"
-            ? ("remove_claim" as const)
-            : type === "net_qty_unparsed"
-              ? ({ kind: "set_net_qty" as const, value: "500 g" })
-              : ({ kind: "set_packed_month" as const, value: "10/2026" });
+  const resolve = (itemId: string, type: (typeof queueIssues)[number]["type"]) => {
     setResolved((s) => new Set(s).add(`${itemId}:${type}`));
-    run(() => actions.catalogResolveQueueItem(state, itemId, resolution));
+    run(() => actions.catalogResolveQueueItem(state, itemId, type, resolutionForType(type)));
+  };
+
+  const resolveAllOfType = (type: (typeof queueIssues)[number]["type"]) => {
+    for (const issue of byType.get(type) ?? []) {
+      setResolved((s) => new Set(s).add(`${issue.itemId}:${type}`));
+    }
+    run(() => actions.catalogResolveQueueItemsByType(state, type, resolutionForType(type)));
   };
 
   return (
     <Card>
       <StepHead n="FQ" label="Fallback queue" extra={<Chip kind="warn">Needs a person</Chip>} />
+      {queueIssues.length > 0 && (
+        <div className="mb-3 space-y-2">
+          {[...byType.entries()].map(([type, issuesOfType]) =>
+            issuesOfType.length > 1 ? (
+              <div key={type} className="flex items-center justify-between gap-2 rounded-lg border border-[var(--line)] bg-[#fbfaf7] p-2.5 text-sm">
+                <span>
+                  <b>{issuesOfType.length}</b> issues of type <b className="font-mono">{type}</b>
+                </span>
+                <Button small disabled={isPending} onClick={() => resolveAllOfType(type)}>
+                  Resolve all {issuesOfType.length}
+                </Button>
+              </div>
+            ) : null,
+          )}
+        </div>
+      )}
       <div className="mb-3 space-y-2">
         {queueIssues.map((issue) => {
           const key = `${issue.itemId}:${issue.type}`;
@@ -322,9 +351,17 @@ function QueuePanel({ state, run, isPending }: { state: SingleDemoState; run: (a
           );
         })}
       </div>
-      <Button variant="gate" disabled={isPending} onClick={() => run(() => actions.catalogFinishQueue(state))}>
+      <p className="mb-2 text-xs text-[var(--ink2)]">
+        {queueIssues.length === 0 ? "All items resolved." : `${queueIssues.length} item(s) still open.`}
+      </p>
+      <Button
+        variant="gate"
+        disabled={isPending || queueIssues.length > 0}
+        onClick={() => run(() => actions.catalogFinishQueue(state))}
+      >
         Finish fallback queue
       </Button>
+      <ScorecardLink state={state} />
     </Card>
   );
 }
@@ -332,15 +369,35 @@ function QueuePanel({ state, run, isPending }: { state: SingleDemoState; run: (a
 function G3Panel({ state, run, isPending }: { state: SingleDemoState; run: (a: () => Promise<DemoState>) => void; isPending: boolean }) {
   const { catalog } = state;
   const [enteredBrands, setEnteredBrands] = useState<Set<string>>(new Set());
+  const [enteredItems, setEnteredItems] = useState<Set<string>>(new Set());
   if (!catalog) return null;
   const g3Issues = catalog.issues.filter((i) => i.severity === "g3");
   const packerBrands = [...new Set(catalog.items.filter((i) => !i.manufacturerOrPackerName && i.brand).map((i) => i.brand!))];
+  // A source with no brand column at all (e.g. set F) still names a
+  // third-party packer explicitly; without a per-item path here, an item
+  // like this had no way to resolve its packer_missing/fssai issue and G3
+  // sign-off would stay disabled forever.
+  const packerIssueIds = new Set(
+    catalog.issues.filter((i) => i.type === "packer_missing" || i.type === "fssai").map((i) => i.itemId),
+  );
+  const unbrandedPackerItems = catalog.items.filter((i) => packerIssueIds.has(i.id) && !i.brand);
 
   const enterBrand = (brand: string) => {
     setEnteredBrands((s) => new Set(s).add(brand));
     run(() =>
       actions.catalogEnterPackerForBrand(state, brand, {
         manufacturerOrPackerName: `${brand} (from label)`,
+        manufacturerOrPackerAddress: "Address copied from the pack label",
+        fssaiLicenceNo: "20000000000900",
+      }),
+    );
+  };
+
+  const enterItem = (itemId: string, packerName: string) => {
+    setEnteredItems((s) => new Set(s).add(itemId));
+    run(() =>
+      actions.catalogEnterPackerForItem(state, itemId, {
+        manufacturerOrPackerName: packerName,
         manufacturerOrPackerAddress: "Address copied from the pack label",
         fssaiLicenceNo: "20000000000900",
       }),
@@ -373,6 +430,27 @@ function G3Panel({ state, run, isPending }: { state: SingleDemoState; run: (a: (
         </div>
       )}
 
+      {unbrandedPackerItems.length > 0 && (
+        <div className="mb-3 space-y-2">
+          <h4 className="text-sm font-semibold">Third-party-packed items with no brand column</h4>
+          {unbrandedPackerItems.map((item) => (
+            <div key={item.id} className="flex items-center justify-between rounded-lg border border-[var(--line)] p-2.5 text-sm">
+              <span>
+                <b className="font-mono">{item.id}</b> — named packer &quot;{item.manufacturerOrPackerName}&quot;; copy
+                its address and FSSAI licence from the pack label
+              </span>
+              <Button
+                small
+                disabled={isPending || enteredItems.has(item.id)}
+                onClick={() => enterItem(item.id, item.manufacturerOrPackerName!)}
+              >
+                {enteredItems.has(item.id) ? "Entered" : "Enter from label"}
+              </Button>
+            </div>
+          ))}
+        </div>
+      )}
+
       {remaining.length > 0 && (
         <div className="mb-3 space-y-1.5">
           <h4 className="text-sm font-semibold">Other statutory issues</h4>
@@ -387,6 +465,9 @@ function G3Panel({ state, run, isPending }: { state: SingleDemoState; run: (a: (
         </div>
       )}
 
+      <p className="mb-2 text-xs text-[var(--ink2)]">
+        {g3Issues.length === 0 ? "All statutory fields resolved." : `${g3Issues.length} statutory issue(s) still open.`}
+      </p>
       <Button
         variant="gate"
         disabled={isPending || g3Issues.length > 0}
@@ -394,6 +475,7 @@ function G3Panel({ state, run, isPending }: { state: SingleDemoState; run: (a: (
       >
         Sign off statutory fields
       </Button>
+      <ScorecardLink state={state} />
     </Card>
   );
 }

@@ -113,13 +113,16 @@ describe("validateItems", () => {
     });
   });
 
-  it("catches set F's planted duplicate SKU (TRP-009)", () => {
+  it("catches set F's planted duplicate SKU (TRP-009) once, not once per duplicated row", () => {
+    // The source has two physical rows for TRP-009 (the planted duplicate),
+    // so both catalog items trip the duplicate check; that is one real
+    // finding, not two, so the fallback queue must show it once.
     const items: CatalogItem[] = [
       { id: "TRP-009", name: "Groundnut Oil" },
       { id: "TRP-009", name: "Groundnut Oil" },
     ];
     const issues = validateItems(items, seller);
-    expect(issues.filter((i) => i.type === "duplicate")).toHaveLength(2);
+    expect(issues.filter((i) => i.type === "duplicate")).toHaveLength(1);
   });
 
   it("catches set F's planted organic claim bait (TRP-017)", () => {
@@ -218,7 +221,7 @@ function buildRealItems(set: string, catalogFile: string): CatalogItem[] {
       "utf-8",
     ),
   ) as Record<string, MappingTargetKey>;
-  return buildItemsFromMappedColumns(records, fieldMap);
+  return buildItemsFromMappedColumns(records, fieldMap).items;
 }
 
 describe("own_brands / self-packed (real sets)", () => {
