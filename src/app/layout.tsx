@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { TopNav } from "@/components/top-nav";
 import { Footer } from "@/components/footer";
 import "./globals.css";
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <TopNav />
         <main className="mx-auto w-full max-w-[1320px] flex-1 px-5 py-6">{children}</main>
         <Footer />
+        <Analytics />
       </body>
     </html>
   );
